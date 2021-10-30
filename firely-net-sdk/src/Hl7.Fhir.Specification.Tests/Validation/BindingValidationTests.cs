@@ -28,7 +28,7 @@ namespace Hl7.Fhir.Specification.Tests
             var binding = new ElementDefinition.ElementDefinitionBindingComponent
             {
                 Strength = BindingStrength.Required,
-                ValueSet = new ResourceReference("http://hl7.org/fhir/ValueSet/data-absent-reason")
+                ValueSet = "http://hl7.org/fhir/ValueSet/data-absent-reason"
             };
 
             var validator = binding.ToValidatable("http://example.org/fhir/StructureDefitition/fhir#text.path");
@@ -38,11 +38,11 @@ namespace Hl7.Fhir.Specification.Tests
             var node = v.ToTypedElement();
             Assert.True(validator.Validate(node, vc).Success);
 
-            v = new Quantity(4.0m, "masked", "http://hl7.org/fhir/data-absent-reason");  // nonsense, but hey UCUM is not provided with the spec
+            v = new Quantity(4.0m, "masked", "http://terminology.hl7.org/CodeSystem/data-absent-reason");  // nonsense, but hey UCUM is not provided with the spec
             node = v.ToTypedElement();
             Assert.True(validator.Validate(node, vc).Success);
 
-            v = new Quantity(4.0m, "maskedx", "http://hl7.org/fhir/data-absent-reason");  // nonsense, but hey UCUM is not provided with the spec
+            v = new Quantity(4.0m, "maskedx", "http://terminology.hl7.org/CodeSystem/data-absent-reason");  // nonsense, but hey UCUM is not provided with the spec
             node = v.ToTypedElement();
             Assert.False(validator.Validate(node, vc).Success);
 
@@ -58,7 +58,7 @@ namespace Hl7.Fhir.Specification.Tests
             node = v.ToTypedElement();
             Assert.False(validator.Validate(node, vc).Success);
 
-            var ic = new Coding("http://hl7.org/fhir/data-absent-reason", "masked");
+            var ic = new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "masked");
             var ext = new Extension { Value = ic };
             node = ext.ToTypedElement();
             Assert.True(validator.Validate(node, vc).Success);
@@ -72,25 +72,27 @@ namespace Hl7.Fhir.Specification.Tests
         [Fact]
         public void TestCodingValidation()
         {
+            var dar = "http://terminology.hl7.org/CodeSystem/data-absent-reason";
+
             var binding = new ElementDefinition.ElementDefinitionBindingComponent
             {
-                ValueSet = new ResourceReference("http://hl7.org/fhir/ValueSet/data-absent-reason"),
+                ValueSet = "http://hl7.org/fhir/ValueSet/data-absent-reason",
                 Strength = BindingStrength.Required
             };
 
             var val = binding.ToValidatable();
             var vc = new ValidationContext() { TerminologyService = _termService };
 
-            var c = new Coding("http://hl7.org/fhir/data-absent-reason", "NaN");
+            var c = new Coding(dar, "not-a-number");
             var result = val.Validate(c.ToTypedElement(), vc);
             Assert.True(result.Success);
 
             c.Code = "NaNX";
             result = val.Validate(c.ToTypedElement(), vc);
             Assert.False(result.Success);
-            c.Code = "NaN";
 
-            c.Display = "Not a Number";
+            c.Code = "not-a-number";
+            c.Display = "Not a Number (NaN)";
             binding.Strength = BindingStrength.Required;
             result = val.Validate(c.ToTypedElement(), vc);
             Assert.True(result.Success);
@@ -102,7 +104,7 @@ namespace Hl7.Fhir.Specification.Tests
             // But this won't, it's also a composition, but without expansion - the local term server won't help you here
             var binding2 = new ElementDefinition.ElementDefinitionBindingComponent
             {
-                ValueSet = new FhirUri("http://hl7.org/fhir/ValueSet/substance-code"),
+                ValueSet = "http://hl7.org/fhir/ValueSet/substance-code",
                 Strength = BindingStrength.Required
             };
 
@@ -119,7 +121,7 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var binding = new ElementDefinition.ElementDefinitionBindingComponent
             {
-                ValueSet = new ResourceReference("http://hl7.org/fhir/ValueSet/data-absent-reason"),
+                ValueSet = "http://hl7.org/fhir/ValueSet/data-absent-reason",
                 Strength = BindingStrength.Preferred
             };
 
@@ -149,18 +151,17 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.Contains("None of the Codings in the CodeableConcept were valid for the binding", result.ToString());
 
             // Now, add a third valid code according to the binding.
-            cc.Coding.Add(new Coding("http://hl7.org/fhir/data-absent-reason", "asked"));
+            cc.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "asked-unknown"));
             result = val.Validate(cc.ToTypedElement(), vc);
             Assert.True(result.Success);
         }
-
 
         [Fact]
         public void TestCodeableConceptValidation()
         {
             var binding = new ElementDefinition.ElementDefinitionBindingComponent
             {
-                ValueSet = new ResourceReference("http://hl7.org/fhir/ValueSet/data-absent-reason"),
+                ValueSet = "http://hl7.org/fhir/ValueSet/data-absent-reason",
                 Strength = BindingStrength.Required
             };
 
@@ -168,8 +169,8 @@ namespace Hl7.Fhir.Specification.Tests
             var vc = new ValidationContext() { TerminologyService = _termService };
 
             var cc = new CodeableConcept();
-            cc.Coding.Add(new Coding("http://hl7.org/fhir/data-absent-reason", "NaN"));
-            cc.Coding.Add(new Coding("http://hl7.org/fhir/data-absent-reason", "not-asked"));
+            cc.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "not-a-number"));
+            cc.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "not-asked"));
 
             var result = val.Validate(cc.ToTypedElement(), vc);
             Assert.True(result.Success);
@@ -195,7 +196,7 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var binding = new ElementDefinition.ElementDefinitionBindingComponent
             {
-                ValueSet = new ResourceReference("http://hl7.org/fhir/ValueSet/address-type"),
+                ValueSet = new Canonical("http://hl7.org/fhir/ValueSet/address-type"),
                 Strength = BindingStrength.Required
             };
 
@@ -219,6 +220,24 @@ namespace Hl7.Fhir.Specification.Tests
                               "Code '01.016' from system 'http://another-non-existing.code.system' does not exist in valueset 'http://hl7.org/fhir/ValueSet/address-type'",
                               result.Issue[0].Details.Text);
 
+        }
+
+        //MS 2021-16-08: Tests issue https://github.com/FirelyTeam/firely-net-sdk/issues/1857
+        [Fact]
+        public void TestCurrenciesValidation()
+        {
+            var binding = new ElementDefinition.ElementDefinitionBindingComponent
+            {
+                ValueSet = new Canonical("http://hl7.org/fhir/ValueSet/currencies"),
+                Strength = BindingStrength.Required
+            };
+
+            var val = binding.ToValidatable();
+            var vc = new ValidationContext() { TerminologyService = _termService };
+
+            var v = new Money() { Value = 1, Currency = Money.Currencies.EUR };
+            var node = v.ToTypedElement();
+            Assert.True(val.Validate(node, vc).Success);
         }
     }
 }

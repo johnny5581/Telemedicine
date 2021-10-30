@@ -15,6 +15,13 @@ using System;
 
 namespace Hl7.Fhir.Validation
 {
+    public enum ConstraintBestPractices
+    {
+        Ignore,
+        Enabled,
+        Disabled
+    }
+
     /// <summary>Configuration settings for the <see cref="Validator"/> class.</summary>
     public class ValidationSettings
     {
@@ -94,6 +101,12 @@ namespace Hl7.Fhir.Validation
         public bool EnableXsdValidation { get; set; } // = false;
 
         /// <summary>
+        /// If set to enabled, the validator will treat as error the violations of the invariants marked as best practices, if disabled they will be marked as warnings.
+        /// </summary>
+        public ConstraintBestPractices ConstraintBestPractices { get; set; } // = Ignore;
+
+       
+        /// <summary>
         /// Determine where to retrieve the XSD schemas from when when Xsd validation is enabled and run.
         /// </summary>
         /// <remarks>If this is not set, the default location (using specification.zip) will be used.</remarks>
@@ -117,6 +130,7 @@ namespace Hl7.Fhir.Validation
         {
             if (other == null) throw Error.ArgumentNull(nameof(other));
 
+            other.ConstraintBestPractices = ConstraintBestPractices;
             other.GenerateSnapshot = GenerateSnapshot;
             other.GenerateSnapshotSettings = GenerateSnapshotSettings?.Clone();
             other.EnableXsdValidation = EnableXsdValidation;

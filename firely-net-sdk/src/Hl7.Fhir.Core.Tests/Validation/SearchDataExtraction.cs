@@ -6,34 +6,37 @@
  * available at https://raw.githubusercontent.com/FirelyTeam/firely-net-sdk/master/LICENSE
  */
 
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.FhirPath;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.Utility;
+using Hl7.FhirPath;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
+using System.IO;
 using System.IO.Compression;
-using Hl7.Fhir.FhirPath;
-using Hl7.FhirPath;
-using Hl7.Fhir.Utility;
-using Hl7.Fhir.ElementModel;
+using System.Linq;
+using System.Xml;
 #if NET40
 using ICSharpCode.SharpZipLib.Zip;
 #endif
-using Hl7.Fhir.Tests;
 
 namespace Hl7.Fhir.Test.Validation
 {
     [TestClass]
-#if PORTABLE45
-	public class PortableValidateSearchExtractionAllExamplesTest
-#else
     public class ValidateSearchExtractionAllExamplesTest
-#endif
     {
+        [TestInitialize]
+        public void Setup()
+        {
+            ElementNavFhirExtensions.PrepareFhirSymbolTableFunctions();
+        }
+
+
         [TestMethod]
         [TestCategory("LongRunner")]
         public void SearchExtractionAllExamples()
@@ -60,9 +63,11 @@ namespace Hl7.Fhir.Test.Validation
                     {
                         // Verified examples that fail validations
 
-                        //// vsd-3, vsd-8
-                        //if (file.EndsWith("valueset-ucum-common(ucum-common).xml"))
-                        //    continue;
+                        if (entry.Name.Contains("v2-tables"))
+                            continue; // this file is known to have a single dud valueset - have reported on Zulip
+                                      // https://chat.fhir.org/#narrow/stream/48-terminology/subject/v2.20Table.200550
+                        if (entry.Name == "observation-decimal(decimal).xml")
+                            continue; // this file has a Literal with value '-1.000000000000000000e245', which does not fit into a c# datatype
 
                         testFileCount++;
 
@@ -140,33 +145,42 @@ namespace Hl7.Fhir.Test.Validation
 
         private static void ExtractExamplesFromResource(Dictionary<string, int> exampleSearchValues, Resource resource, ModelInfo.SearchParamDefinition index, string key)
         {
-            var node = resource.ToTypedElement();
-            var results = node.Select(index.Expression, new FhirEvaluationContext(node));
+            var resourceModel = new ScopedNode(resource.ToTypedElement());
+
+            IEnumerable<ITypedElement> results;
+            try
+            {
+                results = resourceModel.Select(index.Expression, new FhirEvaluationContext(resourceModel) { ElementResolver = mockResolver });
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine($"Failed processing search expression {index.Name}: {index.Expression}");
+                throw;
+            }
             if (results.Count() > 0)
             {
                 foreach (var t2 in results)
                 {
                     if (t2 != null)
                     {
-                        var fhirValueProvider = t2.Annotation<IFhirValueProvider>();
-                        if (fhirValueProvider?.FhirValue != null)
+                        var fhirval = t2.Annotation<IFhirValueProvider>();
+                        if (fhirval?.FhirValue != null)
                         {
                             // Validate the type of data returned against the type of search parameter
-                            //     Debug.Write(index.Resource + "." + index.Name + ": ");
-                            //     Debug.WriteLine((t2 as FluentPath.PocoNavigator).FhirValue.ToString());// + "\r\n";
+                            //    Debug.Write(index.Resource + "." + index.Name + ": ");
+                            //    Debug.WriteLine((t2 as FhirPath.ModelNavigator).FhirValue.ToString());// + "\r\n";
                             exampleSearchValues[key]++;
-                            // System.Diagnostics.Trace.WriteLine(string.Format("{0}: {1}", xpath.Value, t2.AsStringRepresentation()));
                         }
                         //else if (t2.Value is Hl7.FhirPath.ConstantValue)
                         //{
-                        //    //     Debug.Write(index.Resource + "." + index.Name + ": ");
-                        //    //     Debug.WriteLine((t2.Value as Hl7.FluentPath.ConstantValue).Value);
+                        //    //    Debug.Write(index.Resource + "." + index.Name + ": ");
+                        //    //    Debug.WriteLine((t2.Value as Hl7.FhirPath.ConstantValue).Value);
                         //    exampleSearchValues[key]++;
                         //}
                         else if (t2.Value is bool)
                         {
-                            //     Debug.Write(index.Resource + "." + index.Name + ": ");
-                            //     Debug.WriteLine((bool)t2.Value);
+                            //    Debug.Write(index.Resource + "." + index.Name + ": ");
+                            //    Debug.WriteLine((bool)t2.Value);
                             exampleSearchValues[key]++;
                         }
                         else
@@ -178,6 +192,20 @@ namespace Hl7.Fhir.Test.Validation
                     }
                 }
             }
+        }
+
+        private static ITypedElement mockResolver(string url)
+        {
+            ResourceIdentity ri = new ResourceIdentity(url);
+            if (!string.IsNullOrEmpty(ri.ResourceType))
+            {
+                var fac = new Hl7.Fhir.Serialization.DefaultModelFactory();
+                var type = ModelInfo.GetTypeForFhirType(ri.ResourceType);
+                DomainResource res = fac.Create(type) as DomainResource;
+                res.Id = ri.Id;
+                return res.ToTypedElement();
+            }
+            return null;
         }
     }
 }

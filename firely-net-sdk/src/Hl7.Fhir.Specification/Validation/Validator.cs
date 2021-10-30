@@ -40,7 +40,7 @@ namespace Hl7.Fhir.Validation
         private FhirPathCompiler _fpCompiler;
 
 #if REUSE_SNAPSHOT_GENERATOR
-        SnapshotGenerator _snapshotGenerator;
+        private SnapshotGenerator _snapshotGenerator;
 
         internal SnapshotGenerator SnapshotGenerator
         {
@@ -192,12 +192,13 @@ namespace Hl7.Fhir.Validation
 
                 var elementConstraints = definition.Current;
 
-                if (elementConstraints.IsPrimitiveValueConstraint())
+                if (elementConstraints.IsPrimitiveConstraint())
                 {
-                    // The "value" property of a FHIR Primitive is the bottom of our recursion chain, it does not have a nameReference
-                    // nor a <type>, the only thing left to do to validate the content is to validate the string representation of the
-                    // primitive against the regex given in the core definition
-                    outcome.Add(VerifyPrimitiveContents(elementConstraints, instance));
+                    // The "value" property of a FHIR Primitive and Extension.url are the bottom of our recursion chain, 
+                    // they don't have a nameReference nor a <type>, the only thing left to do to validate the content is
+                    // to validate the string representation of the primitive against the regex given in the core definition
+                    var regexOutcome = validateRegexExtension(elementConstraints.Type.Single(), instance, "http://hl7.org/fhir/StructureDefinition/regex");
+                    outcome.Add(regexOutcome);
                 }
                 else
                 {
@@ -248,7 +249,7 @@ namespace Hl7.Fhir.Validation
                 outcome.Add(this.ValidateMinMaxValue(elementConstraints, instance));
                 outcome.Add(ValidateMaxLength(elementConstraints, instance));
                 outcome.Add(this.ValidateFp(definition.StructureDefinition.Url, elementConstraints, instance));
-                outcome.Add(this.ValidateExtension(elementConstraints, instance, "http://hl7.org/fhir/StructureDefinition/regex"));
+                outcome.Add(this.validateRegexExtension(elementConstraints, instance, "http://hl7.org/fhir/StructureDefinition/regex"));
                 outcome.Add(this.ValidateBinding(elementConstraints, instance, context));
 
                 // If the report only has partial information, no use to show the hierarchy, so flatten it.
@@ -263,13 +264,20 @@ namespace Hl7.Fhir.Validation
             }
         }
 
-        private OperationOutcome ValidateExtension(IExtendable elementDef, ITypedElement instance, string uri)
+        private OperationOutcome validateRegexExtension(IExtendable elementDef, ITypedElement instance, string uri)
         {
             var outcome = new OperationOutcome();
 
             var pattern = elementDef.GetStringExtension(uri);
             if (pattern != null)
             {
+                // See issue https://github.com/FirelyTeam/firely-net-sdk/issues/1563 and https://hl7.org/fhir/datatypes.html#string 
+                // the regex provided by the Fhir standard is not sufficient enough. The regex [\r\n\t\u0020-\uFFFF]* is more recommended
+                // The regex defined for string also applies to markdown
+                if ((instance?.InstanceType == FHIRAllTypes.String.GetLiteral() || instance?.InstanceType == FHIRAllTypes.Markdown.GetLiteral()) && pattern == @"[ \r\n\t\S]+")
+                {
+                    pattern = @"[\r\n\t\u0020-\uFFFF]*";
+                }
                 var regex = new Regex(pattern);
                 var value = toStringRepresentation(instance);
                 var success = Regex.Match(value, "^" + regex + "$").Success;
@@ -363,35 +371,6 @@ namespace Hl7.Fhir.Validation
             return outcome;
         }
 
-        internal OperationOutcome VerifyPrimitiveContents(ElementDefinition definition, ITypedElement instance)
-        {
-            var outcome = new OperationOutcome();
-
-            Trace(outcome, "Verifying content of the leaf primitive value attribute", Issue.PROCESSING_PROGRESS, instance);
-
-            // Go look for the primitive type extensions
-            //  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-regex">
-            //        <valueString value="-?([0]|([1-9][0-9]*))"/>
-            //      </extension>
-            //      <code>
-            //        <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type">
-            //          <valueString value="number"/>
-            //        </extension>
-            //        <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type">
-            //          <valueString value="int"/>
-            //        </extension>
-            //      </code>
-            // Note that the implementer of IValueProvider may already have outsmarted us and parsed
-            // the wire representation (i.e. POCO). If the provider reads xml directly, would it know the
-            // type? Would it convert it to a .NET native type? How to check?
-
-            // The spec has no regexes for the primitives mentioned below, so don't check them
-            return definition.Type.Count() == 1
-                ? ValidateExtension(definition.Type.Single(), instance, "http://hl7.org/fhir/StructureDefinition/structuredefinition-regex")
-                : outcome;
-        }
-
-
         internal OperationOutcome ValidateMaxLength(ElementDefinition definition, ITypedElement instance)
         {
             var outcome = new OperationOutcome();
@@ -472,7 +451,7 @@ namespace Hl7.Fhir.Validation
                 }
                 catch (Exception e)
                 {
-                    Trace(outcome, $"Resolution of reference '{reference}' using the Resolver API failed: " + e.Message, Issue.UNAVAILABLE_REFERENCED_RESOURCE, path);
+                    Trace(outcome, $"Resolution of reference '{reference}' using the Resolver SDK failed: " + e.Message, Issue.UNAVAILABLE_REFERENCED_RESOURCE, path);
                 }
             }
 

@@ -176,23 +176,18 @@ namespace Hl7.Fhir.Tests.Validation
 
             patn.Contained = null;
             DotNetAttributeValidation.Validate(pat);
-
-            patn.Text = new Narrative();
-            patn.Text.Div = "<div>Narrative in contained resource</div>";
-
-            // Contained resources should not contain narrative
-            validateErrorOrFail(pat);
         }
 
         [TestMethod]
         public void ValidateResourceWithIncorrectChildElement()
         {
-            // First create an incomplete encounter (class not supplied)
+            // First create an incomplete encounter (status and class not supplied)
             var enc = new Encounter();
             validateErrorOrFail(enc, membername: "StatusElement");
             validateErrorOrFail(enc, true);  // recursive checking shouldn't matter
 
             enc.Status = Encounter.EncounterStatus.Planned;
+            enc.Class = new Coding("http://terminology.hl7.org/CodeSystem/v3-ActCode", "IMP", "inpatient encounter");
 
             // Now, it should work
             DotNetAttributeValidation.Validate(enc);
@@ -211,6 +206,7 @@ namespace Hl7.Fhir.Tests.Validation
             validateErrorOrFail(enc, true, membername: "Value");
         }
 
+#if !NETSTANDARD1_6
         [TestMethod]    // XHtml validation not available in portable library
         public void TestXhtmlValidation()
         {
@@ -225,5 +221,6 @@ namespace Hl7.Fhir.Tests.Validation
             p.Text.Div = "<div xmlns='http://www.w3.org/1999/xhtml'><img onmouseover='bigImg(this)' src='smiley.gif' alt='Smiley' /></div>";
             validateErrorOrFail(p, true);
         }
+#endif
     }
 }

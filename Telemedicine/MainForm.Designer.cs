@@ -30,34 +30,34 @@ namespace Telemedicine
         private void InitializeComponent()
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.menuUpload = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuUploadObservation = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuData = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuObservation = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuUpload});
+            this.menuData});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(784, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
-            // menuUpload
+            // menuData
             // 
-            this.menuUpload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuUploadObservation});
-            this.menuUpload.Name = "menuUpload";
-            this.menuUpload.Size = new System.Drawing.Size(43, 20);
-            this.menuUpload.Text = "上傳";
+            this.menuData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuObservation});
+            this.menuData.Name = "menuData";
+            this.menuData.Size = new System.Drawing.Size(43, 20);
+            this.menuData.Text = "資料";
             // 
-            // menuUploadObservation
+            // menuObservation
             // 
-            this.menuUploadObservation.Name = "menuUploadObservation";
-            this.menuUploadObservation.Size = new System.Drawing.Size(180, 22);
-            this.menuUploadObservation.Text = "生理數值";
+            this.menuObservation.Name = "menuObservation";
+            this.menuObservation.Size = new System.Drawing.Size(180, 22);
+            this.menuObservation.Text = "生理數值";
             // 
             // MainForm
             // 
@@ -76,8 +76,8 @@ namespace Telemedicine
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem menuUpload;
-        private System.Windows.Forms.ToolStripMenuItem menuUploadObservation;
+        private System.Windows.Forms.ToolStripMenuItem menuData;
+        private System.Windows.Forms.ToolStripMenuItem menuObservation;
     }
 }
 

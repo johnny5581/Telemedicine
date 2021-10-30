@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Rest.Legacy;
@@ -64,7 +63,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public async System.Threading.Tasks.Task Read_UsingResourceIdentity_ResultReturned()
+        public async System.Threading.Tasks.Task Read_UsingResourceIdentity_ResultReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
             client.Settings.PreferredFormat = ResourceFormat.Json;
@@ -98,7 +97,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public async System.Threading.Tasks.Task Read_UsingLocationString_ResultReturned()
+        public async System.Threading.Tasks.Task Read_UsingLocationString_ResultReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
             client.Settings.PreferredFormat = ResourceFormat.Json;

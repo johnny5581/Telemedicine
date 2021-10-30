@@ -181,9 +181,7 @@
         </extension>
         <strength value="extensible" />
         <description value="A human language." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/languages" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/languages" />
       </binding>
     </element>
     <element id="Questionnaire:sdcquestionnaire.text">
@@ -574,9 +572,7 @@
       <binding>
         <strength value="required" />
         <description value="Lifecycle status of the questionnaire." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/questionnaire-status" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/questionnaire-status" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -694,9 +690,7 @@
       <binding>
         <strength value="extensible" />
         <description value="Indicates the countries, regions, disciplines and other aspects of use within which this artifact is targeted for use." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/use-context" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/use-context" />
       </binding>
       <mapping>
         <identity value="ihesdc" />
@@ -876,9 +870,7 @@
       <binding>
         <strength value="example" />
         <description value="Codes for questionnaires, groups and individual questions" />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/questionnaire-questions" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/questionnaire-questions" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -905,9 +897,7 @@
       <binding>
         <strength value="required" />
         <description value="One of the resource types defined as part of FHIR." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/resource-types" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/resource-types" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -2012,9 +2002,7 @@
       <binding>
         <strength value="example" />
         <description value="Codes for questionnaires, groups and individual questions" />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/questionnaire-questions" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/questionnaire-questions" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -2357,9 +2345,7 @@
       <binding>
         <strength value="required" />
         <description value="Distinguishes groups from questions and display text and indicates data type for questions" />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/item-type" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/item-type" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -2861,9 +2847,7 @@
       <binding>
         <strength value="example" />
         <description value="Allowed values to answer questions." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/questionnaire-answers" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/questionnaire-answers" />
       </binding>
       <mapping>
         <identity value="rim" />

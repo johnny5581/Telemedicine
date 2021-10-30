@@ -123,8 +123,19 @@
       For purposes of example, will represent this way.  -->
     <Condition>
       <id value="p1"/>
-      <clinicalStatus value="active"/>
-	  <verificationStatus value="confirmed"/>
+      <clinicalStatus>
+		<coding>
+		  <system value="http://terminology.hl7.org/CodeSystem/condition-clinical"/>
+		  <code value="active"/>
+		</coding>
+	  </clinicalStatus>
+
+	  <verificationStatus>
+		<coding>
+		  <system value="http://terminology.hl7.org/CodeSystem/condition-ver-status"/>
+		  <code value="confirmed"/>
+		</coding>
+	  </verificationStatus>
       <code>
         <text value="GERDS"/>
       </code>
@@ -137,8 +148,19 @@
   <contained>
     <Condition>
       <id value="p2"/>
-      <clinicalStatus value="active"/>
-	  <verificationStatus value="confirmed"/>
+      <clinicalStatus>
+		<coding>
+		  <system value="http://terminology.hl7.org/CodeSystem/condition-clinical"/>
+		  <code value="active"/>
+		</coding>
+	  </clinicalStatus>
+
+	  <verificationStatus>
+		<coding>
+		  <system value="http://terminology.hl7.org/CodeSystem/condition-ver-status"/>
+		  <code value="confirmed"/>
+		</coding>
+	  </verificationStatus>
       <code>
         <text value="Obesity"/>
       </code>
@@ -151,8 +173,19 @@
   <contained>
     <Condition>
       <id value="p3"/>
-      <clinicalStatus value="active"/>
-	  <verificationStatus value="confirmed"/>
+      <clinicalStatus>
+		<coding>
+		  <system value="http://terminology.hl7.org/CodeSystem/condition-clinical"/>
+		  <code value="active"/>
+		</coding>
+	  </clinicalStatus>
+
+	  <verificationStatus>
+		<coding>
+		  <system value="http://terminology.hl7.org/CodeSystem/condition-ver-status"/>
+		  <code value="confirmed"/>
+		</coding>
+	  </verificationStatus>
       <code>
         <text value="Psoriasis"/>
       </code>
@@ -165,7 +198,7 @@
   <contained>
     <Goal>
       <id value="g1"/>
-      <status value="in-progress"/>
+      <lifecycleStatus value="active"/>
 	  <description>
         <text value="Eve will lose weight and reduce her GERDS symptoms by improving her diet"/>
       </description>
@@ -178,7 +211,7 @@
   <contained>
     <Goal>
       <id value="g2"/>
-	  <status value="in-progress"/>
+	  <lifecycleStatus value="active"/>
       <description>
         <text value="Eve will improve her GERDS symptoms"/>
       </description>
@@ -191,7 +224,7 @@
   <contained>
     <Goal>
       <id value="g3"/>
-      <status value="in-progress"/>
+      <lifecycleStatus value="active"/>
 	  <description>
         <text value="Eve will increase her energy by being more active"/>
       </description>
@@ -204,7 +237,7 @@
   <contained>
     <Goal>
       <id value="g4"/>
-      <status value="in-progress"/>
+      <lifecycleStatus value="active"/>
 	  <description>
         <text value="Eve will set up her medications and take as prescribed"/>
       </description>
@@ -217,7 +250,7 @@
   <contained>
     <Goal>
       <id value="g5"/>
-      <status value="in-progress"/>
+      <lifecycleStatus value="active"/>
 	  <description>
         <text value="Eve will restart her light treatments"/>
       </description>
@@ -272,17 +305,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-09-10"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g1"/>
       </goal>
       <status value="not-started"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-09-10"/>
       </scheduledPeriod>
@@ -298,17 +325,12 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-09-10"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
+      <kind value="CommunicationRequest"/>
       <goal>
         <reference value="#g1"/>
       </goal>
       <status value="not-started"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-09-10"/>
       </scheduledPeriod>
@@ -320,17 +342,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-09-10"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g2"/>
       </goal>
       <status value="in-progress"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-09-10"/>
       </scheduledPeriod>
@@ -350,17 +366,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-09-10"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g3"/>
       </goal>
       <status value="in-progress"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-08-27"/>
       </scheduledPeriod>
@@ -380,17 +390,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-09-10"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g3"/>
       </goal>
       <status value="in-progress"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-23"/>
       </scheduledPeriod>
@@ -402,21 +406,15 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-08-13"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g4"/>
       </goal>
       <status value="in-progress"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-23"/>
       </scheduledPeriod>
-      <description value="Eve will us a calendar to check off after medications are taken"/>
+      <description value="Eve will use a calendar to check off after medications are taken"/>
     </detail>
   </activity>
   <activity>
@@ -432,17 +430,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-08-27"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g5"/>
       </goal>
       <status value="in-progress"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-23"/>
       </scheduledPeriod>
@@ -458,17 +450,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-09-10"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g4"/>
       </goal>
       <status value="in-progress"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-10"/>
       </scheduledPeriod>
@@ -488,17 +474,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-08-23"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g3"/>
       </goal>
       <status value="on-hold"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-23"/>
       </scheduledPeriod>
@@ -510,17 +490,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-07-23"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g4"/>
       </goal>
       <status value="completed"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-10"/>
       </scheduledPeriod>
@@ -536,17 +510,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-07-16"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g4"/>
       </goal>
       <status value="completed"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-10"/>
       </scheduledPeriod>
@@ -566,17 +534,11 @@
       <extension url="http://example.org/fhir/StructureDefinition/RevisionDate">
         <valueDate value="2012-08-13"/>
       </extension>
-      <category>
-        <coding>
-          <system value="http://hl7.org/fhir/care-plan-activity-category"/>
-          <code value="other"/>
-        </coding>
-      </category>
       <goal>
         <reference value="#g3"/>
       </goal>
       <status value="on-hold"/>
-      <prohibited value="false"/>
+      <doNotPerform value="false"/>
       <scheduledPeriod>
         <start value="2012-07-23"/>
       </scheduledPeriod>

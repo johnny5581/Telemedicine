@@ -1,4 +1,5 @@
-using Hl7.Fhir.ElementModel;
+﻿using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.FhirPath;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
@@ -36,6 +37,9 @@ namespace Hl7.Fhir.Specification.Tests
             _asyncSource = fixture.AsyncResolver;
             _validator = fixture.Validator;
             this.output = output;
+
+            ElementNavFhirExtensions.PrepareFhirSymbolTableFunctions();
+
         }
 
         //[TestInitialize]
@@ -155,6 +159,7 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.Equal(0, report.Warnings);
         }
 
+        //[Fact(Skip = "After TC 4.0.1, this unit test fails (2 x ext-1 errors). I have no clue why. [MV 20191217]")]
         [Fact]
         public async T.Task ValidateCardinality()
         {
@@ -186,7 +191,7 @@ namespace Hl7.Fhir.Specification.Tests
             var report = _validator.Validate(data, boolSd);
             output.WriteLine(report.ToString());
             Assert.Equal(0, report.Fatals);
-            Assert.Equal(1, report.Errors); // ext-1
+            Assert.Equal(2, report.Errors); // ext-1, Extension.value[x] cardinality [1..1]
             Assert.Equal(0, report.Warnings);
         }
 
@@ -251,6 +256,22 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [Fact]
+        public async T.Task ValidateCardinalityFromXml()
+        {
+            var xml = "<active xmlns=\"http://hl7.org/fhir\" value=\"true\"><id value=\"myId1\"/><id value=\"myId2\"/><extension><valueInteger value=\"1\"/></extension></active>";
+            var node = FhirXmlNode.Parse(xml);
+            var data = node.ToTypedElement(new PocoStructureDefinitionSummaryProvider(), "boolean");
+
+            var boolSd = await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Boolean);
+
+            var report = _validator.Validate(data, boolSd);
+            output.WriteLine(report.ToString());
+            Assert.Equal(0, report.Fatals);
+            Assert.Equal(2, report.Errors); // boolean.id [0..1], extension.url [1..1]
+            Assert.Equal(0, report.Warnings);
+        }
+
+        [Fact]
         public async T.Task ValidateChoiceElement()
         {
             var extensionSd = (StructureDefinition)(await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Extension)).DeepCopy();
@@ -264,7 +285,14 @@ namespace Hl7.Fhir.Specification.Tests
 
             // Now remove the choice available for OID
             var extValueDef = extensionSd.Snapshot.Element.Single(e => e.Path == "Extension.value[x]");
-            extValueDef.Type.RemoveAll(t => ModelInfo.FhirTypeNameToFhirType(t.Code) == FHIRAllTypes.Oid);
+
+            // [WMR 20190415] Fixed after #944
+            // R4: Oid is derived from, and therefore compatible with, Uri
+            // => Must also remove type option "Uri" to force a validation error
+            //extValueDef.Type.RemoveAll(t => ModelInfo.FhirTypeNameToFhirType(t.Code) == FHIRAllTypes.Oid);
+            extValueDef.Type.RemoveAll(t => t.Code == ModelInfo.FhirTypeToFhirTypeName(FHIRAllTypes.Oid)
+                                         || t.Code == ModelInfo.FhirTypeToFhirTypeName(FHIRAllTypes.Uri));
+
 
             report = _validator.Validate(extensionInstance, extensionSd);
 
@@ -335,7 +363,7 @@ namespace Hl7.Fhir.Specification.Tests
             report = _validator.Validate(patient, patientSd);
             Assert.Equal(0, report.Errors);
 
-            patient.MaritalStatus.Coding.Add(new Coding("http://hl7.org/fhir/v3/MaritalStatus", "L"));
+            patient.MaritalStatus.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "L"));
             report = _validator.Validate(patient, patientSd);
             Assert.Equal(1, report.Errors);
 
@@ -377,7 +405,7 @@ namespace Hl7.Fhir.Specification.Tests
             // Instead, clone the core def and modify the clone
             var patientSd = (StructureDefinition)(await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Patient)).DeepCopy();
 
-            var instance1 = new CodeableConcept("http://hl7.org/fhir/marital-status", "U");
+            var instance1 = new CodeableConcept("http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "U");
 
             var maritalStatusElement = patientSd.Snapshot.Element.Single(e => e.Path == "Patient.maritalStatus");
             maritalStatusElement.Pattern = (CodeableConcept)instance1.DeepCopy();
@@ -402,7 +430,7 @@ namespace Hl7.Fhir.Specification.Tests
             report = _validator.Validate(patient, patientSd);
             Assert.Equal(0, report.Errors);
 
-            patient.MaritalStatus.Coding.Insert(0, new Coding("http://hl7.org/fhir/v3/MaritalStatus", "L"));
+            patient.MaritalStatus.Coding.Insert(0, new Coding("http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "L"));
             report = _validator.Validate(patient, patientSd);
             Assert.Equal(0, report.Errors);
 
@@ -511,6 +539,36 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [Fact]
+        public void TestConstraintBestPractices()
+        {
+            var validator = new Validator(new ValidationSettings { ResourceResolver = _source });
+
+            Patient p = new Patient
+            {
+                Active = true
+            };
+
+            var result = validator.Validate(p);
+            Assert.True(result.Success);
+            Assert.Equal(0, result.Warnings);
+            Assert.Equal(0, result.Errors);
+
+            validator.Settings.ConstraintBestPractices = ConstraintBestPractices.Enabled;
+            result = validator.Validate(p);
+            Assert.False(result.Success);
+            Assert.Equal(0, result.Warnings);
+            Assert.Equal(1, result.Errors);
+            Assert.Contains("Instance failed constraint dom-6 \"A resource should have narrative for robust management\"", result.Issue[0].ToString());
+
+            validator.Settings.ConstraintBestPractices = ConstraintBestPractices.Disabled;
+            result = validator.Validate(p);
+            Assert.True(result.Success);
+            Assert.Equal(1, result.Warnings);
+            Assert.Contains("Instance failed constraint dom-6 \"A resource should have narrative for robust management\"", result.Issue[0].ToString());
+            Assert.Equal(0, result.Errors);
+        }
+
+        [Fact]
         public void ValidateOverNameRef()
         {
             var questionnaireXml = File.ReadAllText(Path.Combine("TestData", "validation", "questionnaire-with-incorrect-fixed-type.xml"));
@@ -537,11 +595,11 @@ namespace Hl7.Fhir.Specification.Tests
                         SourceNode.Valued("system", "http://loinc.org"),
                         SourceNode.Valued("code", "34108-1"),
                         SourceNode.Valued("display", "Outpatient Note"))),
-                SourceNode.Valued("indexed", "2005-12-24T09:43:41"));
+                SourceNode.Valued("date", "2005-12-24T09:43:41"));
 
             var report = _validator.Validate(docRef.ToTypedElement(new PocoStructureDefinitionSummaryProvider()));
             Assert.False(report.Success);
-            Assert.Equal(2, report.Errors);
+            Assert.Equal(2, report.Errors); // timezone in 'date' is missing and mandatory element 'content' is missing
             Assert.Equal(0, report.Warnings);
             Assert.Contains("does not match regex", report.Issue[0].Details.Text);
         }
@@ -608,7 +666,11 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.NotNull(careplan);
             var careplanSd = await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.CarePlan);
             var report = _validator.Validate(careplan, careplanSd);
-            //output.WriteLine(report.ToString());
+            if (!report.Success)
+            {
+                report.Issue.RemoveAll(i => i.Severity == OperationOutcome.IssueSeverity.Warning);
+                output.WriteLine(report.ToString());
+            }
             Assert.True(report.Success);
             Assert.Equal(0, report.Warnings);            // 3x invariant
 
@@ -666,32 +728,24 @@ namespace Hl7.Fhir.Specification.Tests
         [Fact]
         public void ValidateCarePlan()
         {
-            var eoc = new EpisodeOfCare
-            {
-                Identifier = new List<Identifier>() { new Identifier { System = "EpisodeOfCare/example", Value = "example" } },
-                Status = EpisodeOfCare.EpisodeOfCareStatus.Active,
-                Patient = new ResourceReference
-                {
-                    Reference = "Patient/23"
-                }
-            };
-
             var patient = new Patient
             {
-                Identifier = new List<Identifier>() { new Identifier { System = "Patient/23", Value = "23" } }
+                Identifier = new List<Identifier>() { new Identifier { System = "Patient/23", Value = "23" } },
+                Active = true,
             };
 
             var cp = new CarePlan
             {
-                Status = CarePlan.CarePlanStatus.Active,
+                Status = RequestStatus.Active,
                 Intent = CarePlan.CarePlanIntent.Plan,
                 Subject = new ResourceReference
                 {
                     Reference = "Patient/23"
                 },
-                Context = new ResourceReference
+
+                Author = new ResourceReference
                 {
-                    Reference = "EpisodeOfCare/example"
+                    Reference = "Patient/23"
                 }
             };
 
@@ -719,10 +773,7 @@ namespace Hl7.Fhir.Specification.Tests
 
             void onGetExampleResource(object sender, OnResolveResourceReferenceEventArgs e)
             {
-                if (e.Reference.Contains("EpisodeOfCare"))
-                    e.Result = eoc.ToTypedElement();
-                else
-                    e.Result = patient.ToTypedElement();
+                e.Result = patient.ToTypedElement();
             };
         }
 
@@ -809,6 +860,10 @@ namespace Hl7.Fhir.Specification.Tests
             cpDoc.Element(XName.Get("CarePlan", "http://hl7.org/fhir")).Elements(XName.Get("status", "http://hl7.org/fhir")).Remove();
 
             report = v.Validate(cpDoc.CreateReader());
+            if (!report.Success)
+            {
+                report.Issue.RemoveAll(i => i.Severity == OperationOutcome.IssueSeverity.Warning);
+            }
             Assert.False(report.Success);
             Assert.Contains(".NET Xsd validation", report.ToString());
         }
@@ -818,7 +873,7 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var p = new Patient
             {
-                MaritalStatus = new CodeableConcept("http://hl7.org/fhir/v3/MaritalStatus", "S")
+                MaritalStatus = new CodeableConcept("http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "S")
             };
 
             var report = _validator.Validate(p);
@@ -838,12 +893,12 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var profile = "http://validationtest.org/fhir/StructureDefinition/ParametersWithBoundParams";
             var cc = new CodeableConcept();
-            cc.Coding.Add(new Coding("http://hl7.org/fhir/data-absent-reason", "NaN"));
-            cc.Coding.Add(new Coding("http://hl7.org/fhir/data-absent-reason", "not-asked"));
+            cc.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "not-a-number"));
+            cc.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "not-asked"));
 
             var p = new Parameters();
             p.Add("cc", cc);
-            p.Add("c", new Coding("http://hl7.org/fhir/data-absent-reason", "NaN"));
+            p.Add("c", new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "not-a-number"));
             p.Add("s", new FhirString("not-asked"));
 
             var report = _validator.Validate(p, profile);
@@ -876,17 +931,11 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.NotNull(levin);
 
             var report = _validator.Validate(levin);
+            DebugDumpOutputXml(report);
 
             Assert.True(report.Success);
             Assert.Equal(0, report.Warnings);
 
-            // Now, rename the mandatory NCT sub-extension
-            levin.Extension[1].Extension[0].Url = "NCTX";
-            report = _validator.Validate(levin);
-            Assert.False(report.Success);
-            Assert.Contains("Instance count for 'Extension.extension:NCT' is 0", report.ToString());
-
-            levin.Extension[1].Extension[0].Url = "NCT";
             levin.Extension[1].Extension[1].Value = new FhirString("wrong!");
             report = _validator.Validate(levin);
             DebugDumpOutputXml(report);
@@ -951,7 +1000,7 @@ namespace Hl7.Fhir.Specification.Tests
                 FullUrl = "http://somewhere.org/",
                 Resource = new MessageHeader
                 {
-                    Timestamp = DateTimeOffset.Now,
+                    // Timestamp = DateTimeOffset.Now,
                     Meta = new Meta { LastUpdated = DateTimeOffset.Now }
                 }
             });
@@ -962,20 +1011,10 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.DoesNotContain("Encountered unknown child elements 'timestamp'", report.ToString());
         }
 
-
         [Fact]
-        public async T.Task TriggerEscapingValidationError()
+        public async T.Task ValidateAStructureDefinition()
         {
-            // This unit-test is here to trigger because of an escaping mistake in the FHIR spec 3.0.1.
-            // The cause is the escaped \\_ character in eld-16. I have manually corrected profiles-types.xml
-            // in the /data directory for this invariant, so this unit-test will normally pass.
-            // If it does not, the profiles-types.xml will have been updated/overwritten with a version that
-            // still contains this mistake.
-            // [MV 20191217] Still with the FHIR spec 3.0.2 this problem arises. I have manually corrected profiles-types.xml
-            // again.
             var sd = (StructureDefinition)(await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Patient)).DeepCopy();
-            sd.Snapshot.Element[0].SliceName = "dummy";
-
             var result = _validator.Validate(sd);
             Assert.True(result.Success);
         }
@@ -1121,6 +1160,21 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.Equal(nrOfParrallelTasks, successes);
         }
 
+        [Fact]
+        public async T.Task TestSimpleQuantityForInvalidSliceOnRoot()
+        {
+            var sq = new Quantity
+            {
+                Code = "m",
+                Value = 1,
+                System = "http://unitsofmeasure.org"
+            };
+
+            var sqSd = await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.SimpleQuantity);
+            sqSd.Snapshot = null;
+            var result = _validator.Validate(sq, sqSd);
+            Assert.True(result.Success);
+        }
 
         /// <summary>
         /// This test should show that the rng-2 constraint is totally ignored (it's
@@ -1196,6 +1250,31 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [Fact]
+        public async T.Task ValidateContainedPatient()
+        {
+            var content = "<Patient xmlns=\"http://hl7.org/fhir\"><id value=\"3b405ba5f8ce411fa7f285beb20de018\" /><text><status value=\"generated\" /><div xmlns=\"http://www.w3.org/1999/xhtml\"><b>Cococinski, Ms Natalia</b><hr /><span style=\"color: gray;\">address home:</span> 121 Cadles Road, CARRUM DOWNS, 3201<br /><span style=\"color: gray;\">dob:</span> 30/04/1930<br /><span style=\"color: gray;\">gender:</span> Female<br /><span style=\"color: gray;\">home phone:</span> 9782 9999<br /><span style=\"color: gray;\">urno:</span> 88365<br /><span style=\"color: gray;\">managing organisation:</span> Banksia Respite Centre <i style=\"color:blue;\">(TCM)</i></div></text><identifier><use value=\"usual\" /><value value=\"88365\" /></identifier><active value=\"true\" /><name><text value=\"Cococinski, Ms Natalia\" /><family value=\"Cococinski\" /><given value=\"Natalia\" /></name><telecom><system value=\"phone\" /><value value=\"9782 9999\" /><use value=\"home\" /></telecom><gender value=\"female\" /><birthDate value=\"1930-04-30\" /><address><use value=\"home\" /><text value=\"99 Cadles Road, CARRUM DOWNS, 3201\" /><line value=\"99 Cadles Road\" /><city value=\"CARRUM DOWNS\" /><state value=\"Victoria\" /><postalCode value=\"3201\" /><period><start value=\"2006-06-16\" /></period></address><contact><name><text value=\"Sutcliffe, Ms Pat\" /><family value=\"Sutcliffe\" /><given value=\"Pat\" /></name><telecom><system value=\"phone\" /><value value=\"9784 8800\" /><use value=\"home\" /></telecom></contact><contact><name><text value=\"Cococinski, Ms Erica\" /><family value=\"Cococinski\" /><given value=\"Erica\" /></name><telecom><system value=\"phone\" /><value value=\"9782 9999\" /><use value=\"home\" /></telecom><telecom><system value=\"phone\" /><value value=\"9609 9999\" /><use value=\"work\" /></telecom></contact><managingOrganization id=\"5d3eb74c957411d2b2740020182a459e\"><reference value=\"Organization/54d83d08e01d43738d1eab06d2223629\" /><display value=\"tcmdemo fhir (Brian - CTH)\" /></managingOrganization></Patient>";
+
+            Patient p = new Hl7.Fhir.Serialization.FhirXmlParser().Parse<Patient>(content);
+            // Contained resources must have the 
+            Practitioner rp = new Practitioner { Id = "pat1" };
+            rp.Name.Add(new HumanName().WithGiven("Brian").AndFamily("Pos"));
+            p.Contained = new List<Resource> { rp };
+            p.GeneralPractitioner.Add(new ResourceReference() { Reference = "#" + rp.Id, Display = "Brian Pos" });
+
+            // Add a value that is not marked as summary
+            p.MaritalStatus = new CodeableConcept
+            {
+                Coding = new System.Collections.Generic.List<Coding>()
+            };
+            p.MaritalStatus.Coding.Add(new Coding() { Code = "c", Display = "display", System = "http://example.org/system" });
+
+            var patientSd = await _asyncSource.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Patient);
+            var report = _validator.Validate(p, patientSd);
+            Assert.True(report.Success);
+            Assert.Equal(1, report.Warnings);            // 1x cannot resolve external reference
+        }
+
+        [Fact]
         public void ValidateExtensionCardinality()
         {
             var patient = new Patient();
@@ -1244,7 +1323,48 @@ namespace Hl7.Fhir.Specification.Tests
             }
         }
 
+        [Fact]
+        public void ValidateNonBreakingWhitespaceInString()
+        {
+            var value = new FhirString("Non-breaking" + '\u00A0' + "space");
+            var result = _validator.Validate(value);
+            Assert.True(result.Success);
+        }
 
+        [Fact]
+        public void ValidateNonBreakingWhitespaceInMarkdown()
+        {
+            var value = new Markdown("Non-breaking" + '\u00A0' + "space");
+            var result = _validator.Validate(value);
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public void ConditionCon3ConstraintTest()
+        {
+            // the invariant con-3 of condition is wrong in the specification (R4). For now we fixed this in profiles-resources.xml. The correct FhirPath is
+            // "clinicalStatus.exists() or verificationStatus.coding.where(system='http://terminology.hl7.org/CodeSystem/condition-ver-status' and code = 'entered-in-error').exists() or category.coding.where($this.code='problem-list-item').empty()"
+            // So when the profiles-resources.xml has been overwritten and this unit test is failing, then the above FP expression should be set again (snapshot and 
+            // differential
+            // MV 28-06-2021
+
+            var condition = new Condition
+            {
+                Text = new Narrative() { Div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">Testing the con-3 invariant</div>", Status = Narrative.NarrativeStatus.Additional },
+                Subject = new ResourceReference("Patient/1"),
+                Category = new List<CodeableConcept> { new CodeableConcept("http://terminology.hl7.org/CodeSystem/condition-category", "encounter-diagnosis") },
+            };
+
+            var settings = new ValidationSettings
+            {
+                ConstraintBestPractices = ConstraintBestPractices.Enabled,
+                ResourceResolver = new CachedResolver(ZipSource.CreateValidationSource())
+            };
+
+            var validator = new Validator(settings);
+            var result = validator.Validate(condition);
+            Assert.True(result.Success);
+        }
 
         [Fact]
         public void ValidateWithTargetProfileAndChildDefinitions()

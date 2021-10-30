@@ -396,7 +396,7 @@
       </constraint>
       <binding>
         <strength value="required" />
-        <valueSetUri value="http://example.com/fhir/localsystems/patient-id-site" />
+        <valueSet value="http://example.com/fhir/localsystems/patient-id-site" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -502,7 +502,7 @@
       </constraint>
       <binding>
         <strength value="required" />
-        <valueSetUri value="http://example.com/fhir/localsystems/patient-id-site" />
+        <valueSet value="http://example.com/fhir/localsystems/patient-id-site" />
       </binding>
       <mapping>
         <identity value="rim" />
@@ -541,7 +541,7 @@
       <binding>
         <strength value="required" />
         <description value="Identifies the purpose for this identifier, if known ." />
-        <valueSetUri value="http://hl7.org/fhir/ValueSet/identifier-use" />
+        <valueSet value="http://hl7.org/fhir/ValueSet/identifier-use" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -583,7 +583,7 @@
       <binding>
         <strength value="extensible" />
         <description value="A coded type for an identifier that can be used to determine which identifier to use for a specific purpose." />
-        <valueSetUri value="http://hl7.org/fhir/ValueSet/identifier-type" />
+        <valueSet value="http://hl7.org/fhir/ValueSet/identifier-type" />
       </binding>
       <mapping>
         <identity value="v2" />

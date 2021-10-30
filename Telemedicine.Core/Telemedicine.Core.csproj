@@ -10,21 +10,26 @@
     <PackageReference Include="Dev.Logger.Public" Version="1.0.9" />
     <PackageReference Include="Dev.Utility.Public" Version="1.0.7-b20211030-364" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Reference Include="System.Configuration" />
+  
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net452'">
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Net.Requests" Version="4.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.7.0" />
     <PackageReference Include="System.Security.AccessControl" Version="4.7.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="Controllers\" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <None Remove="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.ElementModel\Hl7.Fhir.ElementModel.csproj" />

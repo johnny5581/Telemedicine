@@ -78,15 +78,15 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var wa = new WebResolver() { TimeOut = DefaultTimeOut };
 
-            var artifact = wa.ResolveByUri("http://test.fhir.org/r3/StructureDefinition/Observation");
+            var artifact = wa.ResolveByUri("http://test.fhir.org/r4/StructureDefinition/Observation");
 
             Assert.IsNotNull(artifact);
             Assert.IsTrue(artifact is StructureDefinition);
             Assert.AreEqual("Observation", ((StructureDefinition)artifact).Name);
 
             // var ci = artifact.Annotation<OriginAnnotation>();
-            // Assert.AreEqual("http://test.fhir.org/r3/StructureDefinition/Observation", ci.Origin);
-            Assert.AreEqual("http://test.fhir.org/r3/StructureDefinition/Observation", artifact.GetOrigin());
+            // Assert.AreEqual("http://test.fhir.org/r4/StructureDefinition/Observation", ci.Origin);
+            Assert.AreEqual("http://test.fhir.org/r4/StructureDefinition/Observation", artifact.GetOrigin());
         }
 
         private class TestFhirClient : FhirClient
@@ -140,11 +140,11 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var resolver = new MultiResolver(source, new WebResolver() { TimeOut = DefaultTimeOut });
 
-            var vs = await resolver.ResolveByCanonicalUriAsync("http://hl7.org/fhir/ValueSet/v2-0292");
+            var vs = await resolver.ResolveByUriAsync("http://hl7.org/fhir/ValueSet/v2-0292");
             Assert.IsNotNull(vs);
             Assert.IsTrue(vs is ValueSet);
 
-            var artifact = await resolver.ResolveByUriAsync("http://test.fhir.org/r3/StructureDefinition/Patient");
+            var artifact = await resolver.ResolveByUriAsync("http://test.fhir.org/r4/StructureDefinition/Patient");
 
             Assert.IsNotNull(artifact);
             Assert.IsTrue(artifact is StructureDefinition);
@@ -229,7 +229,7 @@ namespace Hl7.Fhir.Specification.Tests
         [TestMethod]
         public async T.Task TestCacheLoadingStrategy()
         {
-            const string resourceUri = "http://hl7.org/fhir/ValueSet/v2-0292";
+            const string resourceUri = "http://hl7.org/fhir/ValueSet/currencies";
 
             // Create empty in-memory resolver
             var mem = new InMemoryProfileResolver();
@@ -319,8 +319,8 @@ namespace Hl7.Fhir.Specification.Tests
         public async T.Task TestCanonicalUrlConflicts()
         {
             //const string srcFileName = "extension-definitions.xml";
-            const string dupFileName = "diagnosticorder-reason-duplicate";
-            const string url = "http://hl7.org/fhir/StructureDefinition/procedurerequest-reasonRejected";
+            const string dupFileName = "patient-birthtime";
+            const string url = "http://hl7.org/fhir/StructureDefinition/patient-birthTime";
 
             var za = ZipSource.CreateValidationSource();
 

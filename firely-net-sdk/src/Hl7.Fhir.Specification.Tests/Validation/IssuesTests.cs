@@ -29,6 +29,6 @@ namespace Hl7.Fhir.Specification.Tests
 
             var report = validator.Validate(pat);
             Assert.IsTrue(report.Success);
-        }
+        }       
     }
 }

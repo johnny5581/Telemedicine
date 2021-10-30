@@ -35,16 +35,16 @@ namespace Hl7.Fhir.Tests.Rest
         //public static Uri testEndpoint = new Uri("http://test.fhir.org/r3");
         //public static Uri testEndpoint = new Uri("http://localhost:4080");
         //public static Uri testEndpoint = new Uri("https://api.fhir.me");
-        //public static Uri testEndpoint = new Uri("http://fhirtest.uhn.ca/baseDstu3");
         //public static Uri testEndpoint = new Uri("http://localhost:49911/fhir");
         //public static Uri testEndpoint = new Uri("http://sqlonfhir-stu3.azurewebsites.net/fhir");
-        public static Uri testEndpoint = new Uri("https://server.fire.ly/r3");
+        public static Uri testEndpoint = new Uri("https://server.fire.ly/r4");
 
         //public static Uri _endpointSupportingSearchUsingPost = new Uri("http://localhost:49911/fhir"); 
         public static Uri _endpointSupportingSearchUsingPost = new Uri("http://localhost:4080");
         //public static Uri _endpointSupportingSearchUsingPost = new Uri("https://vonk.fire.ly/r3");
 
-        public static Uri TerminologyEndpoint = new Uri("https://stu3.ontoserver.csiro.au/fhir");
+        public static Uri TerminologyEndpoint = new Uri("https://r4.ontoserver.csiro.au/fhir");
+        // public static Uri TerminologyEndpoint = new Uri("http://test.fhir.org/r4");
 
         private static string patientId = "pat1" + ModelInfo.Version;
         private static string locationId = "loc1" + ModelInfo.Version;
@@ -115,6 +115,7 @@ namespace Hl7.Fhir.Tests.Rest
             Patient p = client.Update(pat);
             Location l = client.Update(loc);
             Assert.IsNotNull(p);
+            Assert.IsNotNull(l);
         }
 
 
@@ -148,7 +149,7 @@ namespace Hl7.Fhir.Tests.Rest
         }
 
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void FetchConformance()
+        public void FetchConformanceWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             TestConformance(client);
@@ -256,7 +257,7 @@ namespace Hl7.Fhir.Tests.Rest
         }
 
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void ReadWithFormat()
+        public void ReadWithFormatWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             testReadWithFormat(client);
@@ -275,7 +276,7 @@ namespace Hl7.Fhir.Tests.Rest
         {
             client.Settings.UseFormatParameter = true;
             client.Settings.PreferredFormat = ResourceFormat.Json;
-            var loc = client.Read<Patient>("Patient/example");
+            var loc = client.Read<Patient>("Patient/pat1r4");
             Assert.IsNotNull(loc);
         }
 
@@ -353,8 +354,10 @@ namespace Hl7.Fhir.Tests.Rest
                 await jsonSer.SerializeToStringAsync(loc4));
         }
 
+
+
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void ReadRelative()
+        public void ReadRelativeWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             testReadRelative(client);
@@ -384,7 +387,7 @@ namespace Hl7.Fhir.Tests.Rest
 
 #if NO_ASYNC_ANYMORE
 		[TestMethod, TestCategory("FhirClient")]
-		public void ReadRelativeAsync()
+		public void ReadRelativeAsyncWebClient()
 		{
 			FhirClient client = new FhirClient(testEndpoint);
             testRelativeAsyncClient(client);			
@@ -446,7 +449,9 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod, Ignore]   // Something does not work with the gzip
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void Search()
+        [TestCategory("FhirClient"),
+            TestCategory("IntegrationTest")]
+        public void SearchWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             Bundle result;
@@ -561,7 +566,7 @@ namespace Hl7.Fhir.Tests.Rest
 
 #if NO_ASYNC_ANYMORE
         [TestMethod, TestCategory("FhirClient")]
-        public void SearchAsync()
+        public void SearchAsyncWebClient()
         {
             FhirClient client = new FhirClient(testEndpoint);
             testSearchAsyncHttpClient(client);
@@ -611,11 +616,49 @@ namespace Hl7.Fhir.Tests.Rest
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Entry.Count > 0);
         }
+
+        public void SearchAsyncHttpClient()
+        {
+            using(TestClient client = new TestClient(testEndpoint))
+            {
+                Bundle result;
+
+                result = client.SearchAsync<DiagnosticReport>().Result;
+                Assert.IsNotNull(result);
+                Assert.IsTrue(result.Entry.Count() > 10, "Test should use testdata with more than 10 reports");
+
+                result = client.SearchAsync<DiagnosticReport>(pageSize: 10).Result;
+                Assert.IsNotNull(result);
+                Assert.IsTrue(result.Entry.Count <= 10);
+
+                var withSubject = 
+                    result.Entry.ByResourceType<DiagnosticReport>().FirstOrDefault(dr => dr.Resource.Subject != null);
+                Assert.IsNotNull(withSubject, "Test should use testdata with a report with a subject");
+
+                ResourceIdentity ri = new ResourceIdentity(withSubject.Id);
+
+                result = client.SearchByIdAsync<DiagnosticReport>(ri.Id, 
+                            includes: new string[] { "DiagnosticReport.subject" }).Result;
+                Assert.IsNotNull(result);
+
+                Assert.AreEqual(2, result.Entry.Count);  // should have subject too
+
+                Assert.IsNotNull(result.Entry.Single(entry => new ResourceIdentity(entry.Id).Collection ==
+                            typeof(DiagnosticReport).GetCollectionName()));
+                Assert.IsNotNull(result.Entry.Single(entry => new ResourceIdentity(entry.Id).Collection ==
+                            typeof(Patient).GetCollectionName()));
+
+                result = client.SearchAsync<Patient>(new string[] { "name=Everywoman", "name=Eve" }).Result;
+
+                Assert.IsNotNull(result);
+                Assert.IsTrue(result.Entry.Count > 0);
+            }
+        }
 #endif
 
 
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void Paging()
+        public void PagingWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
 
@@ -661,9 +704,8 @@ namespace Hl7.Fhir.Tests.Rest
         }
 
 
-
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void PagingInJson()
+        public void PagingInJsonWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             testPagingInJson(client);
@@ -714,7 +756,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void CreateAndFullRepresentation()
+        public void CreateAndFullRepresentationWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             testCreateAndFullRepresentation(client);
@@ -835,7 +877,6 @@ namespace Hl7.Fhir.Tests.Rest
                 Assert.AreEqual("410", client.LastResult.Status);
             }
         }
-
 
 
         [TestMethod]
@@ -1028,7 +1069,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void TestWithParam()
+        public void TestWithParamWebClient()
         {
             var client = new LegacyFhirClient(testEndpoint);
             gettWithParam(client);
@@ -1051,7 +1092,7 @@ namespace Hl7.Fhir.Tests.Rest
         }
 
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void ManipulateMeta()
+        public void ManipulateMetaWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient("http://test.fhir.org/r4");
             testManipulateMeta(client);
@@ -1218,7 +1259,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void TestSearchByPersonaCode()
+        public void TestSearchByPersonaCodeWebClient()
         {
             var client = new LegacyFhirClient(testEndpoint);
             searchByPersonaCode(client);
@@ -1302,7 +1343,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void CallsCallbacks()
+        public void CallsCallbacksWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient(testEndpoint);
             client.Settings.ParserSettings.AllowUnrecognizedEnums = true;
@@ -1406,7 +1447,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void RequestFullResource()
+        public void RequestFullResourceWebClient()
         {
             var client = new LegacyFhirClient(testEndpoint);
             testRequestFullResource(client);
@@ -1425,7 +1466,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         private static void testRequestFullResource(BaseFhirClient client)
         {
-            var result = client.Read<Patient>("Patient/glossy");
+            var result = client.Read<Patient>("Patient/pat1r4");
             Assert.IsNotNull(result);
             result.Id = null;
             result.Meta = null;
@@ -1444,13 +1485,13 @@ namespace Hl7.Fhir.Tests.Rest
 
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]   // Currently ignoring, as spark.furore.com returns Status 500.
-        public void TestReceiveHtmlIsHandled()
+        public void TestReceiveHtmlIsHandledWebClient()
         {
-            var client = new LegacyFhirClient("http://test.fhir.org/r4");        // an address that returns html
+            var client = new LegacyFhirClient(testEndpoint);        // an address that returns html
 
             try
             {
-                var pat = client.Read<Patient>("Patient/1");
+                var pat = client.Read<Patient>("Patient/pat1r4");
             }
             catch (FhirOperationException fe)
             {
@@ -1463,11 +1504,11 @@ namespace Hl7.Fhir.Tests.Rest
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]   // Currently ignoring, as spark.furore.com returns Status 500.
         public void TestReceiveHtmlIsHandledHttpClient()
         {
-            using (var client = new FhirClient("http://spark.furore.com/"))        // an address that returns html
+            using (var client = new FhirClient(testEndpoint))        // an address that returns html
             {
                 try
                 {
-                    var pat = client.Read<Patient>("Patient/1");
+                    var pat = client.Read<Patient>("Patient/pat1r4");
                 }
                 catch (FhirOperationException fe)
                 {
@@ -1477,9 +1518,8 @@ namespace Hl7.Fhir.Tests.Rest
             }
         }
 
-
         [TestMethod, TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void TestRefresh()
+        public void TestRefreshWebClient()
         {
             var client = new LegacyFhirClient(testEndpoint);
             clientReadRefresh(client);
@@ -1511,7 +1551,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [Ignore]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void TestReceiveErrorStatusWithHtmlIsHandled()
+        public void TestReceiveErrorStatusWithHtmlIsHandledWebClient()
         {
             var client = new LegacyFhirClient("http://test.fhir.org/r4/");        // an address that returns Status 500 with HTML in its body
             testHandlingHtmlErrorStatus(client);
@@ -1532,7 +1572,7 @@ namespace Hl7.Fhir.Tests.Rest
         {
             try
             {
-                var pat = client.Read<Patient>("Patient/1");
+                var pat = client.Read<Patient>("Patient/pat1r4");
                 Assert.Fail("Failed to throw an Exception on status 500");
             }
             catch (FhirOperationException fe)
@@ -1568,12 +1608,11 @@ namespace Hl7.Fhir.Tests.Rest
             }
         }
 
-
         [TestMethod]
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
-        public void TestReceiveErrorStatusWithOperationOutcomeIsHandled()
+        public void TestReceiveErrorStatusWithOperationOutcomeIsHandledWebClient()
         {
-            var client = new LegacyFhirClient("http://test.fhir.org/r4/");  // an address that returns Status 404 with an OperationOutcome
+            var client = new LegacyFhirClient(testEndpoint);  // an address that returns Status 404 with an OperationOutcome
 
             testHandlingErrorStatusAsOperationOutcome(client);
         }
@@ -1583,7 +1622,7 @@ namespace Hl7.Fhir.Tests.Rest
         [TestCategory("FhirClient"), TestCategory("IntegrationTest")]
         public void TestReceiveErrorStatusWithOperationOutcomeIsHandledHttpClient()
         {
-            using (var client = new FhirClient("http://test.fhir.org/r3"))// an address that returns Status 404 with an OperationOutcome
+            using (var client = new FhirClient(testEndpoint))// an address that returns Status 404 with an OperationOutcome
             {
                 testHandlingErrorStatusAsOperationOutcome(client);
             }
@@ -1623,7 +1662,6 @@ namespace Hl7.Fhir.Tests.Rest
                 Assert.Fail("Failed to throw FhirOperationException on status 404: " + e.Message);
             }
         }
-
 
 
         [TestMethod, Ignore]
@@ -1685,7 +1723,7 @@ namespace Hl7.Fhir.Tests.Rest
         }
 
         [TestMethod, TestCategory("IntegrationTest"), TestCategory("FhirClient")]
-        public void TestAuthenticationOnBefore()
+        public void TestAuthenticationOnBeforeWebClient()
         {
             LegacyFhirClient validationFhirClient = new LegacyFhirClient(testEndpoint);
             validationFhirClient.OnBeforeRequest += (object sender, BeforeRequestEventArgs e) =>
@@ -1729,7 +1767,7 @@ namespace Hl7.Fhir.Tests.Rest
             byte[] arr = File.ReadAllBytes(TestDataHelper.GetFullPathForExample(@"fhir-logo.png"));
             var client = new LegacyFhirClient(testEndpoint);
 
-            var binary = new Binary() { Content = arr, ContentType = "image/png" };
+            var binary = new Binary() { Data = arr, ContentType = "image/png" };
             var result = client.Create(binary);
 
             Assert.IsNotNull(result);
@@ -1751,7 +1789,7 @@ namespace Hl7.Fhir.Tests.Rest
             byte[] arr = File.ReadAllBytes(TestDataHelper.GetFullPathForExample(@"fhir-logo.png"));
             using (var client = new FhirClient(testEndpoint))
             {
-                var binary = new Binary() { Content = arr, ContentType = "image/png" };
+                var binary = new Binary() { Data = arr, ContentType = "image/png" };
                 var result = client.Create(binary);
 
                 Assert.IsNotNull(result);
@@ -1785,7 +1823,7 @@ namespace Hl7.Fhir.Tests.Rest
 
         [Ignore]
         [TestMethod, TestCategory("IntegrationTest"), TestCategory("FhirClient")]
-        public void TestOperationEverything()
+        public void TestOperationEverythingWebClient()
         {
             LegacyFhirClient client = new LegacyFhirClient("http://test.fhir.org/r4", new FhirClientSettings() { UseFormatParameter = true, PreferredFormat = ResourceFormat.Json });
             testOpEverything(client);
@@ -1836,7 +1874,7 @@ namespace Hl7.Fhir.Tests.Rest
             // GET operation $everything with 1 complex parameter
             try
             {
-                loc = client.TypeOperation<Patient>("everything", new Parameters().Add("start", new Annotation() { Text = "test" }), useGet: true);
+                loc = client.TypeOperation<Patient>("everything", new Parameters().Add("start", new Annotation() { Text = new Markdown("test") }), useGet: true);
                 Assert.Fail("An InvalidOperationException was expected here");
             }
             catch (Exception ex)

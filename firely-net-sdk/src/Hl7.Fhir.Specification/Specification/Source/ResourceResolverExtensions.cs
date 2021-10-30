@@ -62,7 +62,7 @@ namespace Hl7.Fhir.Specification.Source
         [Obsolete("Using synchronous resolvers is not recommended anymore, use FindStructureDefinitionForCoreTypeAsync() instead.")]
         public static StructureDefinition FindStructureDefinitionForCoreType(this IResourceResolver resolver, string typename)
         {
-            var url = Uri.IsWellFormedUriString(typename, UriKind.Absolute) ? typename : ModelInfo.CanonicalUriForFhirCoreType(typename);
+            var url = Uri.IsWellFormedUriString(typename, UriKind.Absolute) ? typename : ModelInfo.CanonicalUriForFhirCoreType(typename).Value;
 #pragma warning disable CS0618 // Type or member is obsolete
             return resolver.FindStructureDefinition(url);
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -76,7 +76,8 @@ namespace Hl7.Fhir.Specification.Source
         /// </remarks>
         public static async T.Task<StructureDefinition> FindStructureDefinitionForCoreTypeAsync(this IAsyncResourceResolver resolver, string typename)
         {
-            var url = Uri.IsWellFormedUriString(typename, UriKind.Absolute) ? typename : ModelInfo.CanonicalUriForFhirCoreType(typename);
+            var url = Uri.IsWellFormedUriString(typename, UriKind.Absolute) ? typename : 
+                ModelInfo.CanonicalUriForFhirCoreType(typename).Value;
             return await resolver.FindStructureDefinitionAsync(url).ConfigureAwait(false);
         }
 

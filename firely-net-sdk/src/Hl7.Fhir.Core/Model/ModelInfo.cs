@@ -44,7 +44,6 @@ namespace Hl7.Fhir.Model
         public class SearchParamDefinition
         {
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            [NotMapped]
             private string DebuggerDisplay
             {
                 get
@@ -56,7 +55,7 @@ namespace Hl7.Fhir.Model
             public string Resource { get; set; }
             public string Name { get; set; }
             public string Url { get; set; }
-            public string Description { get; set; }
+            public Markdown Description { get; set; }
             public SearchParamType Type { get; set; }
 
             /// <summary>
@@ -88,9 +87,6 @@ namespace Hl7.Fhir.Model
             /// </summary>
             public ResourceType[] Target { get; set; }
         }
-
-        // [WMR 2017-10-25] Remove Lazy initialization
-        // These methods are used frequently throughout the API (and by clients) and initialization cost is low
 
         private static readonly Dictionary<string, FHIRAllTypes> _fhirTypeNameToFhirType
             = Enum.GetValues(typeof(FHIRAllTypes)).OfType<FHIRAllTypes>().ToDictionary(type => type.GetLiteral());
@@ -159,16 +155,17 @@ namespace Hl7.Fhir.Model
         public static bool IsPrimitive(string name)
         {
             if (String.IsNullOrEmpty(name)) return false;
+            var type = GetTypeForFhirType(name);
+            if (type is null) return false;
 
-            return FhirTypeToCsType.ContainsKey(name) && Char.IsLower(name[0]);
+            return IsPrimitive(type);
+
         }
 
         /// <summary>Determines if the specified <see cref="Type"/> instance represents a FHIR primitive data type.</summary>
         public static bool IsPrimitive(Type type)
         {
-            var name = GetFhirTypeNameForType(type);
-
-            return name != null && Char.IsLower(name[0]);
+            return typeof(PrimitiveType).IsAssignableFrom(type);
         }
 
         /// <summary>Determines if the specified <see cref="FHIRAllTypes"/> value represents a FHIR primitive data type.</summary>
@@ -211,7 +208,8 @@ namespace Hl7.Fhir.Model
         /// <summary>Determines if the specified <see cref="Type"/> instance represents a FHIR Reference type.</summary>
         public static bool IsReference(Type type)
         {
-            return IsReference(type.Name);
+            return type.CanBeTreatedAsType(typeof(ResourceReference));
+            //return IsReference(type.Name);
         }
 
         /// <summary>Determines if the specified <see cref="FHIRAllTypes"/> value represents a FHIR Reference type.</summary>
@@ -226,7 +224,8 @@ namespace Hl7.Fhir.Model
         /// </summary>
         public static bool IsConformanceResource(Type type)
         {
-            return IsConformanceResource(type.Name);
+            return type.CanBeTreatedAsType(typeof(IConformanceResource));
+            //return IsConformanceResource(type.Name);
         }
 
         /// <summary>
@@ -250,20 +249,21 @@ namespace Hl7.Fhir.Model
         {
             FHIRAllTypes.StructureDefinition,
             FHIRAllTypes.StructureMap,
-            FHIRAllTypes.DataElement,
             FHIRAllTypes.CapabilityStatement,
             FHIRAllTypes.MessageDefinition,
             FHIRAllTypes.OperationDefinition,
             FHIRAllTypes.SearchParameter,
             FHIRAllTypes.CompartmentDefinition,
             FHIRAllTypes.ImplementationGuide,
+            FHIRAllTypes.GraphDefinition,
             FHIRAllTypes.CodeSystem,
             FHIRAllTypes.ValueSet,
             FHIRAllTypes.ConceptMap,
-            FHIRAllTypes.ExpansionProfile,
             FHIRAllTypes.NamingSystem,
             FHIRAllTypes.TestScript,
-            FHIRAllTypes.TestReport
+            //FHIRAllTypes.TestReport,
+            FHIRAllTypes.Questionnaire,
+            FHIRAllTypes.TerminologyCapabilities
         };
 
         /// <summary>
@@ -283,20 +283,20 @@ namespace Hl7.Fhir.Model
         {
             ResourceType.StructureDefinition,
             ResourceType.StructureMap,
-            ResourceType.DataElement,
             ResourceType.CapabilityStatement,
             ResourceType.MessageDefinition,
             ResourceType.OperationDefinition,
             ResourceType.SearchParameter,
             ResourceType.CompartmentDefinition,
             ResourceType.ImplementationGuide,
+            ResourceType.GraphDefinition,
             ResourceType.CodeSystem,
             ResourceType.ValueSet,
             ResourceType.ConceptMap,
-            ResourceType.ExpansionProfile,
             ResourceType.NamingSystem,
             ResourceType.TestScript,
-            ResourceType.TestReport
+            //ResourceType.TestReport,
+            ResourceType.TerminologyCapabilities
         };
 
         /// <summary>
@@ -316,6 +316,9 @@ namespace Hl7.Fhir.Model
         /// <remarks>This function does not recognize "system" types, these are the basic types that the FHIR
         /// datatypes are built upon, but are not specific to the FHIR datamodel.</remarks>
         public static bool IsCoreModelType(string name) => FhirTypeToCsType.ContainsKey(name);
+
+        /// <summary>Determines if the specified value represents the type of a core Resource, Datatype or primitive.</summary>
+        public static bool IsCoreModelType(Type type) => FhirCsTypeToString.ContainsKey(type);
         // => IsKnownResource(name) || IsDataType(name) || IsPrimitive(name);
 
 
@@ -351,6 +354,19 @@ namespace Hl7.Fhir.Model
                 type == FHIRAllTypes.BackboneElement;
         }
 
+        public static bool IsCoreSuperType(Type type)
+        {
+            return
+                type == typeof(Base) ||
+                type == typeof(Resource) ||
+                type == typeof(DomainResource) ||
+                type == typeof(Element) ||
+                type == typeof(BackboneElement) ||
+                type == typeof(DataType) ||
+                type == typeof(PrimitiveType) ||
+                type == typeof(BackboneType);
+        }
+
         public static bool IsCoreSuperType(string type)
         {
             var fat = FhirTypeNameToFhirType(type);
@@ -363,7 +379,7 @@ namespace Hl7.Fhir.Model
         [Obsolete("Profiled quantities have been removed from the POCO model and will not appear in data anymore.")]
         public static bool IsProfiledQuantity(FHIRAllTypes type)
         {
-            return type == FHIRAllTypes.SimpleQuantity;
+            return type == FHIRAllTypes.SimpleQuantity || type == FHIRAllTypes.MoneyQuantity;
         }
 
         public static bool IsBindable(string type)
@@ -449,27 +465,23 @@ namespace Hl7.Fhir.Model
         {
             if (superclass == subclass) return true;
 
-            if (IsKnownResource(subclass))
-            {
-                if (superclass == FHIRAllTypes.Resource)
-                    return true;
-                else if (superclass == FHIRAllTypes.DomainResource)
-                    return subclass != FHIRAllTypes.Parameters && subclass != FHIRAllTypes.Bundle && subclass != FHIRAllTypes.Binary;
-                else
-                    return false;
-            }
-            else
-            {
-                return superclass == FHIRAllTypes.Element;
-            }
+            var superclassName = FhirTypeToFhirTypeName(superclass);
+            var subclassName = FhirTypeToFhirTypeName(subclass);
+
+            return IsInstanceTypeFor(superclassName, subclassName);
         }
 
-        public static string CanonicalUriForFhirCoreType(string typename)
+        public static Canonical CanonicalUriForFhirCoreType(string typename)
         {
-            return "http://hl7.org/fhir/StructureDefinition/" + typename;
+            return new Canonical("http://hl7.org/fhir/StructureDefinition/" + typename);
         }
 
-        public static string CanonicalUriForFhirCoreType(FHIRAllTypes type)
+        public static Canonical CanonicalUriForFhirCoreType(Type type)
+        {
+            return CanonicalUriForFhirCoreType(GetFhirTypeNameForType(type));
+        }
+
+        public static Canonical CanonicalUriForFhirCoreType(FHIRAllTypes type)
         {
             return CanonicalUriForFhirCoreType(type.GetLiteral());
         }
@@ -503,6 +515,7 @@ namespace Hl7.Fhir.Model
             typeof(Model.Distance),
             typeof(Model.Dosage),
             typeof(Model.Duration),
+            typeof(Model.Expression),
             typeof(Model.HumanName),
             typeof(Model.Id),
             typeof(Model.Identifier),

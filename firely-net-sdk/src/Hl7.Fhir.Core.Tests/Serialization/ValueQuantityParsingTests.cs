@@ -1,7 +1,10 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Utility;
+using Hl7.Fhir.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Tasks = System.Threading.Tasks;
 
@@ -98,7 +101,6 @@ namespace Hl7.Fhir.Tests.Serialization
             if (Directory.Exists(baseTestPath)) Directory.Delete(baseTestPath, true);
             Directory.CreateDirectory(baseTestPath);
             return baseTestPath;
-        }
-
+        }    
     }
 }

@@ -6,12 +6,10 @@
  * available at https://raw.githubusercontent.com/FirelyTeam/firely-net-sdk/master/LICENSE
  */
 
-using System;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Utility;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
@@ -26,7 +24,7 @@ namespace Hl7.Fhir.Rest
             var result = new EntryRequest
             {
                 Agent = ModelInfo.Version,
-                Method = bundleHttpVerbToRestHttpVerb(entry.Request.Method, entry.Annotation<InteractionType>()),
+                Method = bundleHttpVerbToRestHttpVerb(entry.Request.Method),
                 Type = entry.Annotation<InteractionType>(),
                 Url = entry.Request.Url,
                 Headers = new EntryRequestHeaders
@@ -60,7 +58,7 @@ namespace Hl7.Fhir.Rest
             var result = new EntryRequest
             {
                 Agent = ModelInfo.Version,
-                Method = bundleHttpVerbToRestHttpVerb(entry.Request.Method, entry.Annotation<InteractionType>()),
+                Method = bundleHttpVerbToRestHttpVerb(entry.Request.Method),
                 Type = entry.Annotation<InteractionType>(),
                 Url = entry.Request.Url,
                 Headers = new EntryRequestHeaders
@@ -69,7 +67,7 @@ namespace Hl7.Fhir.Rest
                     IfModifiedSince = entry.Request.IfModifiedSince,
                     IfNoneExist = entry.Request.IfNoneExist,
                     IfNoneMatch = entry.Request.IfNoneMatch
-                }                
+                }
             };
 
             if (!settings.UseFormatParameter)
@@ -89,34 +87,37 @@ namespace Hl7.Fhir.Rest
             return result;
         }
 
-        private static HTTPVerb? bundleHttpVerbToRestHttpVerb(Bundle.HTTPVerb? bundleHttp, InteractionType type)
+        private static HTTPVerb? bundleHttpVerbToRestHttpVerb(Bundle.HTTPVerb? bundleHttp)
         {
-            switch(bundleHttp)
+            switch (bundleHttp)
             {
                 case Bundle.HTTPVerb.POST:
-                {
-                    return HTTPVerb.POST;
-                }
+                    {
+                        return HTTPVerb.POST;
+                    }
                 case Bundle.HTTPVerb.GET:
-                {
-                    return HTTPVerb.GET;
-                }
+                    {
+                        return HTTPVerb.GET;
+                    }
                 case Bundle.HTTPVerb.DELETE:
-                {
-                    return HTTPVerb.DELETE;
-                }
+                    {
+                        return HTTPVerb.DELETE;
+                    }
                 case Bundle.HTTPVerb.PUT:
-                {
-                        //No PATCH in Bundle.HttpVerb in STU3, so this is corrected here. 
-                        return type == InteractionType.Patch ? HTTPVerb.PATCH : HTTPVerb.PUT;
-                }
+                    {
+                        return HTTPVerb.PUT;
+                    }
+                case Bundle.HTTPVerb.PATCH:
+                    {
+                        return HTTPVerb.PATCH;
+                    }
                 default:
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
         }
-        
+
         private static async Task setBodyAndContentTypeAsync(EntryRequest request, Resource data, ResourceFormat format, bool searchUsingPost)
         {
             if (data == null) throw Error.ArgumentNull(nameof(data));
@@ -125,7 +126,7 @@ namespace Hl7.Fhir.Rest
             {
 
                 //Binary.Content is available for STU3. This has changed for R4 as it is Binary.Data
-                request.RequestBodyContent = bin.Content;
+                request.RequestBodyContent = bin.Data;
 
                 // This is done by the caller after the OnBeforeRequest is called so that other properties
                 // can be set before the content is committed
@@ -137,7 +138,7 @@ namespace Hl7.Fhir.Rest
                 List<KeyValuePair<string, string>> bodyParameters = new List<KeyValuePair<string, string>>();
                 foreach (Parameters.ParameterComponent parameter in ((Parameters)data).Parameter)
                 {
-                    bodyParameters.Add(new KeyValuePair<string,string>(parameter.Name, parameter.Value.ToString()));
+                    bodyParameters.Add(new KeyValuePair<string, string>(parameter.Name, parameter.Value.ToString()));
                 }
                 if (bodyParameters.Count > 0)
                 {

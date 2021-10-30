@@ -38,10 +38,13 @@ namespace Hl7.Fhir.Validation
                 // of FP up, which could do comparisons between quantities.
                 if (constraintElement.Key == "rng-2") continue;
 
-                if (constraintElement.Key == "ref-1" && constraintElement.Expression == "reference.startsWith('#').not() or (reference.substring(1).trace('url') in %resource.contained.id.trace('ids'))")
-                {
-                    constraintElement.Expression = "reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids'))";
-                }
+                if (constraintElement.GetBoolExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") == true)
+                    if (v.Settings.ConstraintBestPractices == ConstraintBestPractices.Ignore)
+                        continue;
+                    else if (v.Settings.ConstraintBestPractices == ConstraintBestPractices.Enabled)
+                        constraintElement.Severity = ElementDefinition.ConstraintSeverity.Error;
+                    else if (v.Settings.ConstraintBestPractices == ConstraintBestPractices.Disabled)
+                        constraintElement.Severity = ElementDefinition.ConstraintSeverity.Warning;
 
                 bool success = false;
 

@@ -47,10 +47,5 @@ namespace Telemedicine
         {
             return (T)FindView(typeof(T), createIfEmpty);
         }
-
-        private void menuPatient_Click(object sender, EventArgs e)
-        {
-            Execute(() => FindView<PatientForm>());
-        }
     }
 }

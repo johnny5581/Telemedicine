@@ -38,17 +38,17 @@ namespace Hl7.Fhir.Specification.Tests
         [TestMethod]
         public void FindConceptMaps()
         {
-            var conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use");
+            var conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use").ToList();
             Assert.AreEqual(3, conceptMaps.Count());
             Assert.IsNotNull(conceptMaps.First().GetOrigin());
 
-            conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use", "http://hl7.org/fhir/ValueSet/v2-0190");
+            conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use", "http://terminology.hl7.org/ValueSet/v2-0190").ToList();
             Assert.AreEqual(1, conceptMaps.Count());
 
-            conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use", "http://hl7.org/fhir/ValueSet/v3-AddressUse");
+            conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use", "http://terminology.hl7.org/ValueSet/v3-AddressUse").ToList();
             Assert.AreEqual(2, conceptMaps.Count());
 
-            conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use", "http://hl7.org/fhir/ValueSet/somethingelse");
+            conceptMaps = source.FindConceptMaps("http://hl7.org/fhir/ValueSet/address-use", "http://hl7.org/fhir/ValueSet/somethingelse").ToList();
             Assert.AreEqual(0, conceptMaps.Count());
         }
 
@@ -65,11 +65,11 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.IsNotNull(vs);
 
             // One from v2-tables
-            vs = await source.FindCodeSystemAsync("http://hl7.org/fhir/v2/0145");
+            vs = await source.FindCodeSystemAsync("http://terminology.hl7.org/CodeSystem/v2-0145");
             Assert.IsNotNull(vs);
 
             // One from v3-codesystems
-            vs = await source.FindCodeSystemAsync("http://hl7.org/fhir/v3/ActCode");
+            vs = await source.FindCodeSystemAsync("http://terminology.hl7.org/CodeSystem/v3-ActCode");
             Assert.IsNotNull(vs);
 
             // Something non-existent
@@ -92,11 +92,11 @@ namespace Hl7.Fhir.Specification.Tests
             //Assert.IsNotNull(vs);
 
             // One from v2-tables
-            vs = await source.FindValueSetAsync("http://hl7.org/fhir/ValueSet/v2-0145");
+            vs = await source.FindValueSetAsync("http://terminology.hl7.org/ValueSet/v2-0190");
             Assert.IsNotNull(vs);
 
             // One from v3-codesystems
-            vs = await source.FindValueSetAsync("http://hl7.org/fhir/ValueSet/v3-ActCode");
+            vs = await source.FindValueSetAsync("http://terminology.hl7.org/ValueSet/v3-ActCode");
             Assert.IsNotNull(vs);
 
             // Something non-existent
@@ -132,14 +132,14 @@ namespace Hl7.Fhir.Specification.Tests
             var cs = source.ListResourceUris(ResourceType.CodeSystem); Assert.IsTrue(cs.Any());
             var vs = source.ListResourceUris(ResourceType.ValueSet); Assert.IsTrue(vs.Any());
             var cm = source.ListResourceUris(ResourceType.ConceptMap); Assert.IsTrue(cm.Any());
-            var ep = source.ListResourceUris(ResourceType.ExpansionProfile); Assert.IsFalse(ep.Any());
+            // var ep = source.ListResourceUris(ResourceType.ExpansionProfile); Assert.IsFalse(ep.Any());
             var ns = source.ListResourceUris(ResourceType.NamingSystem); Assert.IsTrue(ns.Any());
 
             var all = source.ListResourceUris();
 
             Assert.AreEqual(sd.Count() + sm.Count() + cf.Count() + md.Count() + od.Count() +
                         sp.Count() + cd.Count() + ig.Count() + cs.Count() + vs.Count() + cm.Count() +
-                        ep.Count() + ns.Count(), all.Count());
+                        /*ep.Count() + */ ns.Count(), all.Count());
 
             Assert.IsTrue(sd.Contains("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
             Assert.IsTrue(cf.Contains("http://hl7.org/fhir/CapabilityStatement/base"));
@@ -183,12 +183,12 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.IsTrue(dt is StructureDefinition);
 
             // Try to find a core extension
-            var ext = fa.ResolveByUri("http://hl7.org/fhir/StructureDefinition/valueset-history");
+            var ext = fa.ResolveByUri("http://hl7.org/fhir/StructureDefinition/valueset-system");
             Assert.IsNotNull(ext);
             Assert.IsTrue(ext is StructureDefinition);
 
             // Try to find an additional non-hl7 profile (they are distributed with the spec for now)
-            var us = fa.ResolveByUri("http://hl7.org/fhir/StructureDefinition/cqif-questionnaire");
+            var us = fa.ResolveByUri("http://hl7.org/fhir/StructureDefinition/ehrsrle-auditevent");
             Assert.IsNotNull(us);
             Assert.IsTrue(us is StructureDefinition);
         }
@@ -557,8 +557,9 @@ namespace Hl7.Fhir.Specification.Tests
             // Create an invalid patient resource on disk
             var obs = new Observation()
             {
-                Id = "1",               
-                Comment = " " // Illegal empty value
+                Id = "1",
+                ReferenceRange = new List<Observation.ReferenceRangeComponent> {
+                    new Observation.ReferenceRangeComponent { Text = " "} }
             };
             var nav = obs.ToTypedElement();
             var xml = await nav.ToXmlAsync();

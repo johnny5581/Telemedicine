@@ -36,6 +36,34 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.ElementModel\Hl7.Fhir.ElementModel.csproj">
+      <Project>{dfbd5812-7ad8-4a81-88e1-61c937db00d1}</Project>
+      <Name>Hl7.Fhir.ElementModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Serialization\Hl7.Fhir.Serialization.csproj">
+      <Project>{bb385b83-dff3-42fd-ad78-ad9d8afff142}</Project>
+      <Name>Hl7.Fhir.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Support.Poco\Hl7.Fhir.Support.Poco.csproj">
+      <Project>{ad64a559-0b0f-4311-8242-1d8ddaf7367c}</Project>
+      <Name>Hl7.Fhir.Support.Poco</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Support\Hl7.Fhir.Support.csproj">
+      <Project>{b57cf7d4-8fe3-4def-9ce5-8d830e6a6b48}</Project>
+      <Name>Hl7.Fhir.Support</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.FhirPath\Hl7.FhirPath.csproj">
+      <Project>{28cc5f4c-5112-430e-a950-e2b01ab7363f}</Project>
+      <Name>Hl7.FhirPath</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\src\Hl7.Fhir.Core\Hl7.Fhir.Core.csproj">
+      <Project>{3d5e26b9-e5f5-42b2-ad2d-f1b76efce7b8}</Project>
+      <Name>Hl7.Fhir.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\src\Hl7.Fhir.Specification\Hl7.Fhir.Specification.csproj">
+      <Project>{f45a0d4c-84ed-482e-bd3b-ea4ae65e572a}</Project>
+      <Name>Hl7.Fhir.Specification</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Telemedicine.Core\Telemedicine.Core.csproj">
       <Project>{9CD5FB0B-5360-454C-A04F-A3B2B7B70C60}</Project>
       <Name>Telemedicine.Core</Name>

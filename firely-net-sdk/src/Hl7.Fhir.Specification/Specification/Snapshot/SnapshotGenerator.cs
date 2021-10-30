@@ -7,7 +7,7 @@
  */
 
 // DEBUGGING
-//#define DUMPMATCHES
+#define DUMPMATCHES
 
 // Cache pre-generated snapshot root ElementDefinition instance as an annotation on the associated differential root ElementDefinition
 // When subsequently expanding the full type profile snapshot, re-use the cached root ElementDefinition instance
@@ -33,6 +33,10 @@
 
 // [WMR 20180409] Resolve contentReference from core resource/datatype (StructureDefinition.type)
 #define FIX_CONTENTREFERENCE
+
+// [WMR 20190828] R4: Normalize renamed type slices in snapshot
+// e.g. diff: "valueString" => snap: "value[x]:valueString"
+#define NORMALIZE_RENAMED_TYPESLICE
 
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Specification.Navigation;
@@ -283,7 +287,7 @@ namespace Hl7.Fhir.Specification.Snapshot
         public ElementDefinition MergeElementDefinition(ElementDefinition snap, ElementDefinition diff, bool mergeElementId)
         {
             var result = (ElementDefinition)snap.DeepCopy();
-            ElementDefnMerger.Merge(this, result, diff, mergeElementId);
+            ElementDefnMerger.Merge(this, result, diff, mergeElementId, _stack.CurrentProfileUri);
             return result;
         }
 
@@ -361,7 +365,45 @@ namespace Hl7.Fhir.Specification.Snapshot
                 // ElementIdGenerator.Clear(snapshot.Element);
                 // Debug.Fail("TODO");
 
-                if (!structure.IsConstraint)
+                // [WMR 20190902] #1090 SnapshotGenerator should support logical models
+                if (structure.Kind == StructureDefinition.StructureDefinitionKind.Logical)
+                {
+                    var rootPath = structure.Type;
+
+                    // For logical models, StructureDefinition.type may return a fully qualified url
+                    // Last segment should equal the name of the root element
+                    // e.g. http://example.org/fhir/StructureDefinition/MyModel
+
+                    if (string.IsNullOrEmpty(rootPath))
+                    {
+                        // Not a fatal error; parse root path from first element constraint
+                        //throw Error.Argument(nameof(structure), $"Invalid argument. The StructureDefinition.type property value is empty or missing.");
+                        addIssueStructureTypeMissing(structure);
+
+                        // Derive from root element name
+                        rootPath = structure.Differential?.Element?[0].GetNameFromPath();
+                    }
+                    else
+                    {
+                        var pos = rootPath.LastIndexOf("/");
+                        if (pos > -1)
+                        {
+                            rootPath = rootPath.Substring(pos + 1);
+                        }
+                    }
+
+                    // Abort if we failed to determine root path
+                    if (string.IsNullOrEmpty(rootPath))
+                    {
+                        // Fatal error...
+                        throw Error.Argument(nameof(structure), $"Invalid argument. The StructureDefinition.type property value is empty or missing.");
+
+                    }
+
+                    snapshot.Rebase(rootPath);
+                }
+
+                else if (!structure.IsConstraint)
                 {
                     // [WMR 20160902] Rebase the cloned base profile (e.g. DomainResource)
 
@@ -378,6 +420,7 @@ namespace Hl7.Fhir.Specification.Snapshot
                         // Fatal error...
                         throw Error.Argument(nameof(structure), $"Invalid argument. The StructureDefinition.type property value is empty or missing.");
                     }
+
                     snapshot.Rebase(rootPath);
 
 #if FIX_SLICENAMES_ON_SPECIALIZATIONS
@@ -572,6 +615,9 @@ namespace Hl7.Fhir.Specification.Snapshot
                 // Also verify that diff only specifies child constraints on common elements (.extension | .modifierExtension) ... ?
                 // Actually, we should determine the intersection of the specified type profiles... ouch
 
+                // [WMR 20181212] R4 NEW - eld-13: Types must be unique by code
+                // Gracefully handle non-distinct type codes; do not expand
+
                 // [MS 20210614] When we can't find a CommonTypeCode assume "Element" for .id and .extension
                 var distinctTypeCode = defn.CommonTypeCode() ?? FHIRAllTypes.Element.GetLiteral();
 
@@ -657,7 +703,7 @@ namespace Hl7.Fhir.Specification.Snapshot
                 var matches = ElementMatcher.Match(snap, diff);
 
 #if DUMPMATCHES
-                Debug.WriteLine($"Matches for children of '{snap.StructureDefinition?.Name}' : {(snap.AtRoot ? "(root)" : snap.Path ?? "/")} '{(snap.Current?.SliceName ?? snap.Current?.Type.FirstOrDefault()?.Profile ?? snap.Current?.Type.FirstOrDefault()?.Code)}'");
+                Debug.WriteLine($"Matches for children of '{snap.StructureDefinition?.Name}' : {(snap.AtRoot ? "(root)" : snap.Path ?? "/")} '{(snap.Current?.SliceName ?? snap.Current?.Type.FirstOrDefault()?.Profile?.FirstOrDefault() ?? snap.Current?.Type.FirstOrDefault()?.Code)}'");
                 matches.DumpMatches(snap, diff);
 #endif
 
@@ -712,16 +758,29 @@ namespace Hl7.Fhir.Specification.Snapshot
         // Create a new resource element without a base element definition (for core type & resource profiles)
         private async T.Task createNewElement(ElementDefinitionNavigator snap, ElementDefinitionNavigator diff)
         {
-            var (baseElement, typeStructure) = await getBaseElementForElementType(diff.Current).ConfigureAwait(false);
+            var (targetElement, typeStructure) = await getBaseElementForElementType(diff.Current).ConfigureAwait(false);
+            addConstraintSource(targetElement, typeStructure?.Url);
 
-            if (baseElement != null)
+            if (targetElement != null)
             {
-                var newElement = (ElementDefinition)baseElement.DeepCopy();
+                // New element with type profile
+                var newElement = (ElementDefinition)targetElement.DeepCopy();
                 newElement.Path = ElementDefinitionNavigator.ReplacePathRoot(newElement.Path, diff.Path);
-                newElement.Base = null;               
+
+                // [WMR 20190130] STU3: Base component of new elements is empty
+                // [WMR 20190130] R4: Base components of new elements refers to self (.Base.Path = .Path)
+                // [WMR 20190723] FIX: Initialize base cardinality from current diff element
+                // Do NOT inherit from target, e.g. Resource.id (0...1) inherits from id root (0...*)
+                // [DEBUGGING] Debug.Assert(newElement.Path != "Resource.id");
+                newElement.Base = new ElementDefinition.BaseComponent()
+                {
+                    Path = newElement.Path,
+                    Min = diff.Current.Min, // newElement.Min,
+                    Max = diff.Current.Max, // newElement.Max
+                };              
 
                 // [WMR 20160915] NEW: Notify subscribers
-                OnPrepareElement(newElement, typeStructure, baseElement);
+                OnPrepareElement(newElement, typeStructure, targetElement);
 
                 // [WMR 20170421] Merge custom element Id from diff
                 mergeElementDefinition(newElement, diff.Current, true);
@@ -730,12 +789,25 @@ namespace Hl7.Fhir.Specification.Snapshot
             }
             else
             {
+                // New element w/o type profile
+                // [WMR 20190131] Also for contentReferences, e.g. Questionnaire.item.item
+                // Only inherits structure, not constraints, from referenced item (e.g. Questionnaire.item)
+                // For example, constraint on .item.type does NOT apply to .item.item.type
+
                 var clonedElem = (ElementDefinition)diff.Current.DeepCopy();
 
 #if CACHE_ROOT_ELEMDEF
                 // [WMR 20190806] Never clone temporary internal annotation!
                 clonedElem.RemoveSnapshotElementAnnotations(); // Paranoia...
 #endif
+
+                // [WMR 20190131] R4: For new elements, base component should refer to element itself (.Base.Path = .Path)
+                clonedElem.Base = new ElementDefinition.BaseComponent()
+                {
+                    Path = clonedElem.Path,
+                    Min = clonedElem.Min,
+                    Max = clonedElem.Max
+                };
 
                 // [WMR 20160915] NEW: Notify subscribers
                 OnPrepareElement(clonedElem, null, null);
@@ -776,6 +848,14 @@ namespace Hl7.Fhir.Specification.Snapshot
                     var keys = newConstraints.Select(c => c.Key);
                     element.Constraint.RemoveAll(c => keys.Contains(c.Key));
                 }
+            }
+        }
+
+        private static void addConstraintSource(ElementDefinition targetElement, string url)
+        {
+            foreach (var constraint in targetElement?.Constraint.Where(c => string.IsNullOrEmpty(c.Source)) ?? Enumerable.Empty<ElementDefinition.ConstraintComponent>())
+            {
+                constraint.Source = url;
             }
         }
 
@@ -842,8 +922,14 @@ namespace Hl7.Fhir.Specification.Snapshot
                 if (_settings.GenerateElementIds)
                 {
                     // Always generate new id's for child elements
+
                     // Also generate id for current element if not specified by diff
-                    ElementIdGenerator.Update(snap, true, !string.IsNullOrEmpty(diff.Current.ElementId));
+                    //ElementIdGenerator.Update(snap, true, !string.IsNullOrEmpty(diff.Current.ElementId));
+
+                    // [WMR 20190822] R4: Always re-generate Element Ids according to standardized format
+                    // http://hl7.org/fhir/elementdefinition.html#id
+                    // Ignore user-specified element id's in the differential
+                    ElementIdGenerator.Update(snap, true);
                 }
             }
 #else
@@ -870,7 +956,7 @@ namespace Hl7.Fhir.Specification.Snapshot
                     // by the differential
 
                     // Note that since we merged the parent, a (shorthand) typeslice will already
-                    // have reduced the numer of types to 1. Still, if you don't do that, we cannot
+                    // have reduced the number of types to 1. Still, if you don't do that, we cannot
                     // accept constraints on children, need to select a single type first...
 
                     // [WMR 20170227] REDUNDANT; checked by expandElement
@@ -917,7 +1003,7 @@ namespace Hl7.Fhir.Specification.Snapshot
         {
 
             // [WMR 20170421] Add parameter to control when (not) to inherit Element.id
-            ElementDefnMerger.Merge(this, snap, diff, mergeElementId);
+            ElementDefnMerger.Merge(this, snap, diff, mergeElementId, _stack.CurrentProfileUri);
         }
 
         // [WMR 20160720] Merge custom element type profiles, e.g. Patient.name with type.profile = "MyHumanName"
@@ -980,7 +1066,9 @@ namespace Hl7.Fhir.Specification.Snapshot
             }
 
             // [WMR 20171004] New
-            var distinctTypeProfiles = diffTypes.Where(t => t.Profile != null).Select(t => t.Profile).Distinct().ToList();
+            //var distinctTypeProfiles = diffTypes.Where(t => t.Profile != null).Select(t => t.Profile).Distinct().ToList();
+            // [WMR 20181212] R4 NEW
+            var distinctTypeProfiles = diffTypes.SelectMany(t => t.Profile).Distinct().ToList();
             if (distinctTypeProfiles.Count > 1)
             {
                 // Multiple type profiles, cannot expand children
@@ -992,13 +1080,15 @@ namespace Hl7.Fhir.Specification.Snapshot
             var primaryDiffType = diff.Current.PrimaryType();
 
             StructureDefinition typeStructure = null;
-            if (primaryDiffType != null)
+            if (!(primaryDiffType is null))
             {
 
                 var primarySnapType = snap.Current.PrimaryType();
                 // if (primarySnapType == null) { return true; }
 
-                var primaryDiffTypeProfile = primaryDiffType.Profile;
+                // [WMR 20181212] R4 NEW
+                //var primaryDiffTypeProfile = primaryDiffType.Profile.FirstOrDefault();
+                var primaryDiffTypeProfile = distinctTypeProfiles.FirstOrDefault();
 
                 // [WMR 20170208] Ignore explicit diff profile if it matches the (implied) base type profile
                 // e.g. if the differential specifies explicit core type profile url
@@ -1088,12 +1178,14 @@ namespace Hl7.Fhir.Specification.Snapshot
                                 // [WMR 20170208] Update ElementDefinition.Base components
                                 // ensureBaseComponents(typeNav, snap, true);
 
+#if FIX_SLICENAMES_ON_ROOT_ELEMENTS
                                 // [WMR 20170321] HACK: Never copy elements names from the root element (e.g. SimpleQuantity)
                                 if (typeNav.Current.SliceNameElement != null)
                                 {
                                     Debug.WriteLine($"[{nameof(SnapshotGenerator)}.{nameof(mergeTypeProfiles)}] Explicitly prevent copying of root element name: {typeNav.Path} : '{typeNav.Current.SliceName}'");
                                     typeNav.Current.SliceName = null;
                                 }
+#endif
 
                             }
                             else
@@ -1153,20 +1245,76 @@ namespace Hl7.Fhir.Specification.Snapshot
                         }
                         else
                         {
-                            // Expand and merge (only!) the root element of the external type profile
-                            // Note: full expansion may trigger recursion, e.g. Element.id => identifier => string => Element
-                            var typeRootElem = await getSnapshotRootElement(typeStructure, primaryDiffTypeProfile, diffNode).ConfigureAwait(false);
-                            if (typeRootElem == null) { return false; }
+                            // Resolve and merge referenced external type profile
 
-                            // Rebase before merging
-                            var rebasedRootElem = (ElementDefinition)typeRootElem.DeepCopy();
-                            rebasedRootElem.Path = diff.Path;
-                            // MV 20210727: copy cardinality from base (so do not use the cardinality of the type). See issue #1824
-                            rebasedRootElem.Min = diff.Current.Min;
-                            rebasedRootElem.Max = diff.Current.Max;
+                            // [WMR 20190723] NEW
+                            // EXCEPT for complex reference to profile and (extension) child element:
+                            // "{url}#{element}", e.g. http://hl7.org/fhir/StructureDefinition/patient-nationality#code
+                            // Target extension profile has already been merged via (grand)parent extension element
+                            // => Do nothing; continue merging profile constraints on extension child elements
+                            //
+                            // Note: profile constraint on complex extension child element only needs to specify
+                            // the correct slice name of the child element. Complex reference to profile & element
+                            // is allowed, but not required.
+                            // Example:
+                            //
+                            //
+                            // <!-- Introduce profile extension -->
+                            // <element>
+                            //   <path value="Patient.extension"/>
+                            //   <type>
+                            //     <code value="Extension"/>
+                            //     <profile value="http://hl7.org/fhir/StructureDefinition/patient-nationality"/>
+                            //   </type>
+                            // </element>
+                            // <!-- Slicing entry for extension child elements -->
+                            // <element>
+                            //   <slicing>
+                            //     <discriminator>
+                            //       <type value="value"/>
+                            //       <path value="url"/>
+                            //     </discriminator>
+                            //     <ordered value="false"/>
+                            //     <rules value="open"/>
+                            //   </slicing>                         */
+                            // </element>
+                            // <!-- Profile constraint on extension child element "code" -->
+                            // <element>
+                            //   <path value="Patient.extension.extension"/>
+                            //   <!-- REQUIRED: Slice name of the constrained extension child element -->
+                            //   <sliceName value="code"/>
+                            //   <!-- OPTIONAL: Complex reference to extension profile and element -->
+                            //   <type>
+                            //     <code value="Extension"/>
+                            //     <profile value="http://hl7.org/fhir/StructureDefinition/patient-nationality#code"/>
+                            //   </type>
+                            // </element>
 
-                            // Merge the type profile root element; no need to expand children
-                            mergeElementDefinition(snap.Current, rebasedRootElem, false);
+                            if (!profileRef.IsComplex)
+                            {
+                                // Expand and merge (only!) the root element of the external type profile
+                                // Note: full expansion may trigger recursion, e.g. Element.id => identifier => string => Element
+                                var typeRootElem = await getSnapshotRootElement(typeStructure, primaryDiffTypeProfile, diffNode).ConfigureAwait(false);
+                                if (typeRootElem == null) { return false; }
+
+                                // Rebase before merging
+                                var rebasedRootElem = (ElementDefinition)typeRootElem.DeepCopy();
+                                rebasedRootElem.Path = diff.Path;
+                                rebasedRootElem.Min = diff.Current.Min;
+                                rebasedRootElem.Max = diff.Current.Max;
+
+                                // Merge the type profile root element; no need to expand children
+                                mergeElementDefinition(snap.Current, rebasedRootElem, false);
+                            }
+                            else
+                            {
+                                // Url bookmark #name should match the specified sliceName
+                                // Note: ignore bookmark; always use the specified sliceName
+                                if (!StringComparer.Ordinal.Equals(diff.Current.SliceName, profileRef.ElementName))
+                                {
+                                    addIssueInvalidComplexProfileReference(diff.Current);
+                                }
+                            }
                         }
                     }
                 }
@@ -1204,8 +1352,8 @@ namespace Hl7.Fhir.Specification.Snapshot
             if (IsEqualPath(elem.Base?.Path, DomainResource_Extension_Path))
             {
                 elem.ShortElement?.RemoveConstrainedByDiffAnnotation();
-                elem.CommentElement?.RemoveConstrainedByDiffAnnotation();
-                elem.DefinitionElement?.RemoveConstrainedByDiffAnnotation();
+                elem.Comment?.RemoveConstrainedByDiffAnnotation();
+                elem.Definition?.RemoveConstrainedByDiffAnnotation();
             }
         }
 
@@ -1622,10 +1770,34 @@ namespace Hl7.Fhir.Specification.Snapshot
 
             // Debug.Assert(diff.Current.Name != null);
             Debug.Assert(snap.Current.SliceName == null
+
+                // [WMR 20190808] Handle new named slice in derived profile
+                // - base profile is sliced, diff profile introduces another named slice
+                // - snap is positioned on (last) named base slice
+                // - diff is positioned on new named base slice (introduced by derived profile)
+                // - sliceBase is positioned on base slice group
+                || (!(sliceBase is null))
+
                 // [WMR 20161219] Handle Composition.section - has default name 'section' in core resource (name reference target for Composition.section.section)
                 || snap.Path == "Composition.section"
                 || diff.Current.SliceName == null
                 || ElementDefinitionNavigator.IsDirectResliceOf(diff.Current.SliceName, snap.Current.SliceName));
+
+
+            bool isRenamed = !IsEqualPath(snap.PathName, diff.PathName);
+
+            // [WMR 20190822] R4 TODO
+            // Emit default Slicing component for type slices, if omitted
+            if (isRenamed && snap.Current.Slicing is null)
+            {
+                snap.Current.Slicing = new ElementDefinition.SlicingComponent()
+                {
+                    Discriminator = new List<ElementDefinition.DiscriminatorComponent>()
+                    {
+                        ElementDefinition.DiscriminatorComponent.ForTypeSlice()
+                    }
+                };
+            };
 
             // Append the new slice constraint to the existing slice group
             // Slice definitions in StructureDef are always ordered! (only instances may contain unordered slices)
@@ -1635,13 +1807,27 @@ namespace Hl7.Fhir.Specification.Snapshot
 
             // [WMR 20161219] Handle invalid multiple renamed choice type constraints, e.g. { valueString, valueInteger }
             // Snapshot base element has already been renamed by the first match => re-assign
-            if (!IsEqualPath(snap.PathName, diff.PathName))
+            if (isRenamed)
             {
-                snap.Current.Path = diff.Current.Path;
+                // [WMR 20190819] NEW: #1074
+                // Support implicit type constraints on renamed elements
+                applyImplicitChoiceTypeConstraint(snap, diff);
+
+                // [WMR 20190819] NEW: Auto-generate default slice name for (implicit) type slices
+                if (string.IsNullOrEmpty(snap.Current.SliceName) && string.IsNullOrEmpty(diff.Current.SliceName))
+                {
+                    snap.Current.SliceName = diff.PathName;
+                }
+
+#if !NORMALIZE_RENAMED_TYPESLICE
+                // [WMR 20190828] R4: Snapshot always represents type slice using full slicing notation
+                // Must undo element renaming, e.g. "value[x]:valueString", not "valueString"
+                snap.Current.Path = diff.Path; // Current.Path;
+#endif
             }
 
             // Important: explicitly clear the slicing node in the copy!
-            Debug.Assert(snap.Current.Slicing == null); // Taken care of by ElementMatcher.initSliceBase
+            Debug.Assert(snap.Current.Slicing is null); // Taken care of by ElementMatcher.initSliceBase
                                                         // snap.Current.Slicing = null;
 
             // [WMR 20170718] NEW
@@ -1655,6 +1841,41 @@ namespace Hl7.Fhir.Specification.Snapshot
 
             // Merge differential
             await mergeElement(snap, diff).ConfigureAwait(false);
+        }
+
+        // [WMR 20190819] NEW
+        // Renamed choice type element implies type constraint
+        // e.g. "valueQuantity" implies type is constrained to Quantity
+
+        // Parse type from renamed choice type element and constrain snap types.
+        void applyImplicitChoiceTypeConstraint(ElementDefinitionNavigator snap, ElementDefinitionNavigator diff)
+        {
+            Debug.Assert(!IsEqualPath(snap.PathName, diff.PathName));
+
+            var diffTypes = diff.Current.Type;
+            if (diffTypes is null || diffTypes.Count == 0)
+            {
+                // [WMR 20190819] NEW: #1074
+                // Parse type constraint from renamed element
+                var primaryDiffType = ElementDefinitionNavigator.ParseTypeFromRenamedElement(diff.PathName, snap.PathName);
+
+                if (!string.IsNullOrEmpty(primaryDiffType))
+                {
+                    // Try to find matching type in base element
+                    var match = snap.Current.Type.FirstOrDefault(t => StringComparer.Ordinal.Equals(primaryDiffType, t.Code));
+                    if (match is null)
+                    {
+                        // No match; error! Invalid choice type constraint
+                        addIssueInvalidChoiceRename(diff.Current);
+                    }
+                    else if (snap.Current.Type.Count > 0)
+                    {
+                        // Found match; constrain to specified type
+                        //snap.Current.Type.RemoveAll(t => !StringComparer.Ordinal.Equals(primaryDiffType, t.Code));
+                        snap.Current.Type = new List<ElementDefinition.TypeRefComponent>() { match };
+                    }
+                }
+            }
         }
 
         void addSliceBase(ElementDefinitionNavigator snap, ElementDefinitionNavigator diff, ElementDefinitionNavigator sliceBase)
@@ -1695,29 +1916,58 @@ namespace Hl7.Fhir.Specification.Snapshot
             var bm = snap.Bookmark();
             var name = snap.PathName;
             var sliceName = diff.Current.SliceName;
-            //Debug.Assert(sliceName != null);
-            var baseSliceName = ElementDefinitionNavigator.GetBaseSliceName(sliceName);
-            do
+
+            // [WMR 20190211] R4: Allow multiple renamed choice type element constraints
+            // e.g. value[x], valueString, valueInteger
+            if (string.IsNullOrEmpty(sliceName) //&& snap.IsRenamedChoiceTypeElement(diff.PathName))
+                && ElementDefinitionNavigator.IsRenamedChoiceTypeElement(snap.PathName, diff.PathName))
             {
-                var snapSliceName = snap.Current.SliceName;
-                if (baseSliceName != null && StringComparer.Ordinal.Equals(baseSliceName, snapSliceName))
+                // snap is positioned at a choice type element, e.g. "value[x]"
+                // diff is positioned at a renamed choice type element constraint, e.g. "valueString"
+                // Append new diff constraint after existing renamed choice type element constraints in snap
+                var choiceName = snap.PathName;
+                var bm2 = snap.Bookmark();
+                while (snap.MoveToNext())
                 {
-                    // Found a matching base slice; skip any children and reslices
-                    var bm2 = snap.Bookmark();
-                    while (snap.MoveToNext(name))
+                    // [WMR 20190828] Also handle non-renamed type slices in the snapshot
+                    // R4: Type slices in snapshot must be normalized (not renamed)
+                    // Still try to handle renamed elements, e.g. from externally generated snapshots
+                    if (!IsEqualName(snap.PathName, choiceName)
+                        && !ElementDefinitionNavigator.IsRenamedChoiceTypeElement(choiceName, snap.PathName))
                     {
-                        var snapSliceName2 = snap.Current.SliceName;
-                        if (!ElementDefinitionNavigator.IsResliceOf(snapSliceName2, snapSliceName))
-                        {
-                            // Not a reslice; add diff slice after the previous match
-                            break;
-                        }
-                        bm2 = snap.Bookmark();
+                        // Not a choice type element constraint; rewind to last match
+                        snap.ReturnToBookmark(bm2);
+                        break;
                     }
-                    snap.ReturnToBookmark(bm2);
-                    break;
+                    bm2 = snap.Bookmark();
                 }
-            } while (snap.MoveToNext(name));
+            }
+            else
+            {
+                //Debug.Assert(sliceName != null);
+                var baseSliceName = ElementDefinitionNavigator.GetBaseSliceName(sliceName);
+                do
+                {
+                    var snapSliceName = snap.Current.SliceName;
+                    if (baseSliceName != null && StringComparer.Ordinal.Equals(baseSliceName, snapSliceName))
+                    {
+                        // Found a matching base slice; skip any children and reslices
+                        var bm2 = snap.Bookmark();
+                        while (snap.MoveToNext(name))
+                        {
+                            var snapSliceName2 = snap.Current.SliceName;
+                            if (!ElementDefinitionNavigator.IsResliceOf(snapSliceName2, snapSliceName))
+                            {
+                                // Not a reslice; add diff slice after the previous match
+                                break;
+                            }
+                            bm2 = snap.Bookmark();
+                        }
+                        snap.ReturnToBookmark(bm2);
+                        break;
+                    }
+                } while (snap.MoveToNext(name));
+            }
             var result = snap.Bookmark();
             snap.ReturnToBookmark(bm);
             return result;
@@ -1731,14 +1981,15 @@ namespace Hl7.Fhir.Specification.Snapshot
             // Initialize slicing component to sensible defaults
             elem.Slicing = new ElementDefinition.SlicingComponent()
             {
-                Discriminator = new List<ElementDefinition.DiscriminatorComponent>()
-                {
-                    new ElementDefinition.DiscriminatorComponent
-                    {
-                        Type = ElementDefinition.DiscriminatorType.Value,
-                        Path = "url"
-                    }
-                },
+                //Discriminator = new List<ElementDefinition.DiscriminatorComponent>()
+                //{
+                //    new ElementDefinition.DiscriminatorComponent
+                //    {
+                //        Type = ElementDefinition.DiscriminatorType.Value,
+                //        Path = "url"
+                //    }
+                //},
+                Discriminator = ElementDefinition.DiscriminatorComponent.ForExtensionSlice().ToList(),
                 Ordered = false,
                 Rules = ElementDefinition.SlicingRules.Open
             };
@@ -1775,8 +2026,10 @@ namespace Hl7.Fhir.Specification.Snapshot
             // [WMR 20160720] Handle custom type profiles (GForge #9791)
             bool isValidProfile = false;
 
-            // First try to resolve the custom element type profile, if specified
-            var typeProfile = typeRef.Profile;
+            // [WMR 20181212] R4 NEW
+            // Resolve target profile if the type specifies a _single_ profile.
+            // Return null if the type specifies zero or multiple profiles.
+            var typeProfile = typeRef.Profile.SafeSingleOrDefault();
 
             // [WMR 20161004] Remove configuration setting; always merge type profiles
             // [WMR 20180723] Also expand custom profile on Reference
@@ -1790,8 +2043,9 @@ namespace Hl7.Fhir.Specification.Snapshot
             }
 
             // Otherwise, or if the custom type profile is missing, then try to resolve the core type profile
+            // [MV 20191217] stop when it is a special type (System.*). Introduced in the technical correction 4.0.1
             var typeCodeElem = typeRef.CodeElement;
-            if (!isValidProfile && typeCodeElem != null && typeCodeElem.ObjectValue is string typeName)
+            if (!isValidProfile && typeCodeElem != null && typeCodeElem.ObjectValue is string typeName && !typeName.StartsWith("http://hl7.org/fhirpath/System."))
             {
                 baseStructure = await getStructureDefinitionForTypeCode(AsyncResolver, typeCodeElem).ConfigureAwait(false);
                 // [WMR 20160906] Check if element type equals path (e.g. Resource root element), prevent infinite recursion
@@ -1843,6 +2097,8 @@ namespace Hl7.Fhir.Specification.Snapshot
             var location = elementDef.Path;
 
             var contentReference = elementDef.ContentReference; // e.g. "#Questionnaire.item"
+
+            // [WMR 20181212] TODO: Handle logical models, where StructureDefinition.type returns an uri
 
             var coreType = nav.StructureDefinition?.Type
                 // Fall back to root element name...?
@@ -2033,6 +2289,9 @@ namespace Hl7.Fhir.Specification.Snapshot
                 // [WMR 20190805] IMPORTANT! Always explicitly clear the annotation before returning result to caller
                 // Otherwise, cloning & expanding the result will pick up incorrect root element from original... WRONG!
 #endif
+                // [WMR 20190723] FIX #1052: Initialize ElementDefinition.constraint.source
+                ElementDefnMerger.InitializeConstraintSource(snapRoot.Constraint, sd.Url);
+
                 // Debug.Print($"[{nameof(SnapshotGenerator)}.{nameof(getSnapshotRootElement)}] {nameof(profileUri)} = '{profileUri}' - use root element definition from differential: #{clonedDiffRoot.GetHashCode()}");
                 return snapRoot;
             }
@@ -2093,15 +2352,16 @@ namespace Hl7.Fhir.Specification.Snapshot
         }
 
         /// <summary>Determine if the specified element paths are equal. Performs an ordinal comparison.</summary>
-        static bool IsEqualPath(string path, string other) => StringComparer.Ordinal.Equals(path, other);
+        internal static bool IsEqualPath(string path, string other) => StringComparer.Ordinal.Equals(path, other);
 
         /// <summary>Determine if the specified element names are equal. Performs an ordinal comparison.</summary>
-        static bool IsEqualName(string name, string other) => StringComparer.Ordinal.Equals(name, other);
+        internal static bool IsEqualName(string name, string other) => StringComparer.Ordinal.Equals(name, other);
 
-        // [WMR 20170227] NEW
-        // TODO:
-        // - Analyze possible re-use by Validator
-        // - Maybe move this method to another (public) class?
+        /// <summary>Determine if the specified uri strings are equal. Performs an ordinal comparison.</summary>
+        internal static bool IsEqualUri(string uri, string other) => StringComparer.Ordinal.Equals(uri, other);
+
+        /// <summary>Determine if the specified type codes are equal. Performs an ordinal comparison.</summary>
+        internal static bool IsEqualType(string type, string other) => StringComparer.Ordinal.Equals(type, other);
 
         /// <summary>
         /// Determines if the specified <see cref="StructureDefinition"/> is compatible with <paramref name="type"/>.

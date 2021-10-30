@@ -108,7 +108,7 @@ namespace Hl7.Fhir.Rest
             new Binary
             {
                 //Content is for STU3, from R4 Content has changed into Data
-                Content = data,
+                Data = data,
                 ContentType = contentType
             };
 

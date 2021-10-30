@@ -119,7 +119,8 @@ namespace Hl7.Fhir.Specification
         }
 #endif
 
-        private static bool isPrimitiveValueConstraint(ElementDefinition ed) => ed.Path.EndsWith(".value") && ed.Type.All(t => t.Code == null);
+        private static bool isPrimitiveValueConstraint(ElementDefinition ed) => (ed.Path.EndsWith(".value") && ed.Type.All(t => t.Code == null)) ||
+            (ed.Path.EndsWith(".value") && ed.Type.All(t => t.Code.StartsWith("http://hl7.org/fhirpath/System.")));
 
         internal static IEnumerable<IElementDefinitionSummary> getElements(ElementDefinitionNavigator nav)
         {
@@ -193,7 +194,29 @@ namespace Hl7.Fhir.Specification
                 return new[] { (ITypeSerializationInfo)new BackboneElementComplexTypeSerializationInfo(reference) };
             }
             else
-                return nav.Current.Type.Select(t => (ITypeSerializationInfo)new TypeReferenceInfo(t.Code)).Distinct().ToArray();
+            {                
+                var basePath = nav.Current?.Base?.Path;
+                if (basePath == "Resource.id" || nav?.Current?.Path == "Resource.id")
+                {
+                    // [EK 20200423] OMG! Why does Resource.id have a base Resource.id?
+                    // [MV 20191217] it should be url?.Value, but there is something wrong in the 
+                    // specification (https://jira.hl7.org/browse/FHIR-25262), so I manually change it to "id".
+                    //return new[] { (ITypeSerializationInfo)new TypeReferenceInfo(url?.Value) };
+
+                    return new[] { (ITypeSerializationInfo)new TypeReferenceInfo("id") };
+                }
+                else if(basePath == "xhtml.id" || nav.Current?.Path == "xhtml.id")
+                {
+                    // [EK 20200423] xhtml.id is missing the structuredefinition-fhir-type extension
+                    return new[] { (ITypeSerializationInfo)new TypeReferenceInfo("string") };
+                }
+                else if (nav.Current.Type[0].GetExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type")?.Value is FhirUrl url)
+                {
+                    return new[] { (ITypeSerializationInfo)new TypeReferenceInfo(url?.Value) };
+                }
+                else
+                    return nav.Current.Type.Select(t => (ITypeSerializationInfo)new TypeReferenceInfo(t.Code)).Distinct().ToArray();
+            }
         }
 
         public string ElementName { get; private set; }

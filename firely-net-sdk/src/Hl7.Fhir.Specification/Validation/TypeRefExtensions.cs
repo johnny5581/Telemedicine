@@ -19,14 +19,16 @@ namespace Hl7.Fhir.Validation
     {
         public static string ReadableName(this StructureDefinition sd) => sd.Derivation == StructureDefinition.TypeDerivationRule.Constraint ? sd.Url : sd.Id;
 
-        public static string GetDeclaredProfiles(this ElementDefinition.TypeRefComponent typeRef)
+        public static string[] GetDeclaredProfiles(this ElementDefinition.TypeRefComponent typeRef)
         {
-            if (!System.String.IsNullOrEmpty(typeRef.Profile))
-                return typeRef.Profile;
-            else if (!string.IsNullOrEmpty(typeRef.Code))
-                return ModelInfo.CanonicalUriForFhirCoreType(typeRef.Code);
-            else
-                return null;
+            // back to what DSTU2 had ;)
+            if (typeRef.ProfileElement.Any())
+            {
+                return typeRef.Profile.ToArray();
+            }
+            if (!string.IsNullOrEmpty(typeRef.Code))
+                return new[] { ModelInfo.CanonicalUriForFhirCoreType(typeRef.Code)?.Value };
+            return null;
         }
 
 

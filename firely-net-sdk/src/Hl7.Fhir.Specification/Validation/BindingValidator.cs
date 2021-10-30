@@ -27,8 +27,7 @@ namespace Hl7.Fhir.Validation
             if (binding.Strength == null)
                 throw new IncorrectElementDefinitionException("Encountered a binding element without a binding strength.");
 
-            var uri = (binding.ValueSet as FhirUri)?.Value ??
-                        (binding.ValueSet as ResourceReference)?.Reference;
+            var uri = binding.ValueSet;
 
             if (uri == null)
                 throw new IncorrectElementDefinitionException($"Encountered a binding element without either a ValueSet reference or uri");

@@ -1,4 +1,4 @@
-using Hl7.Fhir.Model;
+﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Specification.Source;
 using Hl7.Fhir.Specification.Terminology;
@@ -43,7 +43,7 @@ namespace Hl7.Fhir.Specification.Tests
 
             Assert.True(issueTypeVs.CodeInExpansion("security", "http://hl7.org/fhir/issue-type"));
             Assert.True(issueTypeVs.CodeInExpansion("expired", "http://hl7.org/fhir/issue-type"));
-            Assert.Equal(29, issueTypeVs.Expansion.Contains.CountConcepts());
+            Assert.Equal(31, issueTypeVs.Expansion.Contains.CountConcepts());
             Assert.Equal(issueTypeVs.Expansion.Contains.CountConcepts(), issueTypeVs.Expansion.Total);
 
             var trans = issueTypeVs.FindInExpansion("transient", "http://hl7.org/fhir/issue-type");
@@ -54,7 +54,7 @@ namespace Hl7.Fhir.Specification.Tests
             issueTypeVs.Version = "3.14";
             await expander.ExpandAsync(issueTypeVs);
             Assert.NotEqual(id, issueTypeVs.Expansion.Identifier);
-            Assert.Equal(29, issueTypeVs.Expansion.Total);
+            Assert.Equal(31, issueTypeVs.Expansion.Total);
 
             //var versionParam = issueTypeVs.Expansion.Parameter.Single(c => c.Name == "version");
             //Assert.Equal("http://hl7.org/fhir/ValueSet/issue-type?version=3.14", ((FhirUri)versionParam.Value).Value);
@@ -76,17 +76,17 @@ namespace Hl7.Fhir.Specification.Tests
         [Fact]
         public async T.Task ExpansionOfComposeImport()
         {
-            var testVs = (await _resolver.ResolveByCanonicalUriAsync("http://hl7.org/fhir/ValueSet/v3-ObservationMethod")).DeepCopy() as ValueSet;
+            var testVs = (await _resolver.ResolveByCanonicalUriAsync("http://hl7.org/fhir/ValueSet/FHIR-version")).DeepCopy() as ValueSet;
             Assert.False(testVs.HasExpansion);
 
             var expander = new ValueSetExpander(new ValueSetExpanderSettings { ValueSetSource = _resolver });
-            expander.Settings.MaxExpansionSize = 50;
+            expander.Settings.MaxExpansionSize = 2;
 
             await Assert.ThrowsAsync<ValueSetExpansionTooBigException>(async () => await expander.ExpandAsync(testVs));
 
-            expander.Settings.MaxExpansionSize = 500;
+            expander.Settings.MaxExpansionSize = 50;
             await expander.ExpandAsync(testVs);
-            Assert.Equal(304, testVs.Expansion.Total);
+            Assert.Equal(22, testVs.Expansion.Total);
         }
 
         [Fact]
@@ -165,14 +165,14 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var vsUrl = "http://hl7.org/fhir/ValueSet/data-absent-reason";
 #pragma warning disable CS0618 // Type or member is obsolete
-            var result = svc.ValidateCode(vsUrl, code: "NaN", system: "http://hl7.org/fhir/data-absent-reason");
+            var result = svc.ValidateCode(vsUrl, code: "not-a-number", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason");
             Assert.True(result.Success);
 
-            result = svc.ValidateCode(vsUrl, code: "NaNX", system: "http://hl7.org/fhir/data-absent-reason");
+            result = svc.ValidateCode(vsUrl, code: "NaNX", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason");
             Assert.False(result.Success);
 
-            result = svc.ValidateCode(vsUrl, code: "NaN", system: "http://hl7.org/fhir/data-absent-reason",
-                display: "Not a Number");
+            result = svc.ValidateCode(vsUrl, code: "not-a-number", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                display: "Not a Number (NaN)");
             Assert.True(result.Success);
 
             // The spec is not clear on the behaviour of incorrect displays - so don't test it here
@@ -180,17 +180,17 @@ namespace Hl7.Fhir.Specification.Tests
             //    display: "Not any Number");
             //Assert.True(result.Success);
 
-            result = svc.ValidateCode("http://hl7.org/fhir/ValueSet/v3-AcknowledgementDetailCode", code: "_AcknowledgementDetailNotSupportedCode",
-                system: "http://hl7.org/fhir/v3/AcknowledgementDetailCode");
+            result = svc.ValidateCode("http://terminology.hl7.org/ValueSet/v3-AcknowledgementDetailCode", code: "_AcknowledgementDetailNotSupportedCode",
+                system: "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementDetailCode");
             Assert.True(result.Success);
 
             Assert.Throws<FhirOperationException>(() => svc.ValidateCode("http://hl7.org/fhir/ValueSet/crappy", code: "4322002", system: "http://snomed.info/sct"));
-            
-            var coding = new Coding("http://hl7.org/fhir/data-absent-reason", "NaN");
+
+            var coding = new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "not-a-number");
             result = svc.ValidateCode(vsUrl, coding: coding);
             Assert.True(result.Success);
 
-            coding.Display = "Not a Number";
+            coding.Display = "Not a Number (NaN)";
             result = svc.ValidateCode(vsUrl, coding: coding);
             Assert.True(result.Success);
 
@@ -199,11 +199,11 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.False(result.Success);
             coding.Code = "NaN";
 
-            var cc = new CodeableConcept("http://hl7.org/fhir/data-absent-reason", "NaNX", "Not a Number");
+            var cc = new CodeableConcept("http://terminology.hl7.org/CodeSystem/data-absent-reason", "NaNX", "Not a Number");
             result = svc.ValidateCode(vsUrl, codeableConcept: cc);
             Assert.False(result.Success);
 
-            cc.Coding.Add(new Coding("http://hl7.org/fhir/data-absent-reason", "asked"));
+            cc.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/data-absent-reason", "asked-unknown"));
             result = svc.ValidateCode(vsUrl, codeableConcept: cc);
 #pragma warning restore CS0618 // Type or member is obsolete
             DebugDumpOutputXml(result);
@@ -228,14 +228,14 @@ namespace Hl7.Fhir.Specification.Tests
 
             var vsUrl = "http://hl7.org/fhir/ValueSet/data-absent-reason";
 #pragma warning disable CS0618 // Type or member is obsolete
-            var result = svc.ValidateCode(vsUrl, code: "NaN", system: "http://hl7.org/fhir/data-absent-reason",
-                display: "Not a Number");
+            var result = svc.ValidateCode(vsUrl, code: "not-a-number", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                display: "Not a Number (NaN)");
 #pragma warning restore CS0618 // Type or member is obsolete
             Assert.True(result.Success);
             Assert.Equal(0, result.Warnings);
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            result = svc.ValidateCode(vsUrl, code: "NaN", system: "http://hl7.org/fhir/data-absent-reason",
+            result = svc.ValidateCode(vsUrl, code: "not-a-number", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason",
                         display: "Certainly Not a Number");
 #pragma warning restore CS0618 // Type or member is obsolete
             Assert.True(result.Success);
@@ -248,7 +248,7 @@ namespace Hl7.Fhir.Specification.Tests
             var svc = new LocalTerminologyService(_resolver);
             var inParams = new ValidateCodeParameters()
                 .WithValueSet(url: "http://hl7.org/fhir/ValueSet/data-absent-reason")
-                .WithCode(code: "NaN", system: "http://hl7.org/fhir/data-absent-reason", display: "Not a Number");
+                .WithCode(code: "not-a-number", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason", display: "Not a Number (NaN)");
 
             var result = await svc.ValueSetValidateCode(inParams);
 
@@ -257,7 +257,7 @@ namespace Hl7.Fhir.Specification.Tests
 
             inParams = new ValidateCodeParameters()
                 .WithValueSet(url: "http://hl7.org/fhir/ValueSet/data-absent-reason")
-                .WithCode(code: "NaN", system: "http://hl7.org/fhir/data-absent-reason", display: "Certainly Not a Number");
+                .WithCode(code: "not-a-number", system: "http://terminology.hl7.org/CodeSystem/data-absent-reason", display: "Certainly Not a Number");
 
             result = await svc.ValueSetValidateCode(inParams);
 
@@ -275,13 +275,12 @@ namespace Hl7.Fhir.Specification.Tests
 
             // This is a valueset with a compose - not supported locally normally, but it has been expanded in the zip, so this will work
 #pragma warning disable CS0618 // Type or member is obsolete
-            var result = svc.ValidateCode("http://hl7.org/fhir/ValueSet/yesnodontknow", code: "Y", system: "http://hl7.org/fhir/v2/0136");
-
+            var result = svc.ValidateCode("http://hl7.org/fhir/ValueSet/yesnodontknow", code: "Y", system: "http://terminology.hl7.org/CodeSystem/v2-0136");
             Assert.True(result.Success);
 
             // This test is not always correctly done by the external services, so copied here instead
-            result = svc.ValidateCode("http://hl7.org/fhir/ValueSet/v3-AcknowledgementDetailCode", code: "_AcknowledgementDetailNotSupportedCode",
-                    system: "http://hl7.org/fhir/v3/AcknowledgementDetailCode", @abstract: false);
+            result = svc.ValidateCode("http://terminology.hl7.org/ValueSet/v3-AcknowledgementDetailCode", code: "_AcknowledgementDetailNotSupportedCode",
+                    system: "http://terminology.hl7.org/ValueSet/v3-AcknowledgementDetailCode", @abstract: false);
             Assert.False(result.Success);
 
             // And one that will specifically fail on the local service, since it's too complex too expand - the local term server won't help you here
@@ -297,15 +296,15 @@ namespace Hl7.Fhir.Specification.Tests
             // This is a valueset with a compose - not supported locally normally, but it has been expanded in the zip, so this will work
             var inParams = new ValidateCodeParameters()
                 .WithValueSet(url: "http://hl7.org/fhir/ValueSet/yesnodontknow")
-                .WithCode(code: "Y", system: "http://hl7.org/fhir/v2/0136");
+                .WithCode(code: "Y", system: "http://terminology.hl7.org/CodeSystem/v2-0136");
 
             var result = await svc.ValueSetValidateCode(inParams);
             Assert.True(result.GetSingleValue<FhirBoolean>("result")?.Value);
 
             // This test is not always correctly done by the external services, so copied here instead
             inParams = new ValidateCodeParameters()
-                .WithValueSet(url: "http://hl7.org/fhir/ValueSet/v3-AcknowledgementDetailCode")
-                .WithCode(code: "_AcknowledgementDetailNotSupportedCode", system: "http://hl7.org/fhir/v3/AcknowledgementDetailCode")
+                .WithValueSet(url: "http://terminology.hl7.org/ValueSet/v3-AcknowledgementDetailCode")
+                .WithCode(code: "_AcknowledgementDetailNotSupportedCode", system: "http://terminology.hl7.org/ValueSet/v3-AcknowledgementDetailCodee")
                 .WithAbstract(false);
 
             result = await svc.ValueSetValidateCode(inParams);
@@ -680,7 +679,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("128599005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         });
                 });
@@ -722,12 +721,12 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("301095005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         },
                         element =>
@@ -737,12 +736,12 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("301095005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         },
                         element =>
@@ -752,7 +751,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         },
                         element =>
@@ -762,17 +761,17 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("128599005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("301095005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         });
                 });
@@ -802,17 +801,17 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("301095005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("128599005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         },
                         element =>
@@ -822,12 +821,12 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("301095005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         },
                         element =>
@@ -837,7 +836,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         },
                         element =>
@@ -847,17 +846,17 @@ namespace Hl7.Fhir.Specification.Tests
                                 target =>
                                 {
                                     Assert.Equal("128599005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("301095005", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 },
                                 target =>
                                 {
                                     Assert.Equal("298705000", target.Code);
-                                    Assert.Equal(ConceptMap.ConceptMapEquivalence.Subsumes, target.Equivalence);
+                                    Assert.Equal(ConceptMapEquivalence.Subsumes, target.Equivalence);
                                 });
                         });
                 });
@@ -944,7 +943,7 @@ namespace Hl7.Fhir.Specification.Tests
 
             public async Task<Resource> ResolveByCanonicalUriAsync(string uri)
             {
-                return await T.Task.FromResult(uri == _myOnlyVS.Url ? _myOnlyVS : null);
+                return await T.Task.FromResult(uri == _myOnlyVS.Url) ? _myOnlyVS : null;
             }
 
             public Task<Resource> ResolveByUriAsync(string uri) => throw new NotImplementedException();

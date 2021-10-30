@@ -1,4 +1,4 @@
-﻿/*
+/*
   Copyright (c) 2011-2012, HL7, Inc
   All rights reserved.
   
@@ -66,7 +66,7 @@ namespace Hl7.Fhir.Model
     public partial class ImplementationGuide : IVersionableConformanceResource
     {
         //I think ImplementationGuide should have a purpose element.
-        [NotMapped]
+        [Obsolete("This property is not a part of the official FHIR specification", true)]
         public Markdown Purpose
         {
             get { return null; }
@@ -102,57 +102,41 @@ namespace Hl7.Fhir.Model
     }
 
 
-    public partial class ExpansionProfile : IVersionableConformanceResource
-    {
-        public Markdown Purpose
-        {
-            get { return null; }
-            set { throw new NotImplementedException(); }
-        }
-    }
+    //public partial class ExpansionProfile : IVersionableConformanceResource
+    //{
+    //    public Markdown Purpose
+    //    {
+    //        get { return null; }
+    //        set { throw new NotImplementedException(); }
+    //    }
+    //}
 
     public partial class Questionnaire : IVersionableConformanceResource
     {
 
     }
 
-    public partial class DataElement : IConformanceResource
+    public partial class TerminologyCapabilities : IVersionableConformanceResource
     {
-        // I think DataElement should have Description too
-        [NotMapped]
-        public Markdown Description
-        {
-            get { return null; }
-            set { throw new NotImplementedException(); }
-        }
 
-        [NotMapped]
-        public Markdown Purpose
-        {
-            get { return null; }
-            set { throw new NotImplementedException(); }
-        }
     }
-
 
     public partial class NamingSystem : IConformanceResource
     {
         // I think NamingSystem should have Experimental too
-        [NotMapped]
+        [Obsolete("This property is not a part of the official FHIR specification", true)]
         public Markdown Purpose
         {
             get { return null; }
             set { throw new NotImplementedException(); }
         }
 
-        [NotMapped]
         public bool? Experimental
         {
             get { return null; }
             set { throw new NotImplementedException(); }
         }
 
-        [NotMapped]
         public FhirBoolean ExperimentalElement
         {
             get { return null; }
@@ -162,7 +146,6 @@ namespace Hl7.Fhir.Model
         /// <summary>
         /// Will return the (first) preferred UniqueId, or the first UniqueId if there is no preferred UniqueId
         /// </summary>
-        [NotMapped]
         public string Url
         {
             get
@@ -173,7 +156,6 @@ namespace Hl7.Fhir.Model
             set { throw new NotImplementedException(); }
         }
 
-        [NotMapped]
         public FhirUri UrlElement
         {
             get

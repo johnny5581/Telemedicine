@@ -17,7 +17,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public async Task Search_UsingSearchParams_SearchReturned()
+        public async Task Search_UsingSearchParams_SearchReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
             client.Settings.PreferredFormat = ResourceFormat.Json;
@@ -109,7 +109,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public void SearchSync_UsingSearchParams_SearchReturned()
+        public void SearchSync_UsingSearchParams_SearchReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
             client.Settings.PreferredFormat = ResourceFormat.Json;
@@ -157,7 +157,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public void SearchUsingPostSync_UsingSearchParams_SearchReturned()
+        public void SearchUsingPostSync_UsingSearchParams_SearchReturnedHttpClient()
         {
             var client = new LegacyFhirClient(_endpointSupportingSearchUsingPost);
             client.Settings.PreferredFormat = ResourceFormat.Json;
@@ -184,11 +184,12 @@ namespace Hl7.Fhir.Core.AsyncTests
             }
 
             Console.WriteLine("Test Completed");
+
         }
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public async Task SearchMultiple_UsingSearchParams_SearchReturned()
+        public async Task SearchMultiple_UsingSearchParams_SearchReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
 
@@ -213,7 +214,9 @@ namespace Hl7.Fhir.Core.AsyncTests
             var srchParams = new SearchParams()
                 .Where("name=Donald")
                 .LimitTo(10)
-                .SummaryOnly();
+                .SummaryOnly()
+                .OrderBy("birthdate",
+                    SortOrder.Descending);
 
             var task1 = client.SearchAsync<Patient>(srchParams);
             var task2 = client.SearchAsync<Patient>(srchParams);
@@ -299,7 +302,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public async Task SearchWithCriteria_SyncContinue_SearchReturned()
+        public async Task SearchWithCriteria_SyncContinue_SearchReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
             client.Settings.PreferredFormat = ResourceFormat.Json;
@@ -387,7 +390,7 @@ namespace Hl7.Fhir.Core.AsyncTests
 
         [TestMethod]
         [TestCategory("IntegrationTest")]
-        public async Task SearchWithCriteria_AsyncContinue_SearchReturned()
+        public async Task SearchWithCriteria_AsyncContinue_SearchReturnedWebClient()
         {
             var client = new LegacyFhirClient(_endpoint);
             client.Settings.PreferredFormat = ResourceFormat.Json;

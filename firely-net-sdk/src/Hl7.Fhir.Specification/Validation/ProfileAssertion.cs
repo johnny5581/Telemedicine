@@ -306,23 +306,23 @@ namespace Hl7.Fhir.Validation
     public IEnumerable<StructureDefinition> MinimalProfiles
     {
         get
-        {
-            if (_lastMinimalSet != null)
-                return _lastMinimalSet;
-
-            // Provided validation was done, IF there are stated profiles, they are correct constraints on the instance, and compatible with the declared type
-            // so we can just return that list (we might even remove the ones that are constraints on constraints)
-            if (StatedProfiles.Any())
             {
-                // Remove redundant bases, since the snapshots will contain their constraints anyway.
-                // Note: we're not doing a full closure by resolving all bases for performance sake 
-                var result = StatedProfiles.ToList();
-                var bases = StatedProfiles.Where(sp => sp.BaseDefinition != null).Select(sp => sp.BaseDefinition).Distinct().ToList();
-                bases.AddRange(StatedProfiles.Where(sp => sp.Type != null && sp.Derivation == StructureDefinition.TypeDerivationRule.Constraint)
-                    .Select(sp => ModelInfo.CanonicalUriForFhirCoreType(sp.Type)).Distinct());
-                result.RemoveAll(r => bases.Contains(r.Url));
-                _lastMinimalSet = result;
-            }
+                if (_lastMinimalSet != null)
+                    return _lastMinimalSet;
+                        
+                // Provided validation was done, IF there are stated profiles, they are correct constraints on the instance, and compatible with the declared type
+                // so we can just return that list (we might even remove the ones that are constraints on constraints)
+                if (StatedProfiles.Any())
+                {
+                    // Remove redundant bases, since the snapshots will contain their constraints anyway.
+                    // Note: we're not doing a full closure by resolving all bases for performance sake 
+                    var result = StatedProfiles.ToList();
+                    var bases = StatedProfiles.Where(sp => sp.BaseDefinitionElement?.Value != null).Select(sp => sp.BaseDefinitionElement.Value).Distinct().ToList();
+                    bases.AddRange(StatedProfiles.Where(sp => sp.Type != null && sp.Derivation == StructureDefinition.TypeDerivationRule.Constraint)
+                        .Select(sp => ModelInfo.CanonicalUriForFhirCoreType(sp.Type).Value).Distinct());
+                    result.RemoveAll(r => bases.Contains(r.Url));
+                    _lastMinimalSet = result;
+                }
 
             // If there are no stated profiles, then:
             //  * If the declared type is a profile, it is more specific than the instance

@@ -164,7 +164,7 @@ namespace Hl7.Fhir.Specification
             {
                 return Current.Current.Type
                     .GroupBy(t => t.GetTypeProfile(), t => t.TargetProfile)
-                    .Select(group => FromCanonical(group.Key, group.ToList())); // no use returning multiple "reference" profiles when they only differ in targetReference
+                    .Select(group => FromCanonical(group.Key, group.SelectMany(g => g))); // no use returning multiple "reference" profiles when they only differ in targetReference
             }
 
             throw new StructureDefinitionWalkerException("Invalid StructureDefinition: element misses either a type reference or " +
@@ -214,8 +214,8 @@ namespace Hl7.Fhir.Specification
                 throw new StructureDefinitionWalkerException($"resolve() should only be called on elements of type Reference at '{Current.CanonicalPath()}'.");
 
             return Current.Current.Type
-                    .Where(t => t.IsReference() && t.TargetProfile != null)
-                    .Select(t => t.TargetProfile)
+                    .Where(t => t.IsReference() && t.TargetProfile.Any())
+                    .SelectMany(t => t.TargetProfile)
                     .Select(c => FromCanonical(c));
         }
 

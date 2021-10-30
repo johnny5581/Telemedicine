@@ -69,7 +69,7 @@ namespace Hl7.Fhir.Specification.Snapshot
         /// to elements and properties in the snapshot that are constrained by the differential with respect to the base profile.
         /// <br />
         /// Note that this extension only applies to the containing profile and should NOT be inherited by derived profiles.
-        /// The FHIR API snapshot generator explicitly removes and re-generates these extensions for each profile.
+        /// The FHIR SDK snapshot generator explicitly removes and re-generates these extensions for each profile.
         /// The <seealso cref="SnapshotGeneratorExtensions"/> class provides utility methods to read and/or remove the generated extensions.
         /// </summary>
         public bool GenerateExtensionsOnConstraints { get; set; } = false; // MarkChanges

@@ -110,7 +110,7 @@
       <binding>
         <strength value="required" />
         <description value="A human language." />
-        <valueSetUri value="http://tools.ietf.org/html/bcp47" />
+        <valueSet value="http://tools.ietf.org/html/bcp47" />
       </binding>
     </element>
     <element>
@@ -385,9 +385,7 @@
       <binding>
         <strength value="required" />
         <description value="The gender of a person used for administrative purposes." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/administrative-gender" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/administrative-gender" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -518,9 +516,7 @@
       <binding>
         <strength value="required" />
         <description value="The domestic partnership status of a person." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/marital-status" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/marital-status" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -729,9 +725,7 @@
       <binding>
         <strength value="extensible" />
         <description value="The nature of the relationship between a patient and a contact person for that patient." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/patient-contact-relationship" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/patient-contact-relationship" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -849,9 +843,7 @@
       <binding>
         <strength value="required" />
         <description value="The gender of a person used for administrative purposes." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/administrative-gender" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/administrative-gender" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -1035,9 +1027,7 @@
       <binding>
         <strength value="example" />
         <description value="The species of an animal." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/animal-species" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/animal-species" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -1072,9 +1062,7 @@
       <binding>
         <strength value="example" />
         <description value="The breed of an animal." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/animal-breeds" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/animal-breeds" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -1108,9 +1096,7 @@
       <binding>
         <strength value="example" />
         <description value="The state of the animal's reproductive organs." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/animal-genderstatus" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/animal-genderstatus" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -1235,7 +1221,7 @@
       <binding>
         <strength value="required" />
         <description value="A human language." />
-        <valueSetUri value="http://tools.ietf.org/html/bcp47" />
+        <valueSet value="http://tools.ietf.org/html/bcp47" />
       </binding>
       <mapping>
         <identity value="v2" />
@@ -1478,9 +1464,7 @@
       <binding>
         <strength value="required" />
         <description value="The type of link between this patient resource and another patient resource." />
-        <valueSetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/link-type" />
-        </valueSetReference>
+        <valueSet value="http://hl7.org/fhir/ValueSet/link-type" />
       </binding>
       <mapping>
         <identity value="rim" />

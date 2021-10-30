@@ -21,7 +21,7 @@ namespace Hl7.Fhir.Specification.Tests.Validation
         public async T.Task CustomResourceCanBeValidated()
         {
             #region Read StructureDefinition for Custom Resource
-            var structureDefJson = await File.ReadAllTextAsync(@"TestData\CustomBasic-StructureDefinition-R3.json");
+            var structureDefJson = await File.ReadAllTextAsync(@"TestData\CustomBasic-StructureDefinition-R4.json");
             var structureDefNode = await FhirJsonNode.ParseAsync(structureDefJson);
             var customBasicCanonical = structureDefNode.Children("url").First().Text;
             #endregion
@@ -61,12 +61,12 @@ namespace Hl7.Fhir.Specification.Tests.Validation
         public async T.Task BundleWithCustomResourceCanBeValidated()
         {
             #region Read StructureDefinition for Custom Resource
-            var structureDefJson = await File.ReadAllTextAsync(@"TestData\CustomBasic-StructureDefinition-R3.json");
+            var structureDefJson = await File.ReadAllTextAsync(@"TestData\CustomBasic-StructureDefinition-R4.json");
             var structureDefNode = await FhirJsonNode.ParseAsync(structureDefJson);
             var structureDef = structureDefNode.ToPoco<StructureDefinition>();
             var customBasicCanonical = structureDefNode.Children("url").First().Text;
             #endregion
-            
+
             #region Create a Provider that knows this CustomBasic resource
             var snapShotGenerator = new SnapshotGenerator(ZipSource.CreateValidationSource());
             await snapShotGenerator.UpdateAsync(structureDef);

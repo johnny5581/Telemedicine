@@ -15,13 +15,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using static Hl7.Fhir.Model.ElementDefinition.DiscriminatorComponent;
 using Hl7.Fhir.Utility;
+using System.Linq;
 using T = System.Threading.Tasks;
 
 namespace Hl7.Fhir.Specification.Tests
 {
     // Unit tests for ElementMatcher
 
-    [TestClass]
+    [TestClass, TestCategory("Snapshot")]
     public class SnapshotElementMatcherTests
     {
         IAsyncResourceResolver _testResolver;
@@ -31,6 +32,15 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var dirSource = new DirectorySource("TestData/snapshot-test", new DirectorySourceSettings { IncludeSubDirectories = true } );
             _testResolver = new CachedResolver(dirSource);
+        }
+
+        static List<ElementMatcher.MatchInfo> Match(ElementDefinitionNavigator snapNav, ElementDefinitionNavigator diffNav)
+        {
+            Debug.WriteLine($"Match base '{snapNav.Path}' to diff '{diffNav.Path}':");
+            var matches = ElementMatcher.Match(snapNav, diffNav);
+            Assert.IsNotNull(matches);
+            matches.DumpMatches(snapNav, diffNav);
+            return matches;
         }
 
         [TestMethod]
@@ -56,13 +66,13 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Merge: Patient.identifier
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
@@ -105,7 +115,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 new ElementDefinition.TypeRefComponent()
                                 {
                                     Code = FHIRAllTypes.Extension.GetLiteral(),
-                                    Profile = "http://example.org/fhir/StructureDefinition/myExtension"
+                                    Profile = new string[] { "http://example.org/fhir/StructureDefinition/myExtension" }
                                 }
                             }
                         }
@@ -117,15 +127,14 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Patient.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(2, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -160,7 +169,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 new ElementDefinition.TypeRefComponent()
                                 {
                                     Code = FHIRAllTypes.Extension.GetLiteral(),
-                                    Profile = "http://example.org/fhir/StructureDefinition/myExtension"
+                                    Profile = new string[] { "http://example.org/fhir/StructureDefinition/myExtension" }
                                 }
                             }
                         }
@@ -175,15 +184,14 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Patient.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(2, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -221,7 +229,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 new ElementDefinition.TypeRefComponent()
                                 {
                                     Code = FHIRAllTypes.Extension.GetLiteral(),
-                                    Profile = "http://example.org/fhir/StructureDefinition/myExtension"
+                                    Profile = new string[] { "http://example.org/fhir/StructureDefinition/myExtension" }
                                 }
                             }
                         }
@@ -231,21 +239,20 @@ namespace Hl7.Fhir.Specification.Tests
             var userProfile = (StructureDefinition)baseProfile.DeepCopy();
             // Define another extension slice in diff
             userProfile.Differential.Element.RemoveAt(1); // Remove extension slicing entry (not required)
-            userProfile.Differential.Element[1].Type[0].Profile = "http://example.org/fhir/StructureDefinition/myOtherExtension";
+            userProfile.Differential.Element[1].Type[0].Profile = new string[] { "http://example.org/fhir/StructureDefinition/myOtherExtension" };
 
             var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Patient.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             // [WMR 20170406] extension slice entry is inherited from base w/o diff constraints => no match
             // Expecting a single match for the additional complex extension element
             Assert.AreEqual(1, matches.Count);
@@ -281,7 +288,7 @@ namespace Hl7.Fhir.Specification.Tests
                                 new ElementDefinition.TypeRefComponent()
                                 {
                                     Code = FHIRAllTypes.Extension.GetLiteral(),
-                                    Profile = "http://example.org/fhir/StructureDefinition/myExtension"
+                                    Profile = new string[] { "http://example.org/fhir/StructureDefinition/myExtension" }
                                 }
                             }
                         }
@@ -291,22 +298,21 @@ namespace Hl7.Fhir.Specification.Tests
             var userProfile = (StructureDefinition)baseProfile.DeepCopy();
             // Insert another extension slice before the existing extension
             var ext = (ElementDefinition)userProfile.Differential.Element[2].DeepCopy();
-            ext.Type[0].Profile = "http://example.org/fhir/StructureDefinition/myOtherExtension";
+            ext.Type[0].Profile = new string[] { "http://example.org/fhir/StructureDefinition/myOtherExtension" };
             userProfile.Differential.Element.Insert(2, ext);
 
             var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Patient.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(3, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -330,7 +336,11 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Extension"),
-                        new ElementDefinition("Extension.extension") { SliceName = "name" },
+                        new ElementDefinition("Extension.extension") {
+                            SliceName = "name",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.value[x]")
                         {
                             Type = new List<ElementDefinition.TypeRefComponent>()
@@ -339,7 +349,11 @@ namespace Hl7.Fhir.Specification.Tests
                             }
                         },
                         new ElementDefinition("Extension.extension.url") { Fixed = new FhirUri("name")  },
-                        new ElementDefinition("Extension.extension") { SliceName = "age" },
+                        new ElementDefinition("Extension.extension") {
+                            SliceName = "age",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.value[x]")
                         {
                             Type = new List<ElementDefinition.TypeRefComponent>()
@@ -356,15 +370,14 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Extension root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Extension.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
 
             // DSTU2
             // [WMR 20170411] In DSTU2, The core Extension profile does NOT define a slicing component on "Extension.extension"
@@ -397,9 +410,17 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Extension"),
-                        new ElementDefinition("Extension.extension") { Slicing = new ElementDefinition.SlicingComponent()
-                            { Discriminator = ForValueSlice("url").ToList() } },
-                        new ElementDefinition("Extension.extension") { SliceName = "name" },
+                        new ElementDefinition("Extension.extension")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() {
+                                Discriminator = ForValueSlice("url").ToList()
+                            }
+                        },
+                        new ElementDefinition("Extension.extension") {
+                            SliceName = "name",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.value[x]")
                         {
                             Type = new List<ElementDefinition.TypeRefComponent>()
@@ -408,7 +429,11 @@ namespace Hl7.Fhir.Specification.Tests
                             }
                         },
                         new ElementDefinition("Extension.extension.url") { Fixed = new FhirUri("name")  },
-                        new ElementDefinition("Extension.extension") { SliceName = "age" },
+                        new ElementDefinition("Extension.extension") {
+                            SliceName = "age",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.value[x]")
                         {
                             Type = new List<ElementDefinition.TypeRefComponent>()
@@ -420,6 +445,7 @@ namespace Hl7.Fhir.Specification.Tests
                     }
                 }
             };
+
             var userProfile = new StructureDefinition()
             {
                 Differential = new StructureDefinition.DifferentialComponent()
@@ -427,7 +453,12 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Extension"),
-                        new ElementDefinition("Extension.extension") { SliceName = "size" },
+                        new ElementDefinition("Extension.extension")
+                        {
+                            SliceName = "size",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.value[x]")
                         {
                             Type = new List<ElementDefinition.TypeRefComponent>()
@@ -444,15 +475,14 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Extension root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Extension.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
 
             // [WMR 20170406] extension slice entry is inherited from base w/o diff constraints => no match
             // Only expecting a single match for the additional complex extension element "size"
@@ -488,8 +518,10 @@ namespace Hl7.Fhir.Specification.Tests
                     {
                         new ElementDefinition("Extension"),
                         new ElementDefinition("Extension.extension") {
-                            Slicing = new ElementDefinition.SlicingComponent()
-                            { Discriminator = ForValueSlice("url").ToList() } },
+                            Slicing = new ElementDefinition.SlicingComponent() {
+                                Discriminator = ForValueSlice("url").ToList() 
+                            } 
+                        },
                         new ElementDefinition("Extension.extension") { SliceName = "name" },
                         new ElementDefinition("Extension.extension.value[x]")
                         {
@@ -553,15 +585,15 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Extension root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Extension.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             // [WMR 20170406] extension slice entry is inherited from base w/o diff constraints => no match
             // Expecting three matches for three additional complex extension elements
             Assert.AreEqual(3, matches.Count);  // three additional complex extension elements
@@ -591,11 +623,27 @@ namespace Hl7.Fhir.Specification.Tests
                     {
                         new ElementDefinition("Extension"),
                         new ElementDefinition("Extension.extension")
-                        { Slicing = new ElementDefinition.SlicingComponent() { Discriminator = ForValueSlice("url").ToList() } },
-                        new ElementDefinition("Extension.extension") { SliceName = "parent" },
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() {
+                                Discriminator = ForValueSlice("url").ToList()
+                            }
+                        },
+                        new ElementDefinition("Extension.extension") {
+                            SliceName = "parent",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.extension")
-                        { Slicing = new ElementDefinition.SlicingComponent() { Discriminator = ForValueSlice("url").ToList() } },
-                        new ElementDefinition("Extension.extension.extension") { SliceName = "child" },
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() {
+                                Discriminator = ForValueSlice("url").ToList()
+                            }
+                        },
+                        new ElementDefinition("Extension.extension.extension") {
+                            SliceName = "child",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                         new ElementDefinition("Extension.extension.extension.value[x]")
                         {
                             Type = new List<ElementDefinition.TypeRefComponent>()
@@ -623,8 +671,16 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Extension"),
-                        new ElementDefinition("Extension.extension") { SliceName = "parent" },
-                        new ElementDefinition("Extension.extension.extension") { SliceName = "child" },
+                        new ElementDefinition("Extension.extension") {
+                            SliceName = "parent",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = true
+                        },
+                        new ElementDefinition("Extension.extension.extension") {
+                            SliceName = "child",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = true
+                        },
                         new ElementDefinition("Extension.extension.extension.valueCoding")
                         {
                             Min = 1,
@@ -641,15 +697,15 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Extension root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice: Extension.extension
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             // [WMR 20170406] extension slice entry is inherited from base w/o diff constraints => no match
             // Expecting a single match for "parent"
             Assert.AreEqual(1, matches.Count);  // three additional complex extension elements
@@ -659,25 +715,30 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.AreEqual("parent", snapNav.Current.SliceName);
             Assert.AreEqual("parent", diffNav.Current.SliceName);
             assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);    // Merge extension child element "parent"
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToNext());
             Assert.AreEqual("child", snapNav.Current.SliceName);
             Assert.AreEqual("child", diffNav.Current.SliceName);
             assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);    // Merge extension child element "child"
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsTrue(snapNav.MoveToFirstChild());
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.AreEqual("value[x]", snapNav.PathName);
             Assert.AreEqual("valueCoding", diffNav.PathName);
-            assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);    // Merge extension child element valueCoding
+
+            // STU3: renamed element implies constraint to a single type (0...1)
+            //assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);    // Merge extension child element valueCoding
+            // R4: renamed element only applies to specified type (0...*)
+            // Add as separate constraint; do not merge with base [x] element definition
+            assertMatch(matches[0], ElementMatcher.MatchAction.Add, snapNav, diffNav);
         }
 
         [TestMethod]
-        public async T.Task TestElementMatcher_Patient_Animal_Slice()
+        public async T.Task TestElementMatcher_Patient_Identifier_Slice()
         {
-            // Slice Patient.animal (named)
+            // Slice Patient.identifier (named)
 
             var baseProfile = await _testResolver.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Patient);
             var userProfile = new StructureDefinition()
@@ -687,9 +748,16 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
@@ -698,15 +766,15 @@ namespace Hl7.Fhir.Specification.Tests
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Slice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Slice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             Assert.AreEqual(2, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -717,9 +785,9 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [TestMethod]
-        public void TestElementMatcher_Patient_Animal_Slice_Override()
+        public void TestElementMatcher_Patient_Identifier_Slice_Override()
         {
-            // Constrain existing slice on Patient.animal (named)
+            // Constrain existing slice on Patient.identifier (named)
 
             var baseProfile = new StructureDefinition()
             {
@@ -728,28 +796,36 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
             var userProfile = (StructureDefinition)baseProfile.DeepCopy();
             userProfile.Differential.Element[2].Min = 1;
+            // [WMR 20181211] R4: also specify SliceIsConstraining flag
+            //userProfile.Differential.Element[2].SliceIsConstraining = true;
 
             var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Slice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Slice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             Assert.AreEqual(2, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -760,9 +836,9 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [TestMethod]
-        public void TestElementMatcher_Patient_Animal_Slice_Override_NoEntry()
+        public void TestElementMatcher_Patient_Identifier_Slice_Override_NoEntry()
         {
-            // Constrain existing slice on Patient.animal (named)
+            // Constrain existing slice on Patient.identifier (named)
             // Similar to previous, but differential does NOT provide a slice entry
             // Not strictly necessary, as it is implied by the base
 
@@ -773,9 +849,15 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
@@ -783,20 +865,22 @@ namespace Hl7.Fhir.Specification.Tests
             // Remove slice entry from diff
             userProfile.Differential.Element.RemoveAt(1);
             userProfile.Differential.Element[1].Min = 1;
+            // [WMR 20181211] R4: also specify SliceIsConstraining flag
+            //userProfile.Differential.Element[1].SliceIsConstraining = true;
 
             var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Slice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Slice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             Assert.AreEqual(1, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -806,9 +890,9 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [TestMethod]
-        public void TestElementMatcher_Patient_Animal_Slice_Add()
+        public void TestElementMatcher_Patient_Identifier_Slice_Add()
         {
-            // Add a new (named) slice to an existing slice on Patient.animal
+            // Add a new (named) slice to an existing slice on Patient.identifier
 
             var baseProfile = new StructureDefinition()
             {
@@ -817,28 +901,35 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
             var userProfile = (StructureDefinition)baseProfile.DeepCopy();
-            userProfile.Differential.Element[2].SliceName = "cat";
+            userProfile.Differential.Element[2].SliceName = "his";
+            // [WMR 20181211] R4: Cloned SliceIsConstraining flag value = false
 
             var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Slice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Slice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             Assert.AreEqual(2, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -849,9 +940,9 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [TestMethod]
-        public void TestElementMatcher_Patient_Animal_Slice_Insert()
+        public void TestElementMatcher_Patient_Identifier_Slice_Insert()
         {
-            // Insert a new (named) slice into an existing slice on Patient.animal
+            // Insert a new (named) slice into an existing slice on Patient.identifier
 
             var baseProfile = new StructureDefinition()
             {
@@ -860,30 +951,45 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
+
             var userProfile = (StructureDefinition)baseProfile.DeepCopy();
-            var slice = (ElementDefinition)userProfile.Differential.Element[2].DeepCopy();
-            slice.SliceName = "cat";
-            userProfile.Differential.Element.Insert(2, slice);
+            // [WMR 20181211] R4: update "ssn" slice in derived profile, flag as a constraining slice
+            var ssnSlice = userProfile.Differential.Element[2];
+            Assert.AreEqual("ssn", ssnSlice.SliceName);
+            //ssnSlice.SliceIsConstraining = true;
+            // [WMR 20181211] R4: add "his" slice to derived profile and flag as a new named slice
+            // Note: insert new slice *before* existing slice
+            // Actually illegal according to FHIR, but our implementation can handle it
+            var newSlice = (ElementDefinition)ssnSlice.DeepCopy();
+            newSlice.SliceName = "his";
+            //newSlice.SliceIsConstraining = false;
+            userProfile.Differential.Element.Insert(2, newSlice);
 
             var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Slice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Slice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             Assert.AreEqual(3, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -897,21 +1003,32 @@ namespace Hl7.Fhir.Specification.Tests
         }
 
         [TestMethod]
-        public void TestElementMatcher_Patient_Animal_Reslice()
+        public void TestElementMatcher_Patient_Identifier_Reslice()
         {
             // Reslice an existing (named) slice on Patient.animal
 
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" },
-                        new ElementDefinition("Patient.animal") { SliceName = "cat" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "his",
+                            Short = "HIS"
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
@@ -922,62 +1039,123 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog", Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("breed").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog/schnautzer" },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog/dachshund" }
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "his",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = true,
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "his/acme",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "his/firely",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            SliceName = "ssn"
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = true
+                        },
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            SliceName = "new"
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
                     }
                 }
             };
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Reslice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Reslice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
-            Assert.AreEqual(4, matches.Count);
+
+            Assert.AreEqual(6, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
+            var snapSliceBaseBookmark = snapNav.Bookmark();
+            var sliceBase = CreateSliceBase(snapNav.Current); // slice intro
+
+            ElementDefinition CreateSliceBase(ElementDefinition elem)
+            {
+                var result = (ElementDefinition)elem.DeepCopy();
+                result.Min = 0;
+                result.Slicing = null;
+                return result;
+            }
+
+
             assertMatch(matches[0], ElementMatcher.MatchAction.Slice, snapNav, diffNav);    // Slice entry
             Assert.IsTrue(diffNav.MoveToNext());
             Assert.IsTrue(snapNav.MoveToNext());
-            assertMatch(matches[1], ElementMatcher.MatchAction.Slice, snapNav, diffNav);    // Re-slice entry
+            var hisSliceBase = CreateSliceBase(snapNav.Current); // named slice "his" in base profile
+            assertMatch(matches[1], ElementMatcher.MatchAction.Slice, snapNav, diffNav, hisSliceBase);    // Re-slice entry
+
             Assert.IsTrue(diffNav.MoveToNext());
             // Don't advance snapNav; new diff slice is merged with default base = snap slice entry
-            assertMatch(matches[2], ElementMatcher.MatchAction.Add, snapNav, diffNav);      // Add new slice to reslice
+            assertMatch(matches[2], ElementMatcher.MatchAction.Add, snapNav, diffNav, hisSliceBase);      // Add new slice to reslice
+
             Assert.IsTrue(diffNav.MoveToNext());
             // Don't advance snapNav; new diff slice is merged with default base = snap slice entry
-            assertMatch(matches[3], ElementMatcher.MatchAction.Add, snapNav, diffNav);      // Add new slice to reslice
+            assertMatch(matches[3], ElementMatcher.MatchAction.Add, snapNav, diffNav, hisSliceBase);      // Add new slice to reslice
+
+            Assert.IsTrue(diffNav.MoveToNext());
+            Assert.IsTrue(snapNav.MoveToNext());
+            var ssnSliceBase = CreateSliceBase(snapNav.Current); // named slice "ssn" in base profile
+            assertMatch(matches[4], ElementMatcher.MatchAction.Merge, snapNav, diffNav, ssnSliceBase);    // Second slice
+
+            // [WMR 20190813] NEW - TODO
+            Assert.IsTrue(diffNav.MoveToNext());
+            Assert.IsTrue(snapNav.ReturnToBookmark(snapSliceBaseBookmark));
+            assertMatch(matches[5], ElementMatcher.MatchAction.Add, snapNav, diffNav, sliceBase);      // Add new slice
         }
 
         [TestMethod]
-        public void TestElementMatcher_Patient_Animal_Nested_Slice()
+        public void TestElementMatcher_Patient_Identifier_Nested_Slice()
         {
-            // Introduce a nested (named) slice within an existing (named) slice on Patient.animal
+            // Introduce a nested (named) slice within an existing (named) slice on Patient.identifier
 
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" },
-                        new ElementDefinition("Patient.animal.breed"),
-                        new ElementDefinition("Patient.animal") { SliceName = "cat" },
-                        new ElementDefinition("Patient.animal.breed")
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
+                        new ElementDefinition("Patient.identifier.use"),
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "his",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
+                        new ElementDefinition("Patient.identifier.use")
                     }
                 }
             };
@@ -988,31 +1166,47 @@ namespace Hl7.Fhir.Specification.Tests
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
-                        // Is slice entry required? We're not reslicing animal...
-                        new ElementDefinition("Patient.animal") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("species.coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal") { SliceName = "dog" },
-                        new ElementDefinition("Patient.animal.breed") { Slicing = new ElementDefinition.SlicingComponent()
-                        { Discriminator = ForValueSlice("coding.code").ToList() } },
-                        new ElementDefinition("Patient.animal.breed") { SliceName="schnautzer" },
-                        new ElementDefinition("Patient.animal.breed") { SliceName="dachshund" },
+                        // Is slice entry required? We're not reslicing identifier...
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier") {
+                            SliceName = "ssn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = true
+                        },
+                        new ElementDefinition("Patient.identifier.use")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" }
+                        },
+                        new ElementDefinition("Patient.identifier.use") {
+                            SliceName ="official",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
+                        new ElementDefinition("Patient.identifier.use") {
+                            SliceName ="secondary",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        },
                     }
                 }
             };
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
+            Assert.IsNotNull(matches);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Slice: Patient.animal
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Slice: Patient.identifier
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(2, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -1020,12 +1214,11 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.IsTrue(diffNav.MoveToNext());
             Assert.IsTrue(snapNav.MoveToNext());
             assertMatch(matches[1], ElementMatcher.MatchAction.Merge, snapNav, diffNav);    // First slice
-            Assert.AreEqual("dog", diffNav.Current.SliceName);
+            Assert.AreEqual("ssn", diffNav.Current.SliceName);
 
-            // Nested slice: Patient.animal.breed
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            // Nested slice: Patient.identifier.use
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(3, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
@@ -1034,11 +1227,11 @@ namespace Hl7.Fhir.Specification.Tests
             // Don't advance snapNav (not sliced)
             Assert.IsFalse(snapNav.MoveToNext());
             assertMatch(matches[1], ElementMatcher.MatchAction.Add, snapNav, diffNav);      // First new nested slice
-            Assert.AreEqual("schnautzer", diffNav.Current.SliceName);
+            Assert.AreEqual("official", diffNav.Current.SliceName);
             Assert.IsTrue(diffNav.MoveToNext());
             // Don't advance snapNav (not sliced)
             assertMatch(matches[2], ElementMatcher.MatchAction.Add, snapNav, diffNav);      // Second new nested slice
-            Assert.AreEqual("dachshund", diffNav.Current.SliceName);
+            Assert.AreEqual("secondary", diffNav.Current.SliceName);
             Assert.IsFalse(diffNav.MoveToNext());
             // Don't advance snapNav (not sliced)
         }
@@ -1049,22 +1242,25 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
                         new ElementDefinition("Patient"),
                         new ElementDefinition("Patient.identifier")
                         {
-                            Slicing = new ElementDefinition.SlicingComponent() { Description = "TEST" },
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" },
                         },
                         new ElementDefinition("Patient.identifier")
                         {
-                            SliceName = "bsn"
+                            SliceName = "bsn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
                         }
                     }
                 }
             };
+
             var userProfile = new StructureDefinition()
             {
                 Differential = new StructureDefinition.DifferentialComponent()
@@ -1080,30 +1276,33 @@ namespace Hl7.Fhir.Specification.Tests
                         // Constraint on inherited slice
                         new ElementDefinition("Patient.identifier")
                         {
-                            SliceName = "bsn"
+                            SliceName = "bsn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = true,
                         },
                         // Introduce new slice
                         new ElementDefinition("Patient.identifier")
                         {
-                            SliceName = "ehrid"
+                            SliceName = "ehrid",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
                         }
                     }
                 }
             };
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Patient root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Slice entry: Patient.identifier
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(3, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
@@ -1131,7 +1330,7 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
@@ -1153,19 +1352,18 @@ namespace Hl7.Fhir.Specification.Tests
                 }
             };
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Observation root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Merge: Observation.value[x]
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
 
             // Verify: B:value[x] <-- merge --> D:value[x]
             Assert.AreEqual(1, matches.Count);
@@ -1179,7 +1377,7 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
@@ -1201,19 +1399,18 @@ namespace Hl7.Fhir.Specification.Tests
                 }
             };
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Observation root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Merge: Observation.valueString
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
 
             // Verify: B:valueString <-- merge --> D:valueString
             Assert.AreEqual(1, matches.Count);
@@ -1227,7 +1424,7 @@ namespace Hl7.Fhir.Specification.Tests
         {
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
@@ -1251,32 +1448,44 @@ namespace Hl7.Fhir.Specification.Tests
 
             // 2. Verify: match value[x] in derived profile to valueString in base profile
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Observation root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
             // Merge: Observation.value[x]
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             // Verify: B:value[x] <-- merge --> D:valueString
             Assert.AreEqual(1, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
-            assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+
+            // STU3: renamed element implies constraint to a single type (0...1)
+            //assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+            // R4: renamed element only applies to specified type (0...*)
+            // Add as separate constraint; do not merge with base [x] element definition
+            assertMatch(matches[0], ElementMatcher.MatchAction.Add, snapNav, diffNav);
         }
 
-        [TestMethod]
+        // [WMR 20190211] For STU3
+        [TestMethod, Ignore]
         public void TestElementMatcher_ChoiceType4()
         {
+            // Base profile renames value[x] to valueString
+            // Derived profile refers to value[x] - WRONG! SHALL refer to valueString
+            // Expected behavior: add new constraint for value[x] next to existing valueString constraint
+            // This actually creates a profile that is invalid in STU3, but the validator will handle that
+            // STU3: only rename choice type elements if constrained to a single type
+
             var baseProfile = new StructureDefinition()
             {
-                Differential = new StructureDefinition.DifferentialComponent()
+                Snapshot = new StructureDefinition.SnapshotComponent()
                 {
                     Element = new List<ElementDefinition>()
                     {
@@ -1300,26 +1509,19 @@ namespace Hl7.Fhir.Specification.Tests
                 }
             };
 
-            var snapNav = ElementDefinitionNavigator.ForDifferential(baseProfile);
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
             var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
 
             // Merge: Observation root
-            var matches = ElementMatcher.Match(snapNav, diffNav);
+            var matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
 
-            // Base profile renames value[x] to valueString
-            // Derived profile refers to value[x] - WRONG! SHALL refer to valueString
-            // Expected behavior: add new constraint for value[x] next to existing valueString constraint
-            // This actually creates a profile that is invalid in STU3, but the validator will handle that
-            // STU3: only rename choice type elements if constrained to a single type
-            // R4: allow combinations of constraints on both value[x] and on renamed type slices
-
             // Add: Observation.value[x]
-            matches = ElementMatcher.Match(snapNav, diffNav);
+            matches = Match(snapNav, diffNav);
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+
             // Verify: B:Observation <-- new --> D:value[x]
             Assert.AreEqual(1, matches.Count);
             Assert.IsTrue(diffNav.MoveToFirstChild());
@@ -1332,12 +1534,292 @@ namespace Hl7.Fhir.Specification.Tests
             Assert.AreEqual(SnapshotGenerator.PROFILE_ELEMENTDEF_INVALID_CHOICETYPE_NAME.Code, code);
         }
 
+        // [WMR 20190211] For R4
+        [TestMethod]
+        public void TestElementMatcher_ChoiceType5()
+        {
+            // Base profile renames value[x] to valueString
+            // Derived profile refers to value[x]
+            // R4: allow combinations of constraints on both value[x] and on renamed type slices
+
+            var baseProfile = new StructureDefinition()
+            {
+                Snapshot = new StructureDefinition.SnapshotComponent()
+                {
+                    Element = new List<ElementDefinition>()
+                    {
+                        new ElementDefinition("Observation"),
+                        new ElementDefinition("Observation.value[x]"),
+                        new ElementDefinition("Observation.valueString")
+                    }
+                }
+            };
+
+            var userProfile = new StructureDefinition()
+            {
+                Differential = new StructureDefinition.DifferentialComponent()
+                {
+                    Element = new List<ElementDefinition>()
+                    {
+                        new ElementDefinition("Observation"),
+                        new ElementDefinition("Observation.value[x]"),      // Match to base:value[x]
+                        new ElementDefinition("Observation.valueString"),   // Match to base:valueString
+                        new ElementDefinition("Observation.valueBoolean")   // Match to base:value[x]
+                    }
+                }
+            };
+
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
+            var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
+
+            // Merge: Observation root
+            var matches = Match(snapNav, diffNav);
+            Assert.IsTrue(diffNav.MoveToFirstChild());
+            Assert.IsTrue(snapNav.MoveToFirstChild());
+            assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+
+            // Merge: Observation.value[x]
+            matches = Match(snapNav, diffNav);
+            Assert.IsNotNull(matches);
+
+            Assert.AreEqual(3, matches.Count);
+
+            // Verify: B:Observation.value[x] <-- merge --> D:value[x]
+            Assert.IsTrue(snapNav.MoveToFirstChild());
+            Assert.IsTrue(diffNav.MoveToFirstChild());
+            var match = matches[0];
+            assertMatch(match, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+            Assert.IsNull(match.Issue); // Valid in R4
+            var bmSnapValueX = snapNav.Bookmark();
+
+            // Verify: B:Observation.valueString <-- merge --> D:valueString
+            match = matches[1];
+            Assert.IsTrue(snapNav.MoveToNext());
+            Assert.IsTrue(diffNav.MoveToNext());
+            assertMatch(match, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+            Assert.IsNull(match.Issue); // Valid in R4
+
+            // Verify: B:Observation.value[x] <-- merge --> D:valueBoolean
+            match = matches[2];
+            Assert.IsTrue(diffNav.MoveToNext());
+            Assert.IsTrue(snapNav.ReturnToBookmark(bmSnapValueX));
+            assertMatch(match, ElementMatcher.MatchAction.Add, snapNav, diffNav);
+            Assert.IsNull(match.Issue); // Valid in R4
+
+        }
+
+        // [WMR 20181211] R4: NEW
+        // Test handling of invalid ElementDefinition.SliceIsConstraining flag values
+        // If SliceIsConstraining flag is explicitly specified (not null),
+        // then verify slice name in derived profile against slice names in base profile
+        // Otherwise, if SliceIsConstraining flag is unspecified,
+        // then fall back to original (STU3) matching behavior:
+        // - found matching slice in base profile => implies derived profile constrains existing slice
+        // - no matching slice exists in base profile => implies derived profile introduces a new slice
+        [TestMethod]
+        public void TestElementMatcher_SliceIsConstraining()
+        {
+            var baseProfile = new StructureDefinition()
+            {
+                Snapshot = new StructureDefinition.SnapshotComponent()
+                {
+                    Element = new List<ElementDefinition>()
+                    {
+                        new ElementDefinition("Patient"),
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Slicing = new ElementDefinition.SlicingComponent() { Description = "DUMMY" },
+                        },
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            SliceName = "bsn",
+                            // [WMR 20181211] R4: NEW
+                            //SliceIsConstraining = false
+                        }
+                    }
+                }
+            };
+
+            var userProfile = new StructureDefinition()
+            {
+                Differential = new StructureDefinition.DifferentialComponent()
+                {
+                    Element = new List<ElementDefinition>()
+                    {
+                        new ElementDefinition("Patient"),
+                        // Constraint on inherited slice entry
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            Min = 1
+                        },
+                        // Constraint on inherited slice
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            SliceName = "bsn",
+                            // [WMR 20181211] R4: NEW
+                            // INVALID - conflicts with existing "bsn" slice in base profile
+                            SliceIsConstraining = false,
+                        },
+                        // Introduce new slice
+                        new ElementDefinition("Patient.identifier")
+                        {
+                            SliceName = "his",
+                            // [WMR 20181211] R4: NEW
+                            // INVALID - no matching "his" slice in base profile
+                            SliceIsConstraining = true
+                        }
+                    }
+                }
+            };
+
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
+            var diffNav = ElementDefinitionNavigator.ForDifferential(userProfile);
+
+            // Merge: Observation root
+            var matches = Match(snapNav, diffNav);
+            Assert.IsTrue(diffNav.MoveToFirstChild());
+            Assert.IsTrue(snapNav.MoveToFirstChild());
+            assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+
+            // Slice entry: Patient.identifier
+            matches = Match(snapNav, diffNav);
+            Assert.IsNotNull(matches);
+
+            Assert.AreEqual(3, matches.Count);
+            Assert.IsTrue(diffNav.MoveToFirstChild());
+            Assert.IsTrue(snapNav.MoveToChild(diffNav.PathName));
+            assertMatch(matches[0], ElementMatcher.MatchAction.Merge, snapNav, diffNav);    // Constraint on slice entry
+            var snapSliceEntryBookmark = snapNav.Bookmark();
+
+            // New slice: Patient.identifier:ssn - INVALID (conflicting slice in base profile)
+            Assert.IsTrue(diffNav.MoveToNext());
+            Assert.IsTrue(snapNav.MoveToNext());
+            var match = matches[1];
+            assertMatch(match, ElementMatcher.MatchAction.Invalid, snapNav, diffNav);  
+            Assert.AreEqual("bsn", diffNav.Current.SliceName);
+            Assert.AreEqual("bsn", snapNav.Current.SliceName);
+            // Verify generated outcome issue
+            Assert.IsNotNull(match.Issue);
+            Debug.Print(match.Issue.Details?.Text);
+            Assert.IsTrue(int.TryParse(match.Issue.Details?.Coding?[0]?.Code, out int code));
+            Assert.AreEqual(SnapshotGenerator.PROFILE_ELEMENTDEF_SLICENAME_CONFLICT.Code, code);
+
+            // Slice constraint: Patient.identifier:his - INVALID (no matching slice in base profile)
+            Assert.IsTrue(diffNav.MoveToNext());
+            Assert.IsFalse(snapNav.MoveToNext());
+            Assert.IsTrue(snapNav.ReturnToBookmark(snapSliceEntryBookmark));
+            match = matches[2];
+            assertMatch(match, ElementMatcher.MatchAction.Invalid, snapNav, diffNav);
+            Assert.AreEqual("his", diffNav.Current.SliceName);
+            Assert.IsNull(snapNav.Current.SliceName);
+            // Verify generated outcome issue
+            Assert.IsNotNull(match.Issue);
+            Debug.Print(match.Issue.Details?.Text);
+            Assert.IsTrue(int.TryParse(match.Issue.Details?.Coding?[0]?.Code, out code));
+            Assert.AreEqual(SnapshotGenerator.PROFILE_ELEMENTDEF_SLICENAME_NOMATCH.Code, code);
+
+            // No more matches
+            Assert.IsFalse(diffNav.MoveToNext());
+        }
+
+        // [WMR 20190902] #1090 SnapshotGenerator should support logical models
+        [TestMethod]
+        public async T.Task TestElementMatcher_LogicalModel()
+        {
+            const string rootPath = "MyModel";
+            var SimpleLogicalModel = new StructureDefinition()
+            {
+                Url = "http://example.org/fhir/StructureDefinition/SimpleLogicalModel",
+                Name = "SimpleLogicalModel",
+                Kind = StructureDefinition.StructureDefinitionKind.Logical,
+                // Last segment equals root element name
+                Type = "http://example.org/fhir/StructureDefinition/" + rootPath,
+                BaseDefinition = ModelInfo.CanonicalUriForFhirCoreType(FHIRAllTypes.Element),
+                Differential = new StructureDefinition.DifferentialComponent()
+                {
+                    Element = new List<ElementDefinition>()
+                    {
+                        new ElementDefinition(rootPath)
+                        {
+                            //Min = 0,
+                            //Max = "*",
+                            //Type = new List<ElementDefinition.TypeRefComponent>()
+                            //{
+                            //    new ElementDefinition.TypeRefComponent() { Code = FHIRAllTypes.Element.GetLiteral() }
+                            //}
+                        },
+                        new ElementDefinition(rootPath + ".target")
+                        {
+                            //Min = 0,
+                            Max = "1",
+                            Type = new List<ElementDefinition.TypeRefComponent>()
+                            {
+                                new ElementDefinition.TypeRefComponent()
+                                {
+                                    Code = FHIRAllTypes.Reference.GetLiteral(),
+                                    TargetProfile = new string[] { ModelInfo.CanonicalUriForFhirCoreType(FHIRAllTypes.Person) }
+                                }
+                            }
+                        },
+                        new ElementDefinition(rootPath + ".value[x]")
+                        {
+                            //Min = 0,
+                            //Max = "*",
+                            Type = new List<ElementDefinition.TypeRefComponent>()
+                            {
+                                new ElementDefinition.TypeRefComponent()
+                                {
+                                    Code = FHIRAllTypes.String.GetLiteral(),
+                                },
+                                new ElementDefinition.TypeRefComponent()
+                                {
+                                    Code = FHIRAllTypes.Boolean.GetLiteral(),
+                                }
+                            }
+
+                        }
+                    }
+                }
+            };
+
+            var baseProfile = await _testResolver.FindStructureDefinitionForCoreTypeAsync(FHIRAllTypes.Element);
+            Assert.IsNotNull(baseProfile);
+            Assert.IsTrue(baseProfile.HasSnapshot); // Rely on default snapshot
+            baseProfile.Snapshot.Rebase(rootPath);  // Explicitly rebase before matching!
+
+
+            var snapNav = ElementDefinitionNavigator.ForSnapshot(baseProfile);
+            var diffNav = ElementDefinitionNavigator.ForDifferential(SimpleLogicalModel);
+
+            // Merge: MyModel (root element)
+            var matches = ElementMatcher.Match(snapNav, diffNav);
+            Assert.IsTrue(diffNav.MoveToFirstChild());
+            Assert.IsTrue(snapNav.MoveToFirstChild());
+            assertMatch(matches, ElementMatcher.MatchAction.Merge, snapNav, diffNav);
+
+            matches = ElementMatcher.Match(snapNav, diffNav);
+            Assert.IsNotNull(matches);
+            matches.DumpMatches(snapNav, diffNav);
+            Assert.AreEqual(2, matches.Count);
+
+            // New: MyModel.target
+            Assert.IsTrue(diffNav.MoveToFirstChild());
+            assertMatch(matches[0], ElementMatcher.MatchAction.New, snapNav, diffNav);
+
+            // New: MyModel.value[x]
+            Assert.IsTrue(diffNav.MoveToNext());
+            assertMatch(matches[1], ElementMatcher.MatchAction.New, snapNav, diffNav);
+
+            Assert.IsFalse(diffNav.MoveToNext());
+        }
+
+
         // ========== Helper functions ==========
 
         // Recursively match diffNav to snapNav and verify that all matches return the specified action (def. Merged)
         static List<ElementMatcher.MatchInfo> matchAndVerify(ElementDefinitionNavigator snapNav, ElementDefinitionNavigator diffNav, ElementMatcher.MatchAction action = ElementMatcher.MatchAction.Merge)
         {
-            List<ElementMatcher.MatchInfo> matches = ElementMatcher.Match(snapNav, diffNav);
+            List<ElementMatcher.MatchInfo> matches = Match(snapNav, diffNav);
             Assert.IsTrue(diffNav.MoveToFirstChild());
             Assert.IsTrue(snapNav.MoveToFirstChild());
             for (int i = 0; i < matches.Count; i++)
@@ -1367,22 +1849,23 @@ namespace Hl7.Fhir.Specification.Tests
         static void assertMatch(List<ElementMatcher.MatchInfo> matches, ElementMatcher.MatchAction action, ElementDefinitionNavigator snapNav, ElementDefinitionNavigator diffNav)
         {
             Assert.IsNotNull(matches);
-            matches.DumpMatches(snapNav, diffNav);
+            //matches.DumpMatches(snapNav, diffNav);
             Assert.AreEqual(1, matches.Count);
             assertMatch(matches[0], action, snapNav, diffNav);
         }
 
-        static void assertMatch(ElementMatcher.MatchInfo match, ElementMatcher.MatchAction action, ElementDefinitionNavigator snapNav, ElementDefinitionNavigator diffNav = null)
+        static void assertMatch(ElementMatcher.MatchInfo match, ElementMatcher.MatchAction action, ElementDefinitionNavigator snapNav, ElementDefinitionNavigator diffNav = null, ElementDefinition sliceBase = null)
         {
-            assertMatch(match, action, snapNav.Bookmark(), diffNav != null ? diffNav.Bookmark() : Bookmark.Empty);
+            assertMatch(match, action, snapNav.Bookmark(), diffNav != null ? diffNav.Bookmark() : Bookmark.Empty, sliceBase);
         }
 
-        static void assertMatch(ElementMatcher.MatchInfo match, ElementMatcher.MatchAction action, Bookmark snap, Bookmark diff)
+        static void assertMatch(ElementMatcher.MatchInfo match, ElementMatcher.MatchAction action, Bookmark snap, Bookmark diff, ElementDefinition sliceBase)
         {
             Assert.IsNotNull(match);
             Assert.AreEqual(action, match.Action);
             Assert.AreEqual(snap, match.BaseBookmark);
             Assert.AreEqual(diff, match.DiffBookmark);
+            Assert.IsTrue(sliceBase is null || sliceBase.IsExactly(match.SliceBase.Current));
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Hl7.Fhir.Validation
             cons.Add(new ElementDefinition("Observation.code")
             {
                 ElementId = "Observation.code"
-            }.OfType(FHIRAllTypes.CodeableConcept, "http://validationtest.org/fhir/StructureDefinition/CodeableConceptTranslatable"));
+            }.OfType(FHIRAllTypes.CodeableConcept, new[] { "http://validationtest.org/fhir/StructureDefinition/CodeableConceptTranslatable" }));
 
             return result;
         }
@@ -139,7 +139,6 @@ namespace Hl7.Fhir.Validation
 
             return result;
         }
-
 
         private static StructureDefinition buildPatientWithIdentifierSlicing()
         {
@@ -234,7 +233,7 @@ namespace Hl7.Fhir.Validation
             cons.Add(new ElementDefinition("Patient.identifier.system")
             {
                 ElementId = "Patient.identifier:BSN.system",
-                Definition = "BSN naming system",
+                Definition = new Markdown("BSN naming system"),
                 MustSupport = true
             });
 
@@ -247,7 +246,7 @@ namespace Hl7.Fhir.Validation
             cons.Add(new ElementDefinition("Patient.identifier.system")
             {
                 ElementId = "Patient.identifier:newSlice.system",
-                Definition = "Test_1295"
+                Definition = new Markdown("Test_1295")
             });
 
             return result;
@@ -277,9 +276,12 @@ namespace Hl7.Fhir.Validation
 
             cons.Add(new ElementDefinition("Organization").OfType(FHIRAllTypes.Organization));
 
-            var nameDef = new ElementDefinition("Organization.name.value").OfType(FHIRAllTypes.String);
-            nameDef.Type.Single().SetStringExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-regex", "[A-Z].*");
+            var nameDef = new ElementDefinition("Organization.name.value")
+                .OfType(FHIRAllTypes.String);
+            nameDef.Type.Single().SetStringExtension("http://hl7.org/fhir/StructureDefinition/regex", "[A-Z].*");
+            // R4: [Primitive].value elements have no type code
             nameDef.Type.Single().Code = null;
+
             cons.Add(nameDef);
 
             return result;
@@ -303,8 +305,7 @@ namespace Hl7.Fhir.Validation
 
             cons.Add(new ElementDefinition("Patient").OfType(FHIRAllTypes.Patient));
             cons.Add(new ElementDefinition("Patient.identifier").Required(max: "*")
-                        .OfType(FHIRAllTypes.Identifier, "http://validationtest.org/fhir/StructureDefinition/IdentifierWithBSN")
-                        .OrType(FHIRAllTypes.Identifier, "http://validationtest.org/fhir/StructureDefinition/IdentifierWithDL"));
+                        .OfType(FHIRAllTypes.Identifier, new[] { "http://validationtest.org/fhir/StructureDefinition/IdentifierWithBSN", "http://validationtest.org/fhir/StructureDefinition/IdentifierWithDL" }));
 
             return result;
         }
@@ -387,8 +388,7 @@ namespace Hl7.Fhir.Validation
 
             cons.Add(new ElementDefinition("Observation").OfType(FHIRAllTypes.Observation));
             cons.Add(new ElementDefinition("Observation.value[x]")
-                .OfType(FHIRAllTypes.Quantity, "http://validationtest.org/fhir/StructureDefinition/WeightQuantity")
-                .OrType(FHIRAllTypes.Quantity, "http://validationtest.org/fhir/StructureDefinition/HeightQuantity")
+                .OfType(FHIRAllTypes.Quantity, new[] { "http://validationtest.org/fhir/StructureDefinition/WeightQuantity", "http://validationtest.org/fhir/StructureDefinition/HeightQuantity" })
                 .OrType(FHIRAllTypes.String));
 
             return result;
@@ -405,7 +405,7 @@ namespace Hl7.Fhir.Validation
             cons.Add(new ElementDefinition("Bundle").OfType(FHIRAllTypes.Bundle));
             cons.Add(new ElementDefinition("Bundle.entry.resource")
                 .OfType(FHIRAllTypes.Organization)
-                .OrType(FHIRAllTypes.Patient, $"http://validationtest.org/fhir/StructureDefinition/PatientWith{prefix}Organization"));
+                .OrType(FHIRAllTypes.Patient, new[] { $"http://validationtest.org/fhir/StructureDefinition/PatientWith{prefix}Organization" }));
 
             return result;
         }
@@ -434,7 +434,7 @@ namespace Hl7.Fhir.Validation
 
             cons.Add(new ElementDefinition("Patient").OfType(FHIRAllTypes.Patient));
             cons.Add(new ElementDefinition("Patient.managingOrganization")
-                .OfReference(ModelInfo.CanonicalUriForFhirCoreType(FHIRAllTypes.Organization), aggregation));
+                .OfReference(new[] { (string)ModelInfo.CanonicalUriForFhirCoreType(FHIRAllTypes.Organization) }, aggregation));
 
             return result;
         }
@@ -479,7 +479,7 @@ namespace Hl7.Fhir.Validation
 
             cons.Add(new ElementDefinition("Range").OfType(FHIRAllTypes.Range));
             cons.Add(new ElementDefinition("Range.low")
-                .OfType(FHIRAllTypes.Quantity, profile: QUANTITY_WITH_UNLIMITED_ROOT_CARDINALITY_CANONICAL)
+                .OfType(FHIRAllTypes.Quantity, profile: new[] { QUANTITY_WITH_UNLIMITED_ROOT_CARDINALITY_CANONICAL })
                 .Required(min: 1, max: null));   // just set min to 1 and leave max out.
 
             return result;
@@ -549,7 +549,7 @@ namespace Hl7.Fhir.Validation
             result.Name = name;
             result.Status = PublicationStatus.Draft;
             result.Description = new Markdown(description);
-            result.FhirVersion = ModelInfo.Version;
+            result.FhirVersion = EnumUtility.ParseLiteral<FHIRVersion>(ModelInfo.Version);
             result.Derivation = StructureDefinition.TypeDerivationRule.Constraint;
 
             if (ModelInfo.IsKnownResource(constrainedType))

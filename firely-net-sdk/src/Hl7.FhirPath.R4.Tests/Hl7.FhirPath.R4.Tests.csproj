@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\firely-net-sdk.props" />
+  <Import Project="..\firely-net-sdk.targets" />
+  <Import Project="..\firely-net-sdk-tests.props"/>
+
+  <PropertyGroup>
+    <AssemblyName>Hl7.FhirPath.R4.Tests</AssemblyName>
+    <ContainsTests>true</ContainsTests>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="TestData\**\*.xml;TestData\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="TestData\bundle-contained-references.xml" />
+    <None Remove="TestData\Large-QuestionnaireResponse.xml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Hl7.Fhir.Core\Hl7.Fhir.Core.csproj" />
+    <ProjectReference Include="..\Hl7.Fhir.Specification\Hl7.Fhir.Specification.csproj" />
+    <ProjectReference Include="..\..\common\src\Hl7.FhirPath\Hl7.FhirPath.csproj" />
+    <ProjectReference Include="..\..\common\src\Hl7.FhirPath.Tests\HL7.FhirPath.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+</Project>
