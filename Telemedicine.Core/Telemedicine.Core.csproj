@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Telemedicine</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dev.Frameworks" Version="1.0.8-b20211030-366" />
+    <PackageReference Include="Dev.Logger.Public" Version="1.0.9" />
+    <PackageReference Include="Dev.Utility.Public" Version="1.0.7-b20211030-364" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.7.0" />
+    <PackageReference Include="System.Security.AccessControl" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.ElementModel\Hl7.Fhir.ElementModel.csproj" />
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Serialization\Hl7.Fhir.Serialization.csproj" />
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Support.Poco\Hl7.Fhir.Support.Poco.csproj" />
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Support\Hl7.Fhir.Support.csproj" />
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.FhirPath\Hl7.FhirPath.csproj" />
+    <ProjectReference Include="..\firely-net-sdk\src\Hl7.Fhir.Core\Hl7.Fhir.Core.csproj" />
+    <ProjectReference Include="..\firely-net-sdk\src\Hl7.Fhir.Specification\Hl7.Fhir.Specification.csproj" />
+  </ItemGroup>
+</Project>
