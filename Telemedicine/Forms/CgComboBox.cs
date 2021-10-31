@@ -16,6 +16,7 @@ namespace Telemedicine.Forms
         object SelectedValue { get; set; }
         int SelectedIndex { get; set; }
         string SelectedText { get; set; }
+        ComboBoxStyle DropDownStyle { get; set; }
 
         event EventHandler SelectedIndexChanged;
         event CgComboBox.DrawItemStyleEventHandler DrawItemStyle;
@@ -40,6 +41,7 @@ namespace Telemedicine.Forms
         int SelectItem<T>(T item, IEqualityComparer<T> comparer = null, Func<object, T> converter = null);
         int SelectValue<T>(Func<T, bool> itemSelector, Func<object, T> converter = null);
         int SelectValue<T>(T value, IEqualityComparer<T> comparer = null, Func<object, T> converter = null);
+        
     }
 
     public class CgComboBox : ComboBox, ICgComboBox

@@ -127,7 +127,7 @@ namespace Telemedicine.Forms
                         maximize = Math.Max(maximize, ctrl.LabelWidth);
                     foreach (var ctrl in refCtrls)
                         ctrl.SetHeaderWidth(maximize);
-                    if (IsGrouping) 
+                    if (IsGrouping)
                         labelWidth = maximize;
                 }
             }
@@ -304,7 +304,7 @@ namespace Telemedicine.Forms
                 ((ICgTextBox)textBox).ReadOnly = value;
             }
         }
-        
+
 
         public new event EventHandler TextChanged
         {
@@ -516,7 +516,37 @@ namespace Telemedicine.Forms
                 ((ICgComboBox)comboBox).SelectedText = value;
             }
         }
+        [DefaultValue(ComboBoxStyle.DropDown)]
+        public ComboBoxStyle DropDownStyle
+        {
+            get { return ((ICgComboBox)comboBox).DropDownStyle; }
+            set
+            {
+                ((ICgComboBox)comboBox).DropDownStyle = value;
+            }
+        }
     }
+
+    public class CgLabelDateTimePicker : CgLabelControlBase
+    {
+        private DateTimePicker dateTimePicker;
+        protected override Control GetMainComponent()
+        {
+            dateTimePicker = new DateTimePicker();
+            return dateTimePicker;
+        }
+        public DateTimePicker DateTimePicker
+        {
+            get { return (DateTimePicker)Control; }
+        }
+        [DefaultValue(typeof(DateTime), "")]
+        public DateTime Value
+        {
+            get { return dateTimePicker.Value; }
+            set { dateTimePicker.Value = value; }
+        }
+    }
+
 
 }
 

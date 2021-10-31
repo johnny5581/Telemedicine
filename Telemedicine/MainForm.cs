@@ -36,16 +36,27 @@ namespace Telemedicine
             else if (createIfEmpty)
             {
                 form = (Form)Activator.CreateInstance(viewType);
-                form.MdiParent = this;
-                form.WindowState = FormWindowState.Maximized;
-                form.Show();
+                var f = form as FormBase;
+                if (f != null)
+                    f.Show(this);
+                else
+                    f.Show();                
             }
-
             return form;
         }
         private T FindView<T>(bool createIfEmpty = true) where T : Form
         {
             return (T)FindView(typeof(T), createIfEmpty);
+        }
+
+        private void menuObservationPersonal_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Observations.CreateSingleForm>());
+        }
+
+        private void menuObservationSearch_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Observations.ObservationForm>());
         }
     }
 }

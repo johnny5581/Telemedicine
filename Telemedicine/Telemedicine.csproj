@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Telemedicine</RootNamespace>
     <AssemblyName>Telemedicine</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -149,16 +150,37 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ObservationForm.cs">
+    <Compile Include="Observations\CreateSingleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ObservationForm.Designer.cs">
+    <Compile Include="Observations\CreateSingleForm.Designer.cs">
+      <DependentUpon>CreateSingleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Observations\ObservationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationForm.Designer.cs">
       <DependentUpon>ObservationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patients\PatientPickerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionMonitorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransactionMonitorDialog.Designer.cs">
+      <DependentUpon>TransactionMonitorDialog.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Observations\CreateSingleForm.resx">
+      <DependentUpon>CreateSingleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Observations\ObservationForm.resx">
+      <DependentUpon>ObservationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -168,12 +190,13 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TransactionMonitorDialog.resx">
+      <DependentUpon>TransactionMonitorDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EmbeddedResources\fontawesome.ttf" />
     <EmbeddedResource Include="Forms\EmbeddedResources\materialdesignicons.ttf" />
-    <EmbeddedResource Include="ObservationForm.resx">
-      <DependentUpon>ObservationForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -189,6 +212,34 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.ElementModel\Hl7.Fhir.ElementModel.csproj">
+      <Project>{dfbd5812-7ad8-4a81-88e1-61c937db00d1}</Project>
+      <Name>Hl7.Fhir.ElementModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Serialization\Hl7.Fhir.Serialization.csproj">
+      <Project>{bb385b83-dff3-42fd-ad78-ad9d8afff142}</Project>
+      <Name>Hl7.Fhir.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Support.Poco\Hl7.Fhir.Support.Poco.csproj">
+      <Project>{ad64a559-0b0f-4311-8242-1d8ddaf7367c}</Project>
+      <Name>Hl7.Fhir.Support.Poco</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.Fhir.Support\Hl7.Fhir.Support.csproj">
+      <Project>{b57cf7d4-8fe3-4def-9ce5-8d830e6a6b48}</Project>
+      <Name>Hl7.Fhir.Support</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\common\src\Hl7.FhirPath\Hl7.FhirPath.csproj">
+      <Project>{28cc5f4c-5112-430e-a950-e2b01ab7363f}</Project>
+      <Name>Hl7.FhirPath</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\src\Hl7.Fhir.Core\Hl7.Fhir.Core.csproj">
+      <Project>{3d5e26b9-e5f5-42b2-ad2d-f1b76efce7b8}</Project>
+      <Name>Hl7.Fhir.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\firely-net-sdk\src\Hl7.Fhir.Specification\Hl7.Fhir.Specification.csproj">
+      <Project>{f45a0d4c-84ed-482e-bd3b-ea4ae65e572a}</Project>
+      <Name>Hl7.Fhir.Specification</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Telemedicine.Core\Telemedicine.Core.csproj">
       <Project>{9cd5fb0b-5360-454c-a04f-a3b2b7b70c60}</Project>
       <Name>Telemedicine.Core</Name>

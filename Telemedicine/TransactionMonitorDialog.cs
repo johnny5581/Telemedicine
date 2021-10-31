@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Telemedicine
 {
-    public partial class ObservationForm : FormBase
+    public partial class TransactionMonitorDialog : DialogBase
     {
-        public ObservationForm()
+        public TransactionMonitorDialog()
         {
             InitializeComponent();
         }

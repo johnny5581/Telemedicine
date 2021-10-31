@@ -168,7 +168,6 @@ namespace Telemedicine
         {
             //TODO 塞入一些動畫看起來很帥，毫無用處的垃圾功能
             collection.Append(new SplashDialog.SplashActionItem("Init", "初始化系統", (dialog, cache) => { System.Threading.Thread.Sleep(2000); }));
-
         }
 
 

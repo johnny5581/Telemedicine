@@ -1,7 +1,7 @@
 ﻿
 namespace Telemedicine
 {
-    partial class ObservationForm
+    partial class TransactionMonitorDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -31,11 +31,10 @@ namespace Telemedicine
         {
             this.SuspendLayout();
             // 
-            // ObservationForm
+            // TransactionMonitorDialog
             // 
-            this.ClientSize = new System.Drawing.Size(964, 668);
-            this.Name = "ObservationForm";
-            this.Text = "生理數值";
+            this.ClientSize = new System.Drawing.Size(624, 441);
+            this.Name = "TransactionMonitorDialog";
             this.ResumeLayout(false);
 
         }

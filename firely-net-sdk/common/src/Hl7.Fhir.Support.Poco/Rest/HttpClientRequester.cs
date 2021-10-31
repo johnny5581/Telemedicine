@@ -16,6 +16,9 @@ namespace Hl7.Fhir.Rest
 {
     public class HttpClientRequester : IClientRequester, IDisposable
     {
+        public static event TransactionEventHandler Transacted;
+
+
         public FhirClientSettings Settings { get; set; }
         public Uri BaseUrl { get; private set; }
         public HttpClient Client { get; private set; }
@@ -43,6 +46,8 @@ namespace Hl7.Fhir.Rest
             if (interaction == null) throw Error.ArgumentNull(nameof(interaction));
             bool compressRequestBody = Settings.CompressRequestBody;
 
+            var handler = Transacted;
+
             using var requestMessage = interaction.ToHttpRequestMessage(BaseUrl, Settings);
             if (Settings.PreferCompressedResponses)
             {
@@ -60,8 +65,14 @@ namespace Hl7.Fhir.Rest
             try
             {
                 var body = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-
                 LastResult = response.ToEntryResponse(body);
+
+                if (handler != null)
+                {                    
+                    handler(requestMessage, outgoingBody, response, body);
+                }
+
+
                 return LastResult;
             }
             catch (AggregateException ae)
@@ -92,5 +103,8 @@ namespace Hl7.Fhir.Rest
         }
         #endregion
     }
+
+    public delegate void TransactionEventHandler(HttpRequestMessage request, byte[] requestBody, HttpResponseMessage response, byte[] responseBody);
+    
 
 }
