@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Telemedicine.Forms
 {
-    public class CgPickerDialogForm : CgBaseDialogForm, IPickerDialog
+    public class CgPickerDialogForm : CgBaseMessageDialogForm, IPickerDialog
     {
         private CgFlowLayoutPanel panelFlowLayout;
         private object[] _selectedItems;

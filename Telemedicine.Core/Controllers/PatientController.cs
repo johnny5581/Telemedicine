@@ -37,34 +37,7 @@ namespace Telemedicine.Controllers
         {
             return Search(new KeyValuePair<string, string>("identifier", id));
         }
-        public IList<Patient> Search(params KeyValuePair<string, string>[] searchParams)
-        {
-            var criteria = searchParams.Select(r => string.Format("{0}={1}", r.Key, r.Value)).ToArray();
-            return Search(criteria);
-        }
-        public IList<Patient> Search(IEnumerable<KeyValuePair<string, string>> searchParams)
-        {
-            var criteria = searchParams.Select(r => string.Format("{0}={1}", r.Key, r.Value)).ToArray();
-            return Search(criteria);
-        }
-        public IList<Patient> Search(IEnumerable<string> criteria)
-        {
-            return Search(criteria.ToArray());
-        }
-        public IList<Patient> Search(params string[] criteria)
-        {
-            var bundle = ExecuteClient(client => client.Search<Patient>(criteria));
-            var list = new List<Patient>();
-            if (bundle.Entry.Count > 0)
-            {
-                foreach (var entry in bundle.Entry)
-                {
-                    var pat = (Patient)entry.Resource;
-                    list.Add(pat);
-                }
-            }
-            return list;
-        }
+        
         /// <summary>
         /// 取得名稱
         /// </summary>        

@@ -77,23 +77,9 @@ namespace Telemedicine.Controllers
                 throw new NotSupportedException("no interactive instance");
             return action(interactive); 
         }
-
-        public class Result<T>
-        {
-            public Result(T data, byte[] raw)
-            {
-                Raw = raw;
-                Data = data;
-                if (raw != null)
-                    Content = Encoding.UTF8.GetString(raw);
-            }
-            public byte[] Raw { get; private set; }
-            public string Content { get; private set; }
-            public T Data { get; set; }
-        }
     }
     public abstract class ControllerBase<T> : ControllerBase
-        where T : Resource
+        where T : Resource, new()
     {
 
         public ControllerBase() : base()
@@ -119,6 +105,35 @@ namespace Telemedicine.Controllers
                 var m = client.Update(model);
                 return m.Id;
             });
+        }
+
+        public IList<T> Search(params KeyValuePair<string, string>[] searchParams)
+        {
+            var criteria = searchParams.Select(r => string.Format("{0}={1}", r.Key, r.Value)).ToArray();
+            return Search(criteria);
+        }
+        public IList<T> Search(IEnumerable<KeyValuePair<string, string>> searchParams)
+        {
+            var criteria = searchParams.Select(r => string.Format("{0}={1}", r.Key, r.Value)).ToArray();
+            return Search(criteria);
+        }
+        public IList<T> Search(IEnumerable<string> criteria)
+        {
+            return Search(criteria.ToArray());
+        }
+        public IList<T> Search(params string[] criteria)
+        {
+            var bundle = ExecuteClient(client => client.Search<T>(criteria));
+            var list = new List<T>();
+            if (bundle.Entry.Count > 0)
+            {
+                foreach (var entry in bundle.Entry)
+                {
+                    var item = (T)entry.Resource;
+                    list.Add(item);
+                }
+            }
+            return list;
         }
     }
 }

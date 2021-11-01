@@ -12,6 +12,7 @@ namespace Telemedicine.Forms
     {
         int ItemCount { get; }        
         CgComboBox.ComboBoxItem SelectedComboItem { get; }
+        ComboBox.ObjectCollection Items { get; }
         object SelectedItem { get; }
         object SelectedValue { get; set; }
         int SelectedIndex { get; set; }

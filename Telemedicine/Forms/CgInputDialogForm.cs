@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Telemedicine.Forms
 {
-    public class CgInputDialogForm : CgBaseDialogForm, IInputDialog
+    public class CgInputDialogForm : CgBaseMessageDialogForm, IInputDialog
     {
         private TextBox textInput;
         public CgInputDialogForm()

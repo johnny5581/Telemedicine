@@ -105,6 +105,11 @@ namespace Telemedicine.Forms
         {
             get { return panelLayout.Width; }
         }
+        [DefaultValue(0)]
+        public int ComponentHeight
+        {
+            get; set;
+        }
 
         internal void SetHeaderWidth(int width)
         {
@@ -158,13 +163,20 @@ namespace Telemedicine.Forms
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
             if (_control != null)
-                height = _control.Height + Padding.Vertical;
+            {
+                var h = IsMainComponentAutoHeight() ? _control.Height : ComponentHeight == 0 ? Font.Height : ComponentHeight;
+                height = h + Padding.Vertical + _control.Margin.Vertical;
+            }
             base.SetBoundsCore(x, y, width, height, specified);
         }
 
         protected virtual Control GetMainComponent()
         {
             return null;
+        }
+        protected virtual bool IsMainComponentAutoHeight()
+        {
+            return false;
         }
         #region designer
         private void InitializeComponent()
@@ -237,6 +249,10 @@ namespace Telemedicine.Forms
         public Label Label
         {
             get { return (Label)Control; }
+        }
+        protected override bool IsMainComponentAutoHeight()
+        {
+            return true;
         }
     }
     public class CgLabelTextBox : CgLabelControlBase, ICgTextBox
@@ -320,6 +336,10 @@ namespace Telemedicine.Forms
         {
             add { textBox.KeyPress += value; }
             remove { textBox.KeyPress -= value; }
+        }
+        protected override bool IsMainComponentAutoHeight()
+        {
+            return true;
         }
     }
     public class CgLabelComboBox : CgLabelControlBase, ICgComboBox
@@ -525,6 +545,18 @@ namespace Telemedicine.Forms
                 ((ICgComboBox)comboBox).DropDownStyle = value;
             }
         }
+
+        public ComboBox.ObjectCollection Items
+        {
+            get
+            {
+                return ((ICgComboBox)comboBox).Items;
+            }
+        }
+        protected override bool IsMainComponentAutoHeight()
+        {
+            return true;
+        }
     }
 
     public class CgLabelDateTimePicker : CgLabelControlBase
@@ -539,11 +571,29 @@ namespace Telemedicine.Forms
         {
             get { return (DateTimePicker)Control; }
         }
-        [DefaultValue(typeof(DateTime), "")]
         public DateTime Value
         {
             get { return dateTimePicker.Value; }
             set { dateTimePicker.Value = value; }
+        }
+        protected override bool IsMainComponentAutoHeight()
+        {
+            return true;
+        }
+    }
+
+    public class CgLabelCustomControl : CgLabelControlBase
+    {
+        private CgLayoutPanel panel;
+        public CgLayoutPanel LayoutPanel
+        {
+            get { return (CgLayoutPanel)Control; }
+        }
+        protected override Control GetMainComponent()
+        {
+            panel = new CgLayoutPanel();
+            panel.Size = new Size(23, Font.Height);
+            return panel;
         }
     }
 

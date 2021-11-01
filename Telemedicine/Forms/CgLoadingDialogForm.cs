@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Telemedicine.Forms
 {
-    public class CgLoadingDialogForm : CgBaseDialogForm, ILoadingDialog
+    public class CgLoadingDialogForm : CgBaseMessageDialogForm, ILoadingDialog
     {
         private CgProgressBar progress;
 

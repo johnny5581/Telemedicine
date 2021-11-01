@@ -9,20 +9,78 @@ using Telemedicine.Forms;
 
 namespace Telemedicine
 {
-    public class FormBase : CgForm, IInteractive
+    public static class FormHelper
     {
-        protected void ClearControls(params Control[] controls)
+        public static void BindVitalSigns(this ICgComboBox comboBox, string notSpecifyText = null)
         {
-            foreach(var c in controls)
+            comboBox.Items.Clear();
+            if (notSpecifyText != null)
+                comboBox.AddTextItem(notSpecifyText, null);
+            comboBox.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false));
+        }
+
+
+
+        public static void ClearControls(params Control[] controls)
+        {
+            foreach (var c in controls)
             {
                 var t = c.GetType();
                 if (typeof(ComboBox).IsAssignableFrom(t))
                 {
                     ((ComboBox)c).SelectedIndex = -1;
                 }
+                else if(typeof(DateTimePicker).IsAssignableFrom(t))
+                {
+                    ((DateTimePicker)c).Value = DateTime.Now;
+                }
                 else
                     c.Text = null;
             }
+        }
+        public static bool TryExecute(string name, Action action, Action<Exception> unexcepted = null)
+        {
+            try
+            {
+                action();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (unexcepted != null)
+                    unexcepted(ex);
+                else
+                    UnexceptedHandle(name, ex);
+            }
+            return false;
+        }
+        public static bool TryExecute<T>(string name, Func<T> action, out T result, Action<Exception> unexcepted = null)
+        {
+            try
+            {
+                result = action();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (unexcepted != null)
+                    unexcepted(ex);
+                else
+                    UnexceptedHandle(name, ex);
+            }
+            result = default(T);
+            return false;
+        }
+        public static void UnexceptedHandle(string name, Exception exception)
+        {
+            MsgBoxHelper.Error(exception.Message, name);
+        }
+    }
+    public class FormBase : CgForm, IInteractive
+    {
+        protected void ClearControls(params Control[] controls)
+        {
+            FormHelper.ClearControls(controls);
         }
 
         
@@ -36,61 +94,26 @@ namespace Telemedicine
         #region Executing
         protected void Execute(Action action)
         {
-            TryExecute(action);
+            FormHelper.TryExecute(Text, action);
         }
         protected void Execute(Action action, Action<Exception> errorHandler)
         {
-            TryExecute(action, unexcepted: errorHandler);
+            FormHelper.TryExecute(Text, action, unexcepted: errorHandler);
         }
         protected T Execute<T>(Func<T> action, Action<Exception> errorHandler)
         {
             T result;
-            TryExecute(action, out result, errorHandler);
+            FormHelper.TryExecute(Text, action, out result, errorHandler);
             return result;
         }
         protected void Execute(EventHandler handler)
         {
-            TryExecute(() =>
+            FormHelper.TryExecute(Text, () =>
             {
                 if (handler != null)
                     handler(this, EventArgs.Empty);
             });
         }
-
-        protected bool TryExecute(Action action, Action<Exception> unexcepted = null)
-        {
-            try
-            {
-                action();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                (unexcepted ?? UnexceptedHandle).Invoke(ex);
-            }
-            return false;
-        }
-        protected bool TryExecute<T>(Func<T> action, out T result, Action<Exception> unexcepted = null)
-        {
-            try
-            {
-                result = action();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                (unexcepted ?? UnexceptedHandle).Invoke(ex);
-            }
-            result = default(T);
-            return false;
-        }
-        private void UnexceptedHandle(Exception exception)
-        {
-            MsgBoxHelper.Error(exception.Message, Text);
-        }
-
-
-
         #endregion
 
         #region Interactive
@@ -131,76 +154,32 @@ namespace Telemedicine
     {
         protected void ClearControls(params Control[] controls)
         {
-            foreach (var c in controls)
-            {
-                var t = c.GetType();
-                if (typeof(ComboBox).IsAssignableFrom(t))
-                {
-                    ((ComboBox)c).SelectedIndex = -1;
-                }
-                else
-                    c.Text = null;
-            }
+            FormHelper.ClearControls(controls);
         }
 
         #region Executing
         protected void Execute(Action action)
-        {
-            TryExecute(action);
+        {            
+            FormHelper.TryExecute(FindForm()?.Text ?? Text, action);
         }
         protected void Execute(Action action, Action<Exception> errorHandler)
         {
-            TryExecute(action, unexcepted: errorHandler);
+            FormHelper.TryExecute(FindForm()?.Text ?? Text, action, unexcepted: errorHandler);
         }
         protected T Execute<T>(Func<T> action, Action<Exception> errorHandler)
         {
             T result;
-            TryExecute(action, out result, errorHandler);
+            FormHelper.TryExecute(FindForm()?.Text ?? Text, action, out result, errorHandler);
             return result;
         }
         protected void Execute(EventHandler handler)
         {
-            TryExecute(() =>
+            FormHelper.TryExecute(FindForm()?.Text ?? Text, () =>
             {
                 if (handler != null)
                     handler(this, EventArgs.Empty);
             });
         }
-
-        protected bool TryExecute(Action action, Action<Exception> unexcepted = null)
-        {
-            try
-            {
-                action();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                (unexcepted ?? UnexceptedHandle).Invoke(ex);
-            }
-            return false;
-        }
-        protected bool TryExecute<T>(Func<T> action, out T result, Action<Exception> unexcepted = null)
-        {
-            try
-            {
-                result = action();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                (unexcepted ?? UnexceptedHandle).Invoke(ex);
-            }
-            result = default(T);
-            return false;
-        }
-        private void UnexceptedHandle(Exception exception)
-        {
-            MsgBoxHelper.Error(exception.Message, Text);
-        }
-
-
-
         #endregion
 
         #region Interactive

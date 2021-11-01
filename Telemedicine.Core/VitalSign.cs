@@ -34,9 +34,7 @@ namespace Telemedicine
         public string CategoryDisplay { get; set; }
         public string Code { get; set; }
         public string CodeSystem { get; set; }
-        public string CodeDisplay { get; set; }
         public string Unit { get; set; }
-        public string UnitCode { get; set; }
         public string UnitSystem { get; set; }
 
         public override string ToString()

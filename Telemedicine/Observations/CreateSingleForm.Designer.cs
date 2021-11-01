@@ -30,6 +30,8 @@ namespace Telemedicine.Observations
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.buttonOk = new Telemedicine.Forms.CgIconButton();
             this.textUnit = new Telemedicine.Forms.CgLabelTextBox();
             this.comboItem = new Telemedicine.Forms.CgLabelComboBox();
@@ -40,8 +42,6 @@ namespace Telemedicine.Observations
             this.textBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
             this.textSearch = new Telemedicine.Forms.CgLabelTextBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +62,21 @@ namespace Telemedicine.Observations
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生理數值";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker2.Location = new System.Drawing.Point(158, 114);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(98, 22);
+            this.dateTimePicker2.TabIndex = 6;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(42, 114);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(110, 22);
+            this.dateTimePicker1.TabIndex = 5;
             // 
             // buttonOk
             // 
@@ -84,7 +99,7 @@ namespace Telemedicine.Observations
             this.textUnit.Name = "textUnit";
             this.textUnit.Padding = new System.Windows.Forms.Padding(1);
             this.textUnit.ReadOnly = true;
-            this.textUnit.Size = new System.Drawing.Size(251, 24);
+            this.textUnit.Size = new System.Drawing.Size(251, 30);
             this.textUnit.TabIndex = 2;
             // 
             // comboItem
@@ -94,7 +109,7 @@ namespace Telemedicine.Observations
             this.comboItem.Location = new System.Drawing.Point(6, 21);
             this.comboItem.Name = "comboItem";
             this.comboItem.Padding = new System.Windows.Forms.Padding(1);
-            this.comboItem.Size = new System.Drawing.Size(251, 22);
+            this.comboItem.Size = new System.Drawing.Size(251, 28);
             this.comboItem.TabIndex = 1;
             this.comboItem.SelectedIndexChanged += new System.EventHandler(this.comboItem_SelectedIndexChanged);
             // 
@@ -104,7 +119,7 @@ namespace Telemedicine.Observations
             this.textValue.Location = new System.Drawing.Point(5, 54);
             this.textValue.Name = "textValue";
             this.textValue.Padding = new System.Windows.Forms.Padding(1);
-            this.textValue.Size = new System.Drawing.Size(251, 24);
+            this.textValue.Size = new System.Drawing.Size(251, 30);
             this.textValue.TabIndex = 0;
             // 
             // groupBox1
@@ -137,7 +152,7 @@ namespace Telemedicine.Observations
             this.textSex.Name = "textSex";
             this.textSex.Padding = new System.Windows.Forms.Padding(1);
             this.textSex.ReadOnly = true;
-            this.textSex.Size = new System.Drawing.Size(165, 24);
+            this.textSex.Size = new System.Drawing.Size(165, 30);
             this.textSex.TabIndex = 5;
             // 
             // textBrithDate
@@ -147,7 +162,7 @@ namespace Telemedicine.Observations
             this.textBrithDate.Name = "textBrithDate";
             this.textBrithDate.Padding = new System.Windows.Forms.Padding(1);
             this.textBrithDate.ReadOnly = true;
-            this.textBrithDate.Size = new System.Drawing.Size(165, 24);
+            this.textBrithDate.Size = new System.Drawing.Size(165, 30);
             this.textBrithDate.TabIndex = 4;
             // 
             // textName
@@ -157,7 +172,7 @@ namespace Telemedicine.Observations
             this.textName.Name = "textName";
             this.textName.Padding = new System.Windows.Forms.Padding(1);
             this.textName.ReadOnly = true;
-            this.textName.Size = new System.Drawing.Size(165, 24);
+            this.textName.Size = new System.Drawing.Size(165, 30);
             this.textName.TabIndex = 3;
             // 
             // textSearch
@@ -166,24 +181,9 @@ namespace Telemedicine.Observations
             this.textSearch.Location = new System.Drawing.Point(12, 12);
             this.textSearch.Name = "textSearch";
             this.textSearch.Padding = new System.Windows.Forms.Padding(1);
-            this.textSearch.Size = new System.Drawing.Size(177, 24);
+            this.textSearch.Size = new System.Drawing.Size(177, 30);
             this.textSearch.TabIndex = 1;
             this.textSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSearch_KeyDown);
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(42, 114);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(110, 22);
-            this.dateTimePicker1.TabIndex = 5;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePicker2.Location = new System.Drawing.Point(158, 114);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(98, 22);
-            this.dateTimePicker2.TabIndex = 6;
             // 
             // CreateSingleForm
             // 

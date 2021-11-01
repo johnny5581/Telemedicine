@@ -54,9 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppContext.cs" />
-    <Compile Include="FormBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormBase.cs" />
     <Compile Include="Forms\CgBaseDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,17 +156,26 @@
     <Compile Include="Observations\CreateSingleForm.Designer.cs">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Observations\ObservationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationControl.Designer.cs">
+      <DependentUpon>ObservationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Observations\ObservationCreateForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Observations\ObservationCreateForm.Designer.cs">
       <DependentUpon>ObservationCreateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Observations\ObservationForm.cs">
+    <Compile Include="Observations\ObservationDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Observations\ObservationForm.Designer.cs">
-      <DependentUpon>ObservationForm.cs</DependentUpon>
+    <Compile Include="Observations\ObservationListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationListForm.Designer.cs">
+      <DependentUpon>ObservationListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Opd\CreateOrderForm.cs">
       <SubType>Form</SubType>
@@ -205,11 +212,14 @@
     <EmbeddedResource Include="Observations\CreateSingleForm.resx">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Observations\ObservationControl.resx">
+      <DependentUpon>ObservationControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Observations\ObservationCreateForm.resx">
       <DependentUpon>ObservationCreateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Observations\ObservationForm.resx">
-      <DependentUpon>ObservationForm.cs</DependentUpon>
+    <EmbeddedResource Include="Observations\ObservationListForm.resx">
+      <DependentUpon>ObservationListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Opd\CreateOrderForm.resx">
       <DependentUpon>CreateOrderForm.cs</DependentUpon>

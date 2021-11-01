@@ -89,7 +89,7 @@ namespace Telemedicine.Observations
             this.textSex.Name = "textSex";
             this.textSex.Padding = new System.Windows.Forms.Padding(1);
             this.textSex.ReadOnly = true;
-            this.textSex.Size = new System.Drawing.Size(165, 24);
+            this.textSex.Size = new System.Drawing.Size(165, 30);
             this.textSex.TabIndex = 5;
             // 
             // textBrithDate
@@ -99,7 +99,7 @@ namespace Telemedicine.Observations
             this.textBrithDate.Name = "textBrithDate";
             this.textBrithDate.Padding = new System.Windows.Forms.Padding(1);
             this.textBrithDate.ReadOnly = true;
-            this.textBrithDate.Size = new System.Drawing.Size(165, 24);
+            this.textBrithDate.Size = new System.Drawing.Size(165, 30);
             this.textBrithDate.TabIndex = 4;
             // 
             // textName
@@ -109,7 +109,7 @@ namespace Telemedicine.Observations
             this.textName.Name = "textName";
             this.textName.Padding = new System.Windows.Forms.Padding(1);
             this.textName.ReadOnly = true;
-            this.textName.Size = new System.Drawing.Size(165, 24);
+            this.textName.Size = new System.Drawing.Size(165, 30);
             this.textName.TabIndex = 3;
             // 
             // groupBox2
@@ -216,7 +216,7 @@ namespace Telemedicine.Observations
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ObservationCreateForm";
-            this.Text = "建立身理量測";
+            this.Text = "新增生理數值";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

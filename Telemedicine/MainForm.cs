@@ -56,7 +56,7 @@ namespace Telemedicine
 
         private void menuObservationSearch_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Observations.ObservationForm>());
+            Execute(() => FindView<Observations.ObservationListForm>());
         }
 
         private void menuPatientFind_Click(object sender, EventArgs e)
@@ -80,6 +80,12 @@ namespace Telemedicine
                 }
                 d.Show(this);
             });
+        }
+
+        private void menuObservationCreateBundle_Click(object sender, EventArgs e)
+        {
+            var d = new Observations.ObservationDialog();
+            d.Show();
         }
     }
 }
