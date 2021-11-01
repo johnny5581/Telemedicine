@@ -40,6 +40,8 @@ namespace Telemedicine.Observations
             this.textBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
             this.textSearch = new Telemedicine.Forms.CgLabelTextBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -48,13 +50,15 @@ namespace Telemedicine.Observations
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.dateTimePicker2);
+            this.groupBox2.Controls.Add(this.dateTimePicker1);
             this.groupBox2.Controls.Add(this.buttonOk);
             this.groupBox2.Controls.Add(this.textUnit);
             this.groupBox2.Controls.Add(this.comboItem);
             this.groupBox2.Controls.Add(this.textValue);
             this.groupBox2.Location = new System.Drawing.Point(195, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(280, 170);
+            this.groupBox2.Size = new System.Drawing.Size(280, 204);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生理數值";
@@ -64,7 +68,7 @@ namespace Telemedicine.Observations
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOk.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonOk.IconSize = 0;
-            this.buttonOk.Location = new System.Drawing.Point(199, 141);
+            this.buttonOk.Location = new System.Drawing.Point(199, 175);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 4;
@@ -111,7 +115,7 @@ namespace Telemedicine.Observations
             this.groupBox1.Controls.Add(this.textName);
             this.groupBox1.Location = new System.Drawing.Point(12, 42);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(177, 140);
+            this.groupBox1.Size = new System.Drawing.Size(177, 174);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "病患資料";
@@ -166,9 +170,24 @@ namespace Telemedicine.Observations
             this.textSearch.TabIndex = 1;
             this.textSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSearch_KeyDown);
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(42, 114);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(110, 22);
+            this.dateTimePicker1.TabIndex = 5;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker2.Location = new System.Drawing.Point(158, 114);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(98, 22);
+            this.dateTimePicker2.TabIndex = 6;
+            // 
             // CreateSingleForm
             // 
-            this.ClientSize = new System.Drawing.Size(487, 193);
+            this.ClientSize = new System.Drawing.Size(487, 228);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.textSearch);
             this.Controls.Add(this.groupBox1);
@@ -193,5 +212,7 @@ namespace Telemedicine.Observations
         private Forms.CgLabelTextBox textSex;
         private Forms.CgLabelControl textId;
         private Forms.CgIconButton buttonOk;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
     }
 }

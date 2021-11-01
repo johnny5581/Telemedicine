@@ -36,10 +36,17 @@ namespace Telemedicine.Observations
             this.textBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textMedSearch = new Telemedicine.Forms.CgTextBox();
             this.textMedId = new Telemedicine.Forms.CgLabelControl();
+            this.textMedSearch = new Telemedicine.Forms.CgTextBox();
+            this.cgDataGridPanel1 = new Telemedicine.Forms.CgDataGridPanel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
+            this.cgIconButton2 = new Telemedicine.Forms.CgIconButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -115,14 +122,6 @@ namespace Telemedicine.Observations
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "處方簽";
             // 
-            // textMedSearch
-            // 
-            this.textMedSearch.Location = new System.Drawing.Point(6, 21);
-            this.textMedSearch.Name = "textMedSearch";
-            this.textMedSearch.Size = new System.Drawing.Size(165, 22);
-            this.textMedSearch.TabIndex = 8;
-            this.textMedSearch.WatermarkText = "輸入查詢後按下Enter";
-            // 
             // textMedId
             // 
             this.textMedId.Header = "#";
@@ -133,17 +132,83 @@ namespace Telemedicine.Observations
             this.textMedId.Size = new System.Drawing.Size(165, 14);
             this.textMedId.TabIndex = 9;
             // 
+            // textMedSearch
+            // 
+            this.textMedSearch.Location = new System.Drawing.Point(6, 21);
+            this.textMedSearch.Name = "textMedSearch";
+            this.textMedSearch.Size = new System.Drawing.Size(165, 22);
+            this.textMedSearch.TabIndex = 8;
+            this.textMedSearch.WatermarkText = "輸入查詢後按下Enter";
+            // 
+            // cgDataGridPanel1
+            // 
+            this.cgDataGridPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cgDataGridPanel1.InfoBoxVisible = false;
+            this.cgDataGridPanel1.Location = new System.Drawing.Point(3, 56);
+            this.cgDataGridPanel1.Name = "cgDataGridPanel1";
+            this.cgDataGridPanel1.Size = new System.Drawing.Size(432, 199);
+            this.cgDataGridPanel1.TabIndex = 3;
+            this.cgDataGridPanel1.TopPanelVisible = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cgDataGridPanel1);
+            this.groupBox3.Controls.Add(this.panel1);
+            this.groupBox3.Location = new System.Drawing.Point(196, 13);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(438, 258);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "紀錄";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cgIconButton2);
+            this.panel1.Controls.Add(this.cgIconButton1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 18);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(432, 38);
+            this.panel1.TabIndex = 0;
+            // 
+            // cgIconButton1
+            // 
+            this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton1.IconSize = 0;
+            this.cgIconButton1.Location = new System.Drawing.Point(273, 9);
+            this.cgIconButton1.Name = "cgIconButton1";
+            this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton1.TabIndex = 0;
+            this.cgIconButton1.Text = "新增";
+            this.cgIconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton1.UseVisualStyleBackColor = true;
+            // 
+            // cgIconButton2
+            // 
+            this.cgIconButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton2.IconSize = 0;
+            this.cgIconButton2.Location = new System.Drawing.Point(354, 9);
+            this.cgIconButton2.Name = "cgIconButton2";
+            this.cgIconButton2.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton2.TabIndex = 1;
+            this.cgIconButton2.Text = "刪除";
+            this.cgIconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton2.UseVisualStyleBackColor = true;
+            // 
             // ObservationCreateForm
             // 
             this.ClientSize = new System.Drawing.Size(646, 487);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ObservationCreateForm";
-            this.Text = "建立醫囑資料";
+            this.Text = "建立身理量測";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -159,5 +224,10 @@ namespace Telemedicine.Observations
         private System.Windows.Forms.GroupBox groupBox2;
         private Forms.CgTextBox textMedSearch;
         private Forms.CgLabelControl textMedId;
+        private Forms.CgDataGridPanel cgDataGridPanel1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Panel panel1;
+        private Forms.CgIconButton cgIconButton1;
+        private Forms.CgIconButton cgIconButton2;
     }
 }

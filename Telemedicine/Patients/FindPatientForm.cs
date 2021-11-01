@@ -60,5 +60,18 @@ namespace Telemedicine.Patients
                 dgvData.SetSource(pats);
             });
         }
+
+        private void 修改ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                var item = dgvData.GetSelectedItem() as Patient;
+                if (item == null)
+                    throw new Exception("請選擇資料");
+                var d = new Patients.CreatePatientForm();
+                d.LoadPatient(item);
+                d.ShowDialog();
+            });
+        }
     }
 }

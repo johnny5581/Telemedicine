@@ -81,10 +81,46 @@ namespace Telemedicine.Controllers
         {
             if (names == null || names.Count == 0)
                 return null;
-            var n = names[0].Text;
+            return GetName(names[0]);
+        }
+        /// <summary>
+        /// 取得名稱
+        /// </summary>        
+        public static string GetName(HumanName name)
+        {
+            if (name == null)
+                return null;
+            var n = name.Text;
             if (n == null)
-                n = names[0].Family + names[0].Given.ElementAtOrDefault(0);
+                n = name.Family + name.Given.ElementAtOrDefault(0);
             return n;
+        }
+
+        public static string GetIdentifier(Patient pat)
+        {
+            if (pat == null)
+                return null;
+            return GetIdentifier(pat.Identifier);
+        }
+
+        public static string GetIdentifier(List<Identifier> identifiers)
+        {
+            if (identifiers == null || identifiers.Count == 0)
+                return null;
+            return identifiers[0].Value;
+        }
+
+        public static string GetTelecom(Patient pat)
+        {
+            if (pat == null)
+                return null;
+            return GetTelecom(pat.Telecom);
+        }
+        public static string GetTelecom(List<ContactPoint> contactPoints)
+        {
+            if (contactPoints == null || contactPoints.Count == 0)
+                return null;
+            return contactPoints[0].Value;
         }
     }
 }
