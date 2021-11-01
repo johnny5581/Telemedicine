@@ -148,48 +148,59 @@ namespace Telemedicine.Patients
                 Hl7.Fhir.Model.Patient patient1 = new Hl7.Fhir.Model.Patient
                 {
                     Identifier = new List<Hl7.Fhir.Model.Identifier>
-                {
-                    new Hl7.Fhir.Model.Identifier("https://www.dicom.org.tw/cs/identityCardNumber_tw", textBoxIdentifier.Text),
-                    new Hl7.Fhir.Model.Identifier("https://www.cgmh.org.tw", textBoxIdentifier.Text),
-                },
+                    {
+                        new Hl7.Fhir.Model.Identifier("https://www.dicom.org.tw/cs/identityCardNumber_tw", textBoxIdentifier.Text),
+                        new Hl7.Fhir.Model.Identifier("https://www.cgmh.org.tw", textBoxIdentifier.Text),
+                    },
                     Active = true,
                     Name = new List<Hl7.Fhir.Model.HumanName> {
-                    new Hl7.Fhir.Model.HumanName { Text = textBoxName.Text } },
+                    new Hl7.Fhir.Model.HumanName
+                    {
+                        Text = textBoxName.Text,
+                        Family =textBoxName.Text.Substring(0,1),
+                        Given = new List<string>
+                        {
+                            textBoxName.Text.Substring(1)
+                        },
+                    } },
                     Gender = pG,
                     BirthDate = textBoxBirthdate.Text,   //1970-01-01
                     Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
                     new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax, Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxTelecom.Text) },
                     Contact = new List<Hl7.Fhir.Model.Patient.ContactComponent>
-                {
-                    new Hl7.Fhir.Model.Patient.ContactComponent
                     {
-                        Name = new Hl7.Fhir.Model.HumanName
+                        new Hl7.Fhir.Model.Patient.ContactComponent
                         {
-                            Text = textBoxContactName.Text ,
-                            Family =textBoxContactName.Text.Substring(0,1),
-                            Given = new List<string>
+                            Name = new Hl7.Fhir.Model.HumanName
                             {
-                                textBoxContactName.Text.Substring(1)
+                                Text = textBoxContactName.Text ,
+                                Family =textBoxContactName.Text.Substring(0,1),
+                                Given = new List<string>
+                                {
+                                    textBoxContactName.Text.Substring(1)
+                                },
                             },
-                        },
-                        Relationship = new List<Hl7.Fhir.Model.CodeableConcept>
-                        {
-                            new Hl7.Fhir.Model.CodeableConcept("http://hl7.org/fhir/ValueSet/patient-contactrelationship", "code", textBoxContactRelationship.Text)
-                        },
-                        Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
-                            new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax, Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxContactTelecom.Text) },
-                    }
-                },
+                            Relationship = new List<Hl7.Fhir.Model.CodeableConcept>
+                            {
+                                new Hl7.Fhir.Model.CodeableConcept("http://hl7.org/fhir/ValueSet/patient-contactrelationship",
+                                                                    "N", textBoxContactRelationship.Text)
+                            },
+                            Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
+                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax, Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxContactTelecom.Text) },
+                        }
+                    },
                     ManagingOrganization = new Hl7.Fhir.Model.ResourceReference("Organization/MITW.ForContact"),
                     Address = new List<Hl7.Fhir.Model.Address>
-                {
-                    new Hl7.Fhir.Model.Address
                     {
-                        Text = textBoxAddress.Text,
-                        PostalCode = comboBoxPostalCode.SelectedValue.ToString(),
-                        Country = comboBoxCountry.SelectedValue.ToString(),
+                        new Hl7.Fhir.Model.Address
+                        {
+                            Text = comboBoxPostalCode.SelectedValue.ToString()+"臺灣"+ comboBoxCountry.Text+comboBoxPostalCode.Text+textBoxAddress.Text,
+                            PostalCode = comboBoxPostalCode.SelectedValue.ToString(),
+                            Country ="臺灣",
+                            District = comboBoxCountry.Text.ToString(),
+                            City = comboBoxPostalCode.Text.ToString(),
+                        }
                     }
-                }
                 };
                 var pat = _ctrlPat.Create(patient1);
                 MsgBoxHelper.Info("建立成功");

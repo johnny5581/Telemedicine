@@ -49,7 +49,7 @@ namespace Telemedicine.Patients
             {
                 var criteria = new List<string>();
                 if (textBoxID.Text.IsNotNullOrEmpty())
-                    criteria.Add("id=" + textBoxID.Text);
+                    criteria.Add("_id=" + textBoxID.Text);
                 if (textBoxIdentifier.Text.IsNotNullOrEmpty())
                     criteria.Add("identifier=" + HttpUtility.HtmlEncode("https://www.dicom.org.tw/cs/identityCardNumber_tw|" + textBoxIdentifier.Text));
                 if (textBoxName.Text.IsNotNullOrEmpty())
