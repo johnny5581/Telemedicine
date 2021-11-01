@@ -24,7 +24,7 @@ namespace Telemedicine.Controllers
         {
             _interactive = interactive;
         }
-        protected FhirClient GetClient()
+        public FhirClient GetClient()
         {
             var endpoint = ConfigurationManager.GetConfiguration("server.endpoint");
             if (endpoint.IsNullOrEmpty())
@@ -35,9 +35,9 @@ namespace Telemedicine.Controllers
             };
             return new FhirClient(endpoint, setting);
         }
-        
 
-        protected T ExecuteClient<T>(Func<FhirClient, T> action)
+
+        public T ExecuteClient<T>(Func<FhirClient, T> action)
         {
             var client = GetClient();
             return action(client);

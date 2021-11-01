@@ -30,17 +30,21 @@ namespace Telemedicine.Observations
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textSearchPat = new Telemedicine.Forms.CgTextBox();
             this.textId = new Telemedicine.Forms.CgLabelControl();
             this.textSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
-            this.cgTextBox1 = new Telemedicine.Forms.CgTextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textMedSearch = new Telemedicine.Forms.CgTextBox();
+            this.textMedId = new Telemedicine.Forms.CgLabelControl();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cgTextBox1);
+            this.groupBox1.Controls.Add(this.textSearchPat);
             this.groupBox1.Controls.Add(this.textId);
             this.groupBox1.Controls.Add(this.textSex);
             this.groupBox1.Controls.Add(this.textBrithDate);
@@ -51,6 +55,14 @@ namespace Telemedicine.Observations
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "病患資料";
+            // 
+            // textSearchPat
+            // 
+            this.textSearchPat.Location = new System.Drawing.Point(6, 21);
+            this.textSearchPat.Name = "textSearchPat";
+            this.textSearchPat.Size = new System.Drawing.Size(165, 22);
+            this.textSearchPat.TabIndex = 7;
+            this.textSearchPat.WatermarkText = "輸入查詢後按下Enter";
             // 
             // textId
             // 
@@ -92,22 +104,46 @@ namespace Telemedicine.Observations
             this.textName.Size = new System.Drawing.Size(165, 24);
             this.textName.TabIndex = 3;
             // 
-            // cgTextBox1
+            // groupBox2
             // 
-            this.cgTextBox1.Location = new System.Drawing.Point(6, 21);
-            this.cgTextBox1.Name = "cgTextBox1";
-            this.cgTextBox1.Size = new System.Drawing.Size(165, 22);
-            this.cgTextBox1.TabIndex = 7;
-            this.cgTextBox1.WatermarkText = "輸入查詢後按下Enter";
+            this.groupBox2.Controls.Add(this.textMedId);
+            this.groupBox2.Controls.Add(this.textMedSearch);
+            this.groupBox2.Location = new System.Drawing.Point(12, 186);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(177, 85);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "處方簽";
+            // 
+            // textMedSearch
+            // 
+            this.textMedSearch.Location = new System.Drawing.Point(6, 21);
+            this.textMedSearch.Name = "textMedSearch";
+            this.textMedSearch.Size = new System.Drawing.Size(165, 22);
+            this.textMedSearch.TabIndex = 8;
+            this.textMedSearch.WatermarkText = "輸入查詢後按下Enter";
+            // 
+            // textMedId
+            // 
+            this.textMedId.Header = "#";
+            this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedId.Location = new System.Drawing.Point(6, 49);
+            this.textMedId.Name = "textMedId";
+            this.textMedId.Padding = new System.Windows.Forms.Padding(1);
+            this.textMedId.Size = new System.Drawing.Size(165, 14);
+            this.textMedId.TabIndex = 9;
             // 
             // ObservationCreateForm
             // 
             this.ClientSize = new System.Drawing.Size(646, 487);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ObservationCreateForm";
             this.Text = "建立醫囑資料";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -119,6 +155,9 @@ namespace Telemedicine.Observations
         private Forms.CgLabelTextBox textSex;
         private Forms.CgLabelTextBox textBrithDate;
         private Forms.CgLabelTextBox textName;
-        private Forms.CgTextBox cgTextBox1;
+        private Forms.CgTextBox textSearchPat;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private Forms.CgTextBox textMedSearch;
+        private Forms.CgLabelControl textMedId;
     }
 }

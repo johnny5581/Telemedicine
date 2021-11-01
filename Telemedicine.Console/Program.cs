@@ -10,7 +10,7 @@ namespace Telemedicine
         public static void Main(string[] args)
         {
             var controller = new PatientController();
-            var pat = controller.Search("500");
+            var pat = controller.SearchByIdentifier("500");
             Console.WriteLine("Hello World!");
         }
     }

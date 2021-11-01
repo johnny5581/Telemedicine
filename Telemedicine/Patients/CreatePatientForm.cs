@@ -180,7 +180,7 @@ namespace Telemedicine.Patients
                             new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax, Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxContactTelecom.Text) },
                     }
                 },
-                    ManagingOrganization = new Hl7.Fhir.Model.ResourceReference("Organization/MITW.ForIdentifier"),
+                    ManagingOrganization = new Hl7.Fhir.Model.ResourceReference("Organization/MITW.ForContact"),
                     Address = new List<Hl7.Fhir.Model.Address>
                 {
                     new Hl7.Fhir.Model.Address

@@ -99,7 +99,7 @@ namespace Telemedicine.Observations
             ActionClearScreen();
             if (text.IsNotNullOrEmpty())
             {
-                var pat = _ctrlPat.SearchSingle(text);
+                var pat = _ctrlPat.SearchByIdentifierSingle(text);
                 if (pat != null)
                 {
                     textId.Text = pat.Id;
