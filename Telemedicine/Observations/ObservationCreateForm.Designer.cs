@@ -41,8 +41,9 @@ namespace Telemedicine.Observations
             this.cgDataGridPanel1 = new Telemedicine.Forms.CgDataGridPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
-            this.cgIconButton2 = new Telemedicine.Forms.CgIconButton();
+            this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
+            this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
+            this.buttonUpload = new Telemedicine.Forms.CgIconButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -163,41 +164,54 @@ namespace Telemedicine.Observations
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.cgIconButton2);
-            this.panel1.Controls.Add(this.cgIconButton1);
+            this.panel1.Controls.Add(this.buttonItemDelete);
+            this.panel1.Controls.Add(this.buttonItemAdd);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 18);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(432, 38);
             this.panel1.TabIndex = 0;
             // 
-            // cgIconButton1
+            // buttonItemDelete
             // 
-            this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cgIconButton1.IconSize = 0;
-            this.cgIconButton1.Location = new System.Drawing.Point(273, 9);
-            this.cgIconButton1.Name = "cgIconButton1";
-            this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
-            this.cgIconButton1.TabIndex = 0;
-            this.cgIconButton1.Text = "新增";
-            this.cgIconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cgIconButton1.UseVisualStyleBackColor = true;
+            this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonItemDelete.IconSize = 0;
+            this.buttonItemDelete.Location = new System.Drawing.Point(354, 9);
+            this.buttonItemDelete.Name = "buttonItemDelete";
+            this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemDelete.TabIndex = 1;
+            this.buttonItemDelete.Text = "刪除";
+            this.buttonItemDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonItemDelete.UseVisualStyleBackColor = true;
             // 
-            // cgIconButton2
+            // buttonItemAdd
             // 
-            this.cgIconButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cgIconButton2.IconSize = 0;
-            this.cgIconButton2.Location = new System.Drawing.Point(354, 9);
-            this.cgIconButton2.Name = "cgIconButton2";
-            this.cgIconButton2.Size = new System.Drawing.Size(75, 23);
-            this.cgIconButton2.TabIndex = 1;
-            this.cgIconButton2.Text = "刪除";
-            this.cgIconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cgIconButton2.UseVisualStyleBackColor = true;
+            this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonItemAdd.IconSize = 0;
+            this.buttonItemAdd.Location = new System.Drawing.Point(273, 9);
+            this.buttonItemAdd.Name = "buttonItemAdd";
+            this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemAdd.TabIndex = 0;
+            this.buttonItemAdd.Text = "新增";
+            this.buttonItemAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonItemAdd.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpload
+            // 
+            this.buttonUpload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonUpload.IconSize = 0;
+            this.buttonUpload.Location = new System.Drawing.Point(472, 277);
+            this.buttonUpload.Name = "buttonUpload";
+            this.buttonUpload.Size = new System.Drawing.Size(162, 51);
+            this.buttonUpload.TabIndex = 5;
+            this.buttonUpload.Text = "上傳";
+            this.buttonUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonUpload.UseVisualStyleBackColor = true;
             // 
             // ObservationCreateForm
             // 
-            this.ClientSize = new System.Drawing.Size(646, 487);
+            this.ClientSize = new System.Drawing.Size(646, 337);
+            this.Controls.Add(this.buttonUpload);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -227,7 +241,8 @@ namespace Telemedicine.Observations
         private Forms.CgDataGridPanel cgDataGridPanel1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Panel panel1;
-        private Forms.CgIconButton cgIconButton1;
-        private Forms.CgIconButton cgIconButton2;
+        private Forms.CgIconButton buttonItemAdd;
+        private Forms.CgIconButton buttonItemDelete;
+        private Forms.CgIconButton buttonUpload;
     }
 }
