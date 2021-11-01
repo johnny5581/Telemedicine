@@ -386,6 +386,7 @@ namespace Hl7.Fhir.Utility
         {
             public BetterDecimalJsonTextWriter(TextWriter textWriter) : base(textWriter)
             {
+                Formatting = Newtonsoft.Json.Formatting.Indented;
             }
 
             public override void WriteValue(decimal value)

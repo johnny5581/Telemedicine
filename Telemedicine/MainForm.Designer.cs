@@ -31,15 +31,15 @@ namespace Telemedicine
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuData = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPatient = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPatientCreate = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPatientSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuObservation = new System.Windows.Forms.ToolStripMenuItem();
             this.menuObservationCreate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuObservationSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuObservationCreateBundle = new System.Windows.Forms.ToolStripMenuItem();
             this.視窗ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.傳輸監控ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuPatient = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuPatientCreate = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuPatientSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,6 +63,29 @@ namespace Telemedicine
             this.menuData.Size = new System.Drawing.Size(43, 20);
             this.menuData.Text = "資料";
             // 
+            // menuPatient
+            // 
+            this.menuPatient.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuPatientCreate,
+            this.menuPatientSearch});
+            this.menuPatient.Name = "menuPatient";
+            this.menuPatient.Size = new System.Drawing.Size(122, 22);
+            this.menuPatient.Text = "病患";
+            // 
+            // menuPatientCreate
+            // 
+            this.menuPatientCreate.Name = "menuPatientCreate";
+            this.menuPatientCreate.Size = new System.Drawing.Size(146, 22);
+            this.menuPatientCreate.Text = "初診資料建立";
+            this.menuPatientCreate.Click += new System.EventHandler(this.menuPatientCreate_Click);
+            // 
+            // menuPatientSearch
+            // 
+            this.menuPatientSearch.Name = "menuPatientSearch";
+            this.menuPatientSearch.Size = new System.Drawing.Size(146, 22);
+            this.menuPatientSearch.Text = "查詢";
+            this.menuPatientSearch.Click += new System.EventHandler(this.menuPatientFind_Click);
+            // 
             // menuObservation
             // 
             this.menuObservation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -70,27 +93,27 @@ namespace Telemedicine
             this.menuObservationSearch,
             this.menuObservationCreateBundle});
             this.menuObservation.Name = "menuObservation";
-            this.menuObservation.Size = new System.Drawing.Size(180, 22);
+            this.menuObservation.Size = new System.Drawing.Size(122, 22);
             this.menuObservation.Text = "生理數值";
             // 
             // menuObservationCreate
             // 
             this.menuObservationCreate.Name = "menuObservationCreate";
-            this.menuObservationCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationCreate.Size = new System.Drawing.Size(122, 22);
             this.menuObservationCreate.Text = "個人上傳";
             this.menuObservationCreate.Click += new System.EventHandler(this.menuObservationPersonal_Click);
             // 
             // menuObservationSearch
             // 
             this.menuObservationSearch.Name = "menuObservationSearch";
-            this.menuObservationSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationSearch.Size = new System.Drawing.Size(122, 22);
             this.menuObservationSearch.Text = "查詢";
             this.menuObservationSearch.Click += new System.EventHandler(this.menuObservationSearch_Click);
             // 
             // menuObservationCreateBundle
             // 
             this.menuObservationCreateBundle.Name = "menuObservationCreateBundle";
-            this.menuObservationCreateBundle.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationCreateBundle.Size = new System.Drawing.Size(122, 22);
             this.menuObservationCreateBundle.Text = "批次上傳";
             // 
             // 視窗ToolStripMenuItem
@@ -104,31 +127,9 @@ namespace Telemedicine
             // 傳輸監控ToolStripMenuItem
             // 
             this.傳輸監控ToolStripMenuItem.Name = "傳輸監控ToolStripMenuItem";
-            this.傳輸監控ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.傳輸監控ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.傳輸監控ToolStripMenuItem.Text = "傳輸監控";
-            // 
-            // menuPatient
-            // 
-            this.menuPatient.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuPatientCreate,
-            this.menuPatientSearch});
-            this.menuPatient.Name = "menuPatient";
-            this.menuPatient.Size = new System.Drawing.Size(180, 22);
-            this.menuPatient.Text = "病患";
-            // 
-            // menuPatientCreate
-            // 
-            this.menuPatientCreate.Name = "menuPatientCreate";
-            this.menuPatientCreate.Size = new System.Drawing.Size(180, 22);
-            this.menuPatientCreate.Text = "初診資料建立";
-            this.menuPatientCreate.Click += new System.EventHandler(this.menuPatientCreate_Click);
-            // 
-            // menuPatientSearch
-            // 
-            this.menuPatientSearch.Name = "menuPatientSearch";
-            this.menuPatientSearch.Size = new System.Drawing.Size(180, 22);
-            this.menuPatientSearch.Text = "查詢";
-            this.menuPatientSearch.Click += new System.EventHandler(this.menuPatientFind_Click);
+            this.傳輸監控ToolStripMenuItem.Click += new System.EventHandler(this.傳輸監控ToolStripMenuItem_Click);
             // 
             // MainForm
             // 

@@ -30,16 +30,16 @@ namespace Telemedicine.Observations
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonOk = new Telemedicine.Forms.CgIconButton();
             this.textUnit = new Telemedicine.Forms.CgLabelTextBox();
             this.comboItem = new Telemedicine.Forms.CgLabelComboBox();
             this.textValue = new Telemedicine.Forms.CgLabelTextBox();
-            this.textSearch = new Telemedicine.Forms.CgLabelTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textId = new Telemedicine.Forms.CgLabelControl();
             this.textSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
+            this.textSearch = new Telemedicine.Forms.CgLabelTextBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -58,19 +58,6 @@ namespace Telemedicine.Observations
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生理數值";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.textId);
-            this.groupBox1.Controls.Add(this.textSex);
-            this.groupBox1.Controls.Add(this.textBrithDate);
-            this.groupBox1.Controls.Add(this.textName);
-            this.groupBox1.Location = new System.Drawing.Point(12, 42);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(177, 140);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "使用者";
             // 
             // buttonOk
             // 
@@ -116,15 +103,18 @@ namespace Telemedicine.Observations
             this.textValue.Size = new System.Drawing.Size(251, 24);
             this.textValue.TabIndex = 0;
             // 
-            // textSearch
+            // groupBox1
             // 
-            this.textSearch.Header = "查詢";
-            this.textSearch.Location = new System.Drawing.Point(12, 12);
-            this.textSearch.Name = "textSearch";
-            this.textSearch.Padding = new System.Windows.Forms.Padding(1);
-            this.textSearch.Size = new System.Drawing.Size(177, 24);
-            this.textSearch.TabIndex = 1;
-            this.textSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSearch_KeyDown);
+            this.groupBox1.Controls.Add(this.textId);
+            this.groupBox1.Controls.Add(this.textSex);
+            this.groupBox1.Controls.Add(this.textBrithDate);
+            this.groupBox1.Controls.Add(this.textName);
+            this.groupBox1.Location = new System.Drawing.Point(12, 42);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(177, 140);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "病患資料";
             // 
             // textId
             // 
@@ -165,6 +155,16 @@ namespace Telemedicine.Observations
             this.textName.ReadOnly = true;
             this.textName.Size = new System.Drawing.Size(165, 24);
             this.textName.TabIndex = 3;
+            // 
+            // textSearch
+            // 
+            this.textSearch.Header = "查詢";
+            this.textSearch.Location = new System.Drawing.Point(12, 12);
+            this.textSearch.Name = "textSearch";
+            this.textSearch.Padding = new System.Windows.Forms.Padding(1);
+            this.textSearch.Size = new System.Drawing.Size(177, 24);
+            this.textSearch.TabIndex = 1;
+            this.textSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSearch_KeyDown);
             // 
             // CreateSingleForm
             // 

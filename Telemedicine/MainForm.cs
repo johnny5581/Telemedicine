@@ -40,7 +40,7 @@ namespace Telemedicine
                 if (f != null)
                     f.Show(this);
                 else
-                    f.Show();                
+                    f.Show();
             }
             return form;
         }
@@ -66,6 +66,20 @@ namespace Telemedicine
         private void menuPatientCreate_Click(object sender, EventArgs e)
         {
             Execute(() => FindView<Patients.CreatePatientForm>());
+        }
+
+        private void 傳輸監控ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                var d = AppRuntime.Current.GetData("Monitor") as TransactionMonitorDialog;
+                if (d == null)
+                {
+                    d = new TransactionMonitorDialog();
+                    AppRuntime.Current.SetData("Monitor", d);
+                }
+                d.Show(this);
+            });
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Hl7.Fhir.Serialization
         }
 
         private FhirJsonSerializationSettings buildFhirJsonWriterSettings() =>
-            new FhirJsonSerializationSettings { Pretty = Settings.Pretty, AppendNewLine = Settings.AppendNewLine };
-
+            //new FhirJsonSerializationSettings { Pretty = Settings.Pretty, AppendNewLine = Settings.AppendNewLine };
+            new FhirJsonSerializationSettings { Pretty = true, AppendNewLine = Settings.AppendNewLine };
         /// <inheritdoc cref="SerializeToStringAsync(Base, SummaryType, string[])" />
         public string SerializeToString(Base instance, SummaryType summary = SummaryType.False, string[] elements = null) =>
             MakeElementStack(instance, summary, elements, Settings?.IncludeMandatoryInElementsSummary ?? false)

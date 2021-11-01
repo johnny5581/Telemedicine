@@ -157,6 +157,12 @@
     <Compile Include="Observations\CreateSingleForm.Designer.cs">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Observations\ObservationCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationCreateForm.Designer.cs">
+      <DependentUpon>ObservationCreateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Observations\ObservationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Observations\CreateSingleForm.resx">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Observations\ObservationCreateForm.resx">
+      <DependentUpon>ObservationCreateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Observations\ObservationForm.resx">
       <DependentUpon>ObservationForm.cs</DependentUpon>

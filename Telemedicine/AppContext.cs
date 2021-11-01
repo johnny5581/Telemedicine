@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hl7.Fhir.Rest;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -168,6 +169,26 @@ namespace Telemedicine
         {
             //TODO 塞入一些動畫看起來很帥，毫無用處的垃圾功能
             collection.Append(new SplashDialog.SplashActionItem("Init", "初始化系統", (dialog, cache) => { System.Threading.Thread.Sleep(2000); }));
+            collection.Append(new SplashDialog.SplashActionItem("SetupMonitor", "設定監控視窗", (dialog, cache) =>
+            {
+                var d = GetData("Monitor") as TransactionMonitorDialog;
+                if (d == null)
+                {
+                    d = new TransactionMonitorDialog();
+                    SetData("Monitor", d);
+                }
+                HttpClientRequester.Transacted += (req, reqBody, resp, respBody) =>
+                {
+                    Application.DoEvents();
+                    d.Clear();
+                    Application.DoEvents();
+                    d.SetRequest(req, reqBody);
+                    Application.DoEvents();
+                    if (resp != null)
+                        d.SetResponse(resp, respBody);
+                    Application.DoEvents();
+                };
+            }));
         }
 
 

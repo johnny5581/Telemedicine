@@ -29,7 +29,11 @@ namespace Telemedicine.Controllers
             var endpoint = ConfigurationManager.GetConfiguration("server.endpoint");
             if (endpoint.IsNullOrEmpty())
                 throw new NullReferenceException("endpoint can not be null");
-            return new FhirClient(endpoint);
+            var setting = new FhirClientSettings
+            {
+                 PreferredFormat = ResourceFormat.Json,
+            };
+            return new FhirClient(endpoint, setting);
         }
         
 
@@ -71,7 +75,21 @@ namespace Telemedicine.Controllers
             var interactive = _interactive ?? _gInteractive;
             if (interactive == null)
                 throw new NotSupportedException("no interactive instance");
-            return action(interactive);
+            return action(interactive); 
+        }
+
+        public class Result<T>
+        {
+            public Result(T data, byte[] raw)
+            {
+                Raw = raw;
+                Data = data;
+                if (raw != null)
+                    Content = Encoding.UTF8.GetString(raw);
+            }
+            public byte[] Raw { get; private set; }
+            public string Content { get; private set; }
+            public T Data { get; set; }
         }
     }
     public abstract class ControllerBase<T> : ControllerBase

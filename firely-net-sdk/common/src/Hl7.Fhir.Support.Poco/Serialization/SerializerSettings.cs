@@ -17,7 +17,7 @@ namespace Hl7.Fhir.Serialization
         /// <summary>
         /// Format the serialized xml or json output.
         /// </summary>
-        public bool Pretty { get; set; } // = false;
+        public bool Pretty { get; set; }  = false;
 
         /// <summary>
         /// Add new line at the end of the serialized xml or json output.
