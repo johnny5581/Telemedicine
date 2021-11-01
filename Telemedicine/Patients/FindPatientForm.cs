@@ -1,4 +1,5 @@
 ﻿using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,7 +55,7 @@ namespace Telemedicine.Patients
                 if (textBoxName.Text.IsNotNullOrEmpty())
                     criteria.Add("name=" + textBoxName.Text);
                 if (textBoxOrg.Text.IsNotNullOrEmpty())
-                    criteria.Add("managingOrganization=" + textBoxOrg.Text);
+                    criteria.Add("organization=" + textBoxOrg.Text);
                 var pats = _ctrlPat.Search(criteria);
                 dgvData.SetSource(pats);
             });
