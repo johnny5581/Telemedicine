@@ -32,11 +32,14 @@ namespace Telemedicine
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuData = new System.Windows.Forms.ToolStripMenuItem();
             this.menuObservation = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuObservationPersonal = new System.Windows.Forms.ToolStripMenuItem();
-            this.醫令上傳ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuObservationCreate = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuObservationSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuObservationCreateBundle = new System.Windows.Forms.ToolStripMenuItem();
             this.視窗ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.傳輸監控ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuObservationSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPatient = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPatientCreate = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPatientSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +57,7 @@ namespace Telemedicine
             // menuData
             // 
             this.menuData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuPatient,
             this.menuObservation});
             this.menuData.Name = "menuData";
             this.menuData.Size = new System.Drawing.Size(43, 20);
@@ -62,25 +66,32 @@ namespace Telemedicine
             // menuObservation
             // 
             this.menuObservation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuObservationPersonal,
+            this.menuObservationCreate,
             this.menuObservationSearch,
-            this.醫令上傳ToolStripMenuItem});
+            this.menuObservationCreateBundle});
             this.menuObservation.Name = "menuObservation";
             this.menuObservation.Size = new System.Drawing.Size(180, 22);
             this.menuObservation.Text = "生理數值";
             // 
-            // menuObservationPersonal
+            // menuObservationCreate
             // 
-            this.menuObservationPersonal.Name = "menuObservationPersonal";
-            this.menuObservationPersonal.Size = new System.Drawing.Size(180, 22);
-            this.menuObservationPersonal.Text = "個人上傳";
-            this.menuObservationPersonal.Click += new System.EventHandler(this.menuObservationPersonal_Click);
+            this.menuObservationCreate.Name = "menuObservationCreate";
+            this.menuObservationCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationCreate.Text = "個人上傳";
+            this.menuObservationCreate.Click += new System.EventHandler(this.menuObservationPersonal_Click);
             // 
-            // 醫令上傳ToolStripMenuItem
+            // menuObservationSearch
             // 
-            this.醫令上傳ToolStripMenuItem.Name = "醫令上傳ToolStripMenuItem";
-            this.醫令上傳ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.醫令上傳ToolStripMenuItem.Text = "醫令上傳";
+            this.menuObservationSearch.Name = "menuObservationSearch";
+            this.menuObservationSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationSearch.Text = "查詢";
+            this.menuObservationSearch.Click += new System.EventHandler(this.menuObservationSearch_Click);
+            // 
+            // menuObservationCreateBundle
+            // 
+            this.menuObservationCreateBundle.Name = "menuObservationCreateBundle";
+            this.menuObservationCreateBundle.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationCreateBundle.Text = "批次上傳";
             // 
             // 視窗ToolStripMenuItem
             // 
@@ -96,12 +107,28 @@ namespace Telemedicine
             this.傳輸監控ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.傳輸監控ToolStripMenuItem.Text = "傳輸監控";
             // 
-            // menuObservationSearch
+            // menuPatient
             // 
-            this.menuObservationSearch.Name = "menuObservationSearch";
-            this.menuObservationSearch.Size = new System.Drawing.Size(180, 22);
-            this.menuObservationSearch.Text = "查詢";
-            this.menuObservationSearch.Click += new System.EventHandler(this.menuObservationSearch_Click);
+            this.menuPatient.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuPatientCreate,
+            this.menuPatientSearch});
+            this.menuPatient.Name = "menuPatient";
+            this.menuPatient.Size = new System.Drawing.Size(180, 22);
+            this.menuPatient.Text = "病患";
+            // 
+            // menuPatientCreate
+            // 
+            this.menuPatientCreate.Name = "menuPatientCreate";
+            this.menuPatientCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuPatientCreate.Text = "初診資料建立";
+            this.menuPatientCreate.Click += new System.EventHandler(this.menuPatientCreate_Click);
+            // 
+            // menuPatientSearch
+            // 
+            this.menuPatientSearch.Name = "menuPatientSearch";
+            this.menuPatientSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuPatientSearch.Text = "查詢";
+            this.menuPatientSearch.Click += new System.EventHandler(this.menuPatientFind_Click);
             // 
             // MainForm
             // 
@@ -122,11 +149,14 @@ namespace Telemedicine
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem menuData;
         private System.Windows.Forms.ToolStripMenuItem menuObservation;
-        private System.Windows.Forms.ToolStripMenuItem menuObservationPersonal;
-        private System.Windows.Forms.ToolStripMenuItem 醫令上傳ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuObservationCreate;
+        private System.Windows.Forms.ToolStripMenuItem menuObservationCreateBundle;
         private System.Windows.Forms.ToolStripMenuItem 視窗ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 傳輸監控ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuObservationSearch;
+        private System.Windows.Forms.ToolStripMenuItem menuPatient;
+        private System.Windows.Forms.ToolStripMenuItem menuPatientCreate;
+        private System.Windows.Forms.ToolStripMenuItem menuPatientSearch;
     }
 }
 

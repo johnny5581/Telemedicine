@@ -58,5 +58,14 @@ namespace Telemedicine
         {
             Execute(() => FindView<Observations.ObservationForm>());
         }
+
+        private void menuPatientFind_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Patients.FindPatientForm>());
+        }
+        private void menuPatientCreate_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Patients.CreatePatientForm>());
+        }
     }
 }

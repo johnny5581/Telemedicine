@@ -22,7 +22,7 @@ namespace Telemedicine.Observations
             InitializeComponent();
 
             comboItem.AddTextItem("", null);
-            comboItem.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemChn, r.Item));
+            comboItem.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemDisplay, r.Item));
 
             _ctrlPat = new PatientController(this);
             _ctrlObs = new ObservationController(this);
@@ -60,12 +60,12 @@ namespace Telemedicine.Observations
                 throw new Exception("no patient select");
             var obs = new Observation();
             obs.Status = ObservationStatus.Final;
-            obs.Category.Add(new CodeableConcept(vs.CodeSystem, vs.Category, vs.Category, vs.Category));
+            obs.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay));
             obs.Code = new CodeableConcept { };
             obs.Code.Coding.Add(new Coding(vs.CodeSystem, vs.Code, vs.Item));
             obs.Subject = new ResourceReference("Patient/" + id);
             obs.Effective = FhirDateTime.Now();
-            var valueQuantity = new Quantity(value.To<decimal>(), vs.Unit, vs.CodeSystem);
+            var valueQuantity = new Quantity(value.To<decimal>(), vs.Unit, vs.UnitSystem);
             valueQuantity.Code = vs.Code;
             obs.Value = valueQuantity;
             _ctrlObs.Create(obs);

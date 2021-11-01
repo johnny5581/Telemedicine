@@ -21,7 +21,7 @@ namespace Telemedicine.Observations
         {
             InitializeComponent();
             comboVs.SelectedIndex = comboVs.AddTextItem("全部", null);
-            comboVs.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemChn, r.Item), r => r.Code);
+            comboVs.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);
 
             _ctrlPat = new PatientController(this);
             _ctrlObs = new ObservationController(this);
