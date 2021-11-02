@@ -1,6 +1,7 @@
 ﻿using Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -28,13 +29,20 @@ namespace Telemedicine
             int index = -1;
             if (notSpecifyText != null)
                 index = comboBox.AddTextItem(notSpecifyText, null);
-            
+
             comboBox.AddTextItem("Organization/MITW.ForIdentifier");
             comboBox.AddTextItem("Organization/MITW.ForContact");
             comboBox.AddTextItem("Organization/MITW.ForPHR");
             comboBox.AddTextItem("Organization/MITW.ForEMS");
 
             comboBox.SelectedIndex = index == -1 ? comboBox.Items.Count - 1 : index;
+        }
+
+        public static void BindMedUnit(this ICgComboBox comboBox)
+        {
+            comboBox.AddTextItem("Tablet", new Coding("http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm", "TAB", "Tablet"));
+            comboBox.AddTextItem("Swab", new Coding("http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm", "SWAB", "Swab"));
+            
         }
 
 
@@ -193,6 +201,7 @@ namespace Telemedicine
                 if (binding)
                     Bind(data);
             }
+            [Browsable(false)]
             public T Data
             {
                 get { return _data; }
@@ -218,10 +227,12 @@ namespace Telemedicine
                     Bind(data2);
                 }
             }
+            [Browsable(false)]
             public T1 Data1
             {
                 get { return _data1; }
             }
+            [Browsable(false)]
             public T2 Data2
             {
                 get { return _data2; }

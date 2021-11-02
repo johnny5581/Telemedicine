@@ -37,6 +37,7 @@ namespace Telemedicine.Observations
             this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.groupSearch = new System.Windows.Forms.GroupBox();
+            this.checkDateRange = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.textId = new Telemedicine.Forms.CgLabelTextBox();
             this.comboVitalSign = new Telemedicine.Forms.CgLabelComboBox();
@@ -44,6 +45,7 @@ namespace Telemedicine.Observations
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
             this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
+            this.textMedReq = new Telemedicine.Forms.CgLabelComboBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
             this.labelDateRange = new Telemedicine.Forms.CgLabelCustomControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -81,7 +83,7 @@ namespace Telemedicine.Observations
             this.dgvData.InfoBoxTextFormat = "{0} rows";
             this.dgvData.Location = new System.Drawing.Point(0, 0);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(776, 372);
+            this.dgvData.Size = new System.Drawing.Size(776, 415);
             this.dgvData.TabIndex = 4;
             // 
             // contextMenuStrip
@@ -108,6 +110,7 @@ namespace Telemedicine.Observations
             // 
             // groupSearch
             // 
+            this.groupSearch.Controls.Add(this.checkDateRange);
             this.groupSearch.Controls.Add(this.flowLayoutPanel1);
             this.groupSearch.Controls.Add(this.buttonClear);
             this.groupSearch.Controls.Add(this.buttonSearch);
@@ -115,10 +118,21 @@ namespace Telemedicine.Observations
             this.groupSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupSearch.Location = new System.Drawing.Point(0, 0);
             this.groupSearch.Name = "groupSearch";
-            this.groupSearch.Size = new System.Drawing.Size(776, 148);
+            this.groupSearch.Size = new System.Drawing.Size(776, 190);
             this.groupSearch.TabIndex = 6;
             this.groupSearch.TabStop = false;
             this.groupSearch.Text = "查詢條件";
+            // 
+            // checkDateRange
+            // 
+            this.checkDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkDateRange.AutoSize = true;
+            this.checkDateRange.Location = new System.Drawing.Point(472, 158);
+            this.checkDateRange.Name = "checkDateRange";
+            this.checkDateRange.Size = new System.Drawing.Size(62, 16);
+            this.checkDateRange.TabIndex = 9;
+            this.checkDateRange.Text = "Enabled";
+            this.checkDateRange.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
@@ -132,10 +146,11 @@ namespace Telemedicine.Observations
             this.flowLayoutPanel1.Controls.Add(this.textPatIdentifier);
             this.flowLayoutPanel1.Controls.Add(this.textPatName);
             this.flowLayoutPanel1.Controls.Add(this.comboPatOrg);
+            this.flowLayoutPanel1.Controls.Add(this.textMedReq);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 21);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(676, 87);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(676, 131);
             this.flowLayoutPanel1.TabIndex = 8;
             // 
             // textId
@@ -145,7 +160,7 @@ namespace Telemedicine.Observations
             this.textId.Location = new System.Drawing.Point(3, 3);
             this.textId.Name = "textId";
             this.textId.Padding = new System.Windows.Forms.Padding(1);
-            this.textId.Size = new System.Drawing.Size(224, 30);
+            this.textId.Size = new System.Drawing.Size(189, 30);
             this.textId.TabIndex = 0;
             // 
             // comboVitalSign
@@ -156,34 +171,34 @@ namespace Telemedicine.Observations
             this.comboVitalSign.Location = new System.Drawing.Point(3, 39);
             this.comboVitalSign.Name = "comboVitalSign";
             this.comboVitalSign.Padding = new System.Windows.Forms.Padding(1);
-            this.comboVitalSign.Size = new System.Drawing.Size(224, 31);
+            this.comboVitalSign.Size = new System.Drawing.Size(189, 31);
             this.comboVitalSign.TabIndex = 2;
             // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(233, 3);
+            this.textSubject.Location = new System.Drawing.Point(3, 73);
             this.textSubject.Name = "textSubject";
             this.textSubject.Padding = new System.Windows.Forms.Padding(1);
-            this.textSubject.Size = new System.Drawing.Size(224, 30);
+            this.textSubject.Size = new System.Drawing.Size(189, 30);
             this.textSubject.TabIndex = 3;
             // 
             // textPatIdentifier
             // 
             this.textPatIdentifier.Header = "病患身分證";
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatIdentifier.Location = new System.Drawing.Point(233, 39);
+            this.textPatIdentifier.Location = new System.Drawing.Point(198, 3);
             this.textPatIdentifier.Name = "textPatIdentifier";
             this.textPatIdentifier.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatIdentifier.Size = new System.Drawing.Size(224, 30);
+            this.textPatIdentifier.Size = new System.Drawing.Size(194, 30);
             this.textPatIdentifier.TabIndex = 4;
             // 
             // textPatName
             // 
             this.textPatName.Header = "病患姓名";
             this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatName.Location = new System.Drawing.Point(463, 3);
+            this.textPatName.Location = new System.Drawing.Point(198, 39);
             this.textPatName.Name = "textPatName";
             this.textPatName.Padding = new System.Windows.Forms.Padding(1);
             this.textPatName.Size = new System.Drawing.Size(194, 30);
@@ -194,11 +209,22 @@ namespace Telemedicine.Observations
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(463, 39);
+            this.comboPatOrg.Location = new System.Drawing.Point(198, 75);
             this.comboPatOrg.Name = "comboPatOrg";
             this.comboPatOrg.Padding = new System.Windows.Forms.Padding(1);
             this.comboPatOrg.Size = new System.Drawing.Size(194, 31);
             this.comboPatOrg.TabIndex = 6;
+            // 
+            // textMedReq
+            // 
+            this.textMedReq.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.textMedReq.Header = "醫囑單";
+            this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedReq.Location = new System.Drawing.Point(398, 3);
+            this.textMedReq.Name = "textMedReq";
+            this.textMedReq.Padding = new System.Windows.Forms.Padding(1);
+            this.textMedReq.Size = new System.Drawing.Size(194, 31);
+            this.textMedReq.TabIndex = 7;
             // 
             // buttonClear
             // 
@@ -218,13 +244,14 @@ namespace Telemedicine.Observations
             // 
             // labelDateRange
             // 
+            this.labelDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelDateRange.ComponentHeight = 26;
             this.labelDateRange.Header = "日期區間";
             this.labelDateRange.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.labelDateRange.Location = new System.Drawing.Point(6, 111);
+            this.labelDateRange.Location = new System.Drawing.Point(7, 154);
             this.labelDateRange.Name = "labelDateRange";
             this.labelDateRange.Padding = new System.Windows.Forms.Padding(1);
-            this.labelDateRange.Size = new System.Drawing.Size(458, 34);
+            this.labelDateRange.Size = new System.Drawing.Size(459, 34);
             this.labelDateRange.TabIndex = 5;
             // 
             // splitContainer1
@@ -241,18 +268,19 @@ namespace Telemedicine.Observations
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvData);
-            this.splitContainer1.Size = new System.Drawing.Size(776, 524);
-            this.splitContainer1.SplitterDistance = 148;
+            this.splitContainer1.Size = new System.Drawing.Size(776, 609);
+            this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 7;
             // 
             // ObservationListForm
             // 
-            this.ClientSize = new System.Drawing.Size(776, 524);
+            this.ClientSize = new System.Drawing.Size(776, 609);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ObservationListForm";
             this.Text = "生理數值";
             this.contextMenuStrip.ResumeLayout(false);
             this.groupSearch.ResumeLayout(false);
+            this.groupSearch.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -279,5 +307,7 @@ namespace Telemedicine.Observations
         private Forms.CgLabelCustomControl labelDateRange;
         private Forms.CgLabelTextBox textPatName;
         private Forms.CgLabelComboBox comboPatOrg;
+        private System.Windows.Forms.CheckBox checkDateRange;
+        private Forms.CgLabelComboBox textMedReq;
     }
 }

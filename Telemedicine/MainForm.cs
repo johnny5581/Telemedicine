@@ -82,10 +82,17 @@ namespace Telemedicine
             });
         }
 
-        private void menuObservationCreateBundle_Click(object sender, EventArgs e)
+
+        private void menuMedReqCreate_Click(object sender, EventArgs e)
         {
-            var d = new Observations.ObservationDialog();
-            d.Show();
+            Execute(() => FindView<Meds.MedicationRequestCreateForm>());
+
+        }
+
+        private void menuMedReqSearch_Click(object sender, EventArgs e)
+        {
+
+            Execute(() => FindView<Meds.MedicationRequestListForm>());
         }
     }
 }
