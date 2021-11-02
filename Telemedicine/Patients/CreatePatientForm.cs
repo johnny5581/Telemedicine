@@ -358,7 +358,7 @@ namespace Telemedicine.Patients
                             },
                         }
                     },
-                    ManagingOrganization = new Hl7.Fhir.Model.ResourceReference("Organization/MITW.ForContact"),
+                    ManagingOrganization = new Hl7.Fhir.Model.ResourceReference(comboOrg.SelectedValue as string),
                     Address = new List<Hl7.Fhir.Model.Address>
                     {
                         new Hl7.Fhir.Model.Address

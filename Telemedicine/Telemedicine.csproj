@@ -195,6 +195,12 @@
     <Compile Include="Patients\FindPatientForm.Designer.cs">
       <DependentUpon>FindPatientForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Patients\PatientListContorl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Patients\PatientListContorl.Designer.cs">
+      <DependentUpon>PatientListContorl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Patients\PatientListForm.cs">
       <SubType>Form</SubType>
     </Compile>
