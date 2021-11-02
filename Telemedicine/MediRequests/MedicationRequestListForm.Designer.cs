@@ -158,7 +158,7 @@ namespace Telemedicine.MediRequests
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 76);
+            this.textSubject.Location = new System.Drawing.Point(3, 73);
             this.textSubject.Name = "textSubject";
             this.textSubject.Padding = new System.Windows.Forms.Padding(1);
             this.textSubject.Size = new System.Drawing.Size(224, 30);

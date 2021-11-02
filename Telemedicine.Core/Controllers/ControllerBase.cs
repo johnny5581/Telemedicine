@@ -173,6 +173,7 @@ namespace Telemedicine.Controllers
         {
             if (criteria.Length == 0 && throwOnNoCriteria)
                 throw new InvalidOperationException("no search criteria");
+            criteria = criteria.Concat(new string[] { "_count=100" }).ToArray();
             var bundle = ExecuteClient(client => client.Search<T>(criteria));
             var list = new List<T>();
             if (bundle.Entry.Count > 0)
