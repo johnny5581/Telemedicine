@@ -17,7 +17,7 @@ namespace Hl7.Fhir.Rest
     public class HttpClientRequester : IClientRequester, IDisposable
     {
         public static event TransactionEventHandler Transacted;
-
+        public static string Token;
 
         public FhirClientSettings Settings { get; set; }
         public Uri BaseUrl { get; private set; }
@@ -30,6 +30,8 @@ namespace Hl7.Fhir.Rest
 
             Client = new HttpClient(messageHandler);
             Client.DefaultRequestHeaders.Add("User-Agent", $".NET FhirClient for FHIR");
+            if (Token != null)
+                Client.DefaultRequestHeaders.Add("Authorization", Token);
             Client.Timeout = new TimeSpan(0, 0, 0, Settings.Timeout);
         }
 
