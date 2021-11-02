@@ -63,17 +63,13 @@ namespace Telemedicine.Observations
             observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay, vs.CategoryDisplay));
             observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.Item, vs.ItemDisplay);
             observation.Effective = new FhirDateTime(dateDate.Value.Date + dateTime.Value.TimeOfDay);
-            
-            if(vs.Code != VitalSign.BloodPressurePanel.Code)
-            {
-                observation.Value = GetValueQuantity(textValue.Text, vs);
-            }
-            else
+
+            if (vs.Code == VitalSign.BloodPressurePanel.Code)
             {
                 var sbp = new Observation.ComponentComponent();
                 sbp.Code = new CodeableConcept(VitalSign.SystolicBloodPressure.CodeSystem,
                     VitalSign.SystolicBloodPressure.Code,
-                    VitalSign.SystolicBloodPressure.Item, 
+                    VitalSign.SystolicBloodPressure.Item,
                     VitalSign.SystolicBloodPressure.ItemDisplay);
                 sbp.Value = GetValueQuantity(textValue.Text, VitalSign.SystolicBloodPressure);
                 observation.Component.Add(sbp);
@@ -85,6 +81,19 @@ namespace Telemedicine.Observations
                     VitalSign.DistolicBloodPressure.ItemDisplay);
                 dbp.Value = GetValueQuantity(textValue2.Text, VitalSign.DistolicBloodPressure);
                 observation.Component.Add(dbp);
+            }
+            else
+            {
+                observation.Value = GetValueQuantity(textValue.Text, vs);
+            }
+
+            if (vs.Code == VitalSign.Femoralbody.Code)
+            {
+                observation.BodySite = new CodeableConcept { };
+                foreach (var item in vs.BodySite)
+                {
+                    observation.BodySite.Coding.Add(new Coding(item.CodeSystem, item.Code, item.CodeDisplay));
+                }
             }
             return observation;
         }
