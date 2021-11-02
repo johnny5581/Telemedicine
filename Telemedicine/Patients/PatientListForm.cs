@@ -97,6 +97,8 @@ namespace Telemedicine.Patients
             {
                 var item = GetSelectedItem<Patient>(dgvData);
                 _ctrlPat.Delete(item);
+                MsgBoxHelper.Info("刪除成功");
+                ActionSearch();
             });
         }
     }
