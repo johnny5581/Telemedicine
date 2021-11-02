@@ -83,7 +83,7 @@ namespace Telemedicine.Observations
                     VitalSign.DistolicBloodPressure.Code,
                     VitalSign.DistolicBloodPressure.Item,
                     VitalSign.DistolicBloodPressure.ItemDisplay);
-                dbp.Value = GetValueQuantity(textValue.Text, VitalSign.DistolicBloodPressure);
+                dbp.Value = GetValueQuantity(textValue2.Text, VitalSign.DistolicBloodPressure);
                 observation.Component.Add(dbp);
             }
             return observation;
