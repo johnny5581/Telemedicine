@@ -28,7 +28,7 @@ namespace Telemedicine.Observations
 
         protected override int GetMainComponentHeight()
         {
-            return 150;
+            return 200;
         }
     }
 }

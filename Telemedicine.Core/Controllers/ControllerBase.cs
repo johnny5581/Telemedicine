@@ -103,6 +103,11 @@ namespace Telemedicine.Controllers
                 throw new NotSupportedException("no interactive instance");
             return action(interactive);
         }
+
+        public Bundle CreateBundle(Bundle bundle)
+        {
+            return ExecuteClient(client => client.Create(bundle));
+        }
     }
     public abstract class ControllerBase<T> : ControllerBase
         where T : Resource, new()

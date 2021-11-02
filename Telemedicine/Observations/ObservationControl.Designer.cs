@@ -30,17 +30,19 @@ namespace Telemedicine.Observations
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dateDate = new System.Windows.Forms.DateTimePicker();
+            this.textValue2 = new Telemedicine.Forms.CgLabelTextBox();
             this.textUnit = new Telemedicine.Forms.CgLabelTextBox();
             this.comboItem = new Telemedicine.Forms.CgLabelComboBox();
             this.textValue = new Telemedicine.Forms.CgLabelTextBox();
             this.dateTime = new System.Windows.Forms.DateTimePicker();
+            this.dateDate = new System.Windows.Forms.DateTimePicker();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dateTime);
+            this.groupBox2.Controls.Add(this.textValue2);
             this.groupBox2.Controls.Add(this.dateDate);
             this.groupBox2.Controls.Add(this.textUnit);
             this.groupBox2.Controls.Add(this.comboItem);
@@ -48,26 +50,29 @@ namespace Telemedicine.Observations
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(266, 144);
+            this.groupBox2.Size = new System.Drawing.Size(266, 206);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生理數值";
             // 
-            // dateDate
+            // textValue2
             // 
-            this.dateDate.CustomFormat = "yyyy-MM-dd";
-            this.dateDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateDate.Location = new System.Drawing.Point(42, 114);
-            this.dateDate.Name = "dateDate";
-            this.dateDate.Size = new System.Drawing.Size(115, 22);
-            this.dateDate.TabIndex = 5;
+            this.textValue2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textValue2.Header = "數值2";
+            this.textValue2.Location = new System.Drawing.Point(6, 91);
+            this.textValue2.Name = "textValue2";
+            this.textValue2.Padding = new System.Windows.Forms.Padding(1);
+            this.textValue2.Size = new System.Drawing.Size(251, 30);
+            this.textValue2.TabIndex = 3;
+            this.textValue2.Visible = false;
             // 
             // textUnit
             // 
             this.textUnit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textUnit.Header = "單位";
-            this.textUnit.Location = new System.Drawing.Point(6, 84);
+            this.textUnit.Location = new System.Drawing.Point(6, 127);
             this.textUnit.Name = "textUnit";
             this.textUnit.Padding = new System.Windows.Forms.Padding(1);
             this.textUnit.ReadOnly = true;
@@ -92,7 +97,7 @@ namespace Telemedicine.Observations
             this.textValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textValue.Header = "數值";
-            this.textValue.Location = new System.Drawing.Point(5, 54);
+            this.textValue.Location = new System.Drawing.Point(6, 55);
             this.textValue.Name = "textValue";
             this.textValue.Padding = new System.Windows.Forms.Padding(1);
             this.textValue.Size = new System.Drawing.Size(251, 30);
@@ -102,18 +107,27 @@ namespace Telemedicine.Observations
             // 
             this.dateTime.CustomFormat = "HH:mm:ss";
             this.dateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTime.Location = new System.Drawing.Point(163, 114);
+            this.dateTime.Location = new System.Drawing.Point(164, 163);
             this.dateTime.Name = "dateTime";
             this.dateTime.ShowUpDown = true;
             this.dateTime.Size = new System.Drawing.Size(93, 22);
-            this.dateTime.TabIndex = 6;
+            this.dateTime.TabIndex = 10;
+            // 
+            // dateDate
+            // 
+            this.dateDate.CustomFormat = "yyyy-MM-dd";
+            this.dateDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateDate.Location = new System.Drawing.Point(46, 163);
+            this.dateDate.Name = "dateDate";
+            this.dateDate.Size = new System.Drawing.Size(112, 22);
+            this.dateDate.TabIndex = 9;
             // 
             // ObservationControl
             // 
             this.Controls.Add(this.groupBox2);
             this.Name = "ObservationControl";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(272, 150);
+            this.Size = new System.Drawing.Size(272, 212);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -122,10 +136,11 @@ namespace Telemedicine.Observations
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DateTimePicker dateDate;
         private Forms.CgLabelTextBox textUnit;
         private Forms.CgLabelComboBox comboItem;
         private Forms.CgLabelTextBox textValue;
+        private Forms.CgLabelTextBox textValue2;
         private System.Windows.Forms.DateTimePicker dateTime;
+        private System.Windows.Forms.DateTimePicker dateDate;
     }
 }

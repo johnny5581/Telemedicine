@@ -70,8 +70,8 @@ namespace Telemedicine
             Oxygen,
             HeartRate, 
             BloodPressurePanel,
-            SystolicBloodPressure,
-            DistolicBloodPressure,
+            //SystolicBloodPressure,
+            //DistolicBloodPressure,
         };
     }
 }

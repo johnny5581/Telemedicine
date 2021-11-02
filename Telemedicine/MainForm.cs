@@ -51,7 +51,7 @@ namespace Telemedicine
 
         private void menuObservationPersonal_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Observations.CreateSingleForm>());
+            Execute(() => FindView<Observations.ObservationCreateForm>());
         }
 
         private void menuObservationSearch_Click(object sender, EventArgs e)

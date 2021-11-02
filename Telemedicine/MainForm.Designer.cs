@@ -74,14 +74,14 @@ namespace Telemedicine
             // menuPatientCreate
             // 
             this.menuPatientCreate.Name = "menuPatientCreate";
-            this.menuPatientCreate.Size = new System.Drawing.Size(146, 22);
+            this.menuPatientCreate.Size = new System.Drawing.Size(180, 22);
             this.menuPatientCreate.Text = "初診資料建立";
             this.menuPatientCreate.Click += new System.EventHandler(this.menuPatientCreate_Click);
             // 
             // menuPatientSearch
             // 
             this.menuPatientSearch.Name = "menuPatientSearch";
-            this.menuPatientSearch.Size = new System.Drawing.Size(146, 22);
+            this.menuPatientSearch.Size = new System.Drawing.Size(180, 22);
             this.menuPatientSearch.Text = "查詢";
             this.menuPatientSearch.Click += new System.EventHandler(this.menuPatientFind_Click);
             // 

@@ -28,13 +28,15 @@ namespace Telemedicine.Observations
             _ctrlPat = new PatientController(this);
             _ctrlObs = new ObservationController(this);
 
-            dgvData.AddTextColumn<Observation>(r => r.Id, "#");
-            dgvData.AddTextColumn<Observation>(r => r.Effective, formatter: DateTimeFormatter);
-            dgvData.AddTextColumn("PatId", "Patient Id", "Subject", PatientFormatter);
-            dgvData.AddTextColumn("Item", "Item", "Value", ItemFormatter);
-            dgvData.AddTextColumn("Code", "Code", "Value", CodeFormatter);
-            dgvData.AddTextColumn("Value", "Value", "Value", ValueFormatter);
-            dgvData.AddTextColumn("Unit", "Unit", "Value", UnitFormatter);
+            dgvData.AddTextColumn<ObservationData>(r => r.Id);
+            dgvData.AddTextColumn<ObservationData>(r => r.PatId);
+            dgvData.AddTextColumn<ObservationData>(r => r.MedId);
+
+            dgvData.AddTextColumn<ObservationData>(r => r.Category);
+            dgvData.AddTextColumn<ObservationData>(r => r.Item);
+            dgvData.AddTextColumn<ObservationData>(r => r.Code);
+            dgvData.AddTextColumn<ObservationData>(r => r.Value);
+            dgvData.AddTextColumn<ObservationData>(r => r.Unit);
 
             comboVitalSign.SelectedIndex = comboVitalSign.AddTextItem("全部", null);
             //comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);
@@ -69,70 +71,6 @@ namespace Telemedicine.Observations
             labelDateRange.LayoutPanel.AddControlToPosition(dateEndTime, 4, 0);
         }
 
-        private void PatientFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var value = e.Value as ResourceReference;
-            if (value != null)
-            {
-                e.Value = value.Reference ?? "";
-                e.FormattingApplied = true;
-            }
-        }
-
-        private void DateTimeFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var value = e.Value as FhirDateTime;
-            if (value != null)
-            {
-                e.Value = value.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss");
-                e.FormattingApplied = true;
-            }
-        }
-
-        private void UnitFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var value = e.Value as Quantity;
-            if (value != null)
-            {
-                e.Value = value.Unit;
-                e.FormattingApplied = true;
-            }
-        }
-
-        private void ValueFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var value = e.Value as Quantity;
-            if (value != null)
-            {
-                e.Value = value.Value.ToString(false);
-                e.FormattingApplied = true;
-            }
-        }
-
-        private void CodeFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var value = e.Value as Quantity;
-            if (value != null)
-            {
-                e.Value = value.Code;
-                e.FormattingApplied = true;
-            }
-        }
-
-        private void ItemFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var value = e.Value as Quantity;
-            if (value != null)
-            {
-                var obs = e.Row.DataBoundItem as Observation;
-                var coding = obs.Code.Coding.FirstOrDefault(r => r.Code == value.Code);
-                if (coding != null)
-                {
-                    e.Value = coding.Display;
-                    e.FormattingApplied = true;
-                }
-            }
-        }
 
         private void ActionClearScreen()
         {
@@ -179,7 +117,8 @@ namespace Telemedicine.Observations
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
             var obs = _ctrlObs.Search(criteria);
-            dgvData.SetSource(obs);
+            var dataList = obs.Select(r => new ObservationData(r)).ToList();
+            dgvData.SetSource(dataList);
         }
         private void buttonSearch_Click(object sender, EventArgs e)
         {
@@ -190,10 +129,10 @@ namespace Telemedicine.Observations
         {
             Execute(() =>
             {
-                var item = GetSelectedItem<Observation>(dgvData);
+                var item = GetSelectedItem<ObservationData>(dgvData);
                 using (var d = new ObservationDialog())
                 {
-                    d.MainComponent.LoadModel(item);
+                    d.MainComponent.LoadModel(item.Data);
                     if (d.ShowDialog() == DialogResult.OK)
                     {
                         var newItem = d.MainComponent.GetModel();
@@ -209,13 +148,45 @@ namespace Telemedicine.Observations
         {
             Execute(() =>
             {
-                var item = GetSelectedItem<Observation>(dgvData);
-
-                _ctrlObs.Delete(item);
+                var item = GetSelectedItem<ObservationData>(dgvData);
+                _ctrlObs.Delete(item.Data);
                 MsgBoxHelper.Info("刪除成功");
                 ActionSearch();
 
             });
+        }
+
+        private class ObservationData : DataModelBase<Observation>
+        {
+            public ObservationData(Observation data) : base(data, false)
+            {
+                Id = data.Id;
+                PatId = data.Subject?.Reference;
+                MedId = data.BasedOn.FirstOrDefault()?.Reference;
+                Category = data.Category.ToString(", ", r => r.Text);
+                Item = data.Code.Coding.ToString(", ", r => r.Display);
+                Code = data.Code.Coding.ToString(", ", r => r.Code);
+                var quantity = data.Value as Quantity;
+                if (data.Code.Coding[0].Code == VitalSign.BloodPressurePanel.Code)
+                {
+                    var sbp = data.Component.FirstOrDefault(r => r.Code.Coding.FirstOrDefault()?.Code == VitalSign.SystolicBloodPressure.Code);
+                    var dbp = data.Component.FirstOrDefault(r => r.Code.Coding.FirstOrDefault()?.Code == VitalSign.DistolicBloodPressure.Code);
+                    Value = $"SBP:{(sbp?.Value as Quantity)?.Value}, DBP: {(dbp?.Value as Quantity)?.Value}";
+                }
+                else
+                    Value = quantity?.Value.ToString(false);
+                Unit = quantity?.Unit;
+            }
+            [DisplayName("#")]
+            public string Id { get; set; }
+            [DisplayName("病患")]
+            public string PatId { get; set; }
+            public string MedId { get; set; }
+            public string Category { get; set; }
+            public string Item { get; set; }
+            public string Code { get; set; }
+            public string Value { get; set; }
+            public string Unit { get; set; }
         }
     }
 }

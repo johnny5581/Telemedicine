@@ -24,95 +24,78 @@ namespace Telemedicine.Observations
 
         public void ResetVitalSigns(string notSpecifyText = null)
         {
-            comboItem.ComboBox.BindVitalSigns(notSpecifyText);            
+            comboItem.ComboBox.BindVitalSigns(notSpecifyText);
         }
 
-        public void ResetEffectiveDateTime()
-        {
-            var now = DateTime.Now;
-            dateDate.Value = now;
-            dateTime.Value = now;            
-        }
-        
         public void Clear()
         {
-            ClearControls(textValue, textUnit, comboItem, dateDate, dateTime);
+            ClearControls(textValue, textUnit, comboItem);
         }
 
         public void LoadModel(Observation model)
         {
-            Clear();
-            if(model.Value != null)
-            {
-                if (model.Value is Quantity)
-                {
-                    var quantity = model.Value as Quantity;
-                    comboItem.ComboBox.SelectItem<VitalSign>(r => r.Code == quantity.Code);
-                    textValue.Text = quantity.Value.ToString(false);
-                }
-                else
-                    throw new NotSupportedException("not supported value type:" + model.Value.GetType().FullName);
-            }
-            
-            if(model.Effective != null)
-            {
-                if(model.Effective is FhirDateTime)
-                {
-                    var dt = model.Effective as FhirDateTime;
-                    var date = dt.ToDateTime();
-                    if(date.HasValue)
-                    {
-                        dateDate.Value = date.Value;
-                        dateTime.Value = date.Value;
-                    }
-                    else                    
-                        ResetEffectiveDateTime();                    
-                }
-                else
-                    throw new NotSupportedException("not supported effective type:" + model.Effective.GetType().FullName);
-            }
 
+            Clear();
             _lastModel = model;
+            var code = model.Code;
+            var quantity = model.Value as Quantity;
+            var valueCode = code.Coding.FirstOrDefault()?.Code;
+            if (valueCode != VitalSign.BloodPressurePanel.Code)
+            {
+                comboItem.SelectItem<VitalSign>(r => r.Code == valueCode);
+                textValue.Text = quantity.Value.ToString(false);
+            }
+            else
+            {
+                comboItem.SelectItem<VitalSign>(r => r.Code == VitalSign.BloodPressurePanel.Code);
+                var sbp = model.Component.FirstOrDefault(r => r.Code.Coding[0].Code == VitalSign.SystolicBloodPressure.Code);
+                var dbp = model.Component.FirstOrDefault(r => r.Code.Coding[0].Code == VitalSign.DistolicBloodPressure.Code);
+                textValue.Text = (sbp.Value as Quantity).Value.ToString(false);
+                textValue2.Text = (dbp.Value as Quantity).Value.ToString(false);
+            }
         }
 
         public Observation GetModel()
         {
             var vs = GetVitalSign();
-            var model = _lastModel;
-            if(model == null)
+            var observation = _lastModel ?? new Observation();
+            observation.Status = ObservationStatus.Final;
+            observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay));
+            observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.ItemDisplay, vs.Item);
+            observation.Effective = new FhirDateTime(dateDate.Value.Date + dateTime.Value.TimeOfDay);
+            
+            if(vs.Code != VitalSign.BloodPressurePanel.Code)
             {
-                model = new Observation();
-                model.Status = ObservationStatus.Final;
+                observation.Value = GetValueQuantity(textValue.Text, vs);
             }
+            else
+            {
+                var sbp = new Observation.ComponentComponent();
+                sbp.Code = new CodeableConcept(VitalSign.SystolicBloodPressure.CodeSystem,
+                    VitalSign.SystolicBloodPressure.Code, 
+                    VitalSign.SystolicBloodPressure.ItemDisplay,
+                    VitalSign.SystolicBloodPressure.Item);
+                sbp.Value = GetValueQuantity(textValue.Text, VitalSign.SystolicBloodPressure);
+                observation.Component.Add(sbp);
 
-            var valueQuantity = GetValueQuantity();
-            model.Value = valueQuantity;
-            var effective = dateDate.Value.Date + dateTime.Value.TimeOfDay;
-            model.Effective = new FhirDateTime(effective);
-
-            model.Code.Coding.Clear();
-            model.Code.Coding.Add(new Coding(vs.CodeSystem, vs.Code, vs.Item));
-
-
-            return model;
+                var dbp = new Observation.ComponentComponent();
+                dbp.Code = new CodeableConcept(VitalSign.DistolicBloodPressure.CodeSystem,
+                    VitalSign.DistolicBloodPressure.Code,
+                    VitalSign.DistolicBloodPressure.ItemDisplay,
+                    VitalSign.DistolicBloodPressure.Item);
+                dbp.Value = GetValueQuantity(textValue.Text, VitalSign.DistolicBloodPressure);
+                observation.Component.Add(dbp);
+            }
+            return observation;
         }
 
-        public Quantity GetValueQuantity(bool throwOnError = true)
+        public Quantity GetValueQuantity(string valueText, VitalSign vs, bool throwOnError = true)
         {
-            var vs = GetVitalSign();
-            var valueText = textValue.Text;
             var value = valueText.ToNullable<decimal>();
             if (value == null && throwOnError)
                 throw new FormatException("can't convert value to decimal: " + valueText);
             var quantity = new Quantity(value.Value, vs.Unit, vs.UnitSystem);
             return quantity;
-        }
-
-        public DateTime GetEffectiveDateTime()
-        {
-            var date = dateDate.Value;
-            var time = dateTime.Value;
-            return date.Date + time.TimeOfDay;
         }
 
         public VitalSign GetVitalSign(bool throwOnError = true)
@@ -126,11 +109,12 @@ namespace Telemedicine.Observations
         private void comboItem_SelectedIndexChanged(object sender, EventArgs e)
         {
             ClearControls(textUnit);
-            if(comboItem.SelectedIndex != -1)
+            if (comboItem.SelectedIndex != -1)
             {
                 var vs = comboItem.SelectedItem as VitalSign;
-                if(vs != null)                
-                    textUnit.Text = vs.Unit;                
+                if (vs != null)
+                    textUnit.Text = vs.Unit;
+                textValue2.Visible = vs.Code == VitalSign.BloodPressurePanel.Code;
             }
         }
     }

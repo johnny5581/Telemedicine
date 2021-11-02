@@ -85,6 +85,7 @@ namespace Telemedicine.Forms
             else
             {
                 SetBindingListSource(null, typeof(T));
+                list = dataGridView.DataSource as SortableBindingList<T>;
             }
             return list;
         }

@@ -61,7 +61,7 @@ namespace Telemedicine.Patients
             this.buttonSearch.IconMargin = 3;
             this.buttonSearch.IconSize = 0;
             this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
-            this.buttonSearch.Location = new System.Drawing.Point(689, 21);
+            this.buttonSearch.Location = new System.Drawing.Point(743, 21);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(75, 64);
             this.buttonSearch.TabIndex = 5;
@@ -78,8 +78,9 @@ namespace Telemedicine.Patients
             this.dgvData.InfoBoxTextFormat = "{0} rows";
             this.dgvData.Location = new System.Drawing.Point(0, 0);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(776, 372);
+            this.dgvData.Size = new System.Drawing.Size(830, 380);
             this.dgvData.TabIndex = 4;
+            this.dgvData.DataSelected += new Telemedicine.Forms.CgDataGridPanel.DataSelectedEventHandler(this.dgvData_DataSelected);
             // 
             // contextMenuStrip
             // 
@@ -111,15 +112,14 @@ namespace Telemedicine.Patients
             this.groupSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupSearch.Location = new System.Drawing.Point(0, 0);
             this.groupSearch.Name = "groupSearch";
-            this.groupSearch.Size = new System.Drawing.Size(776, 148);
+            this.groupSearch.Size = new System.Drawing.Size(830, 140);
             this.groupSearch.TabIndex = 6;
             this.groupSearch.TabStop = false;
             this.groupSearch.Text = "查詢條件";
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Controls.Add(this.textId);
@@ -129,7 +129,7 @@ namespace Telemedicine.Patients
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 21);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(676, 116);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(730, 116);
             this.flowLayoutPanel1.TabIndex = 8;
             // 
             // textId
@@ -181,7 +181,7 @@ namespace Telemedicine.Patients
             this.buttonClear.IconMargin = 3;
             this.buttonClear.IconSize = 0;
             this.buttonClear.Image = ((System.Drawing.Image)(resources.GetObject("buttonClear.Image")));
-            this.buttonClear.Location = new System.Drawing.Point(689, 91);
+            this.buttonClear.Location = new System.Drawing.Point(743, 91);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(75, 46);
             this.buttonClear.TabIndex = 7;
@@ -203,13 +203,13 @@ namespace Telemedicine.Patients
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvData);
-            this.splitContainer1.Size = new System.Drawing.Size(776, 524);
-            this.splitContainer1.SplitterDistance = 148;
+            this.splitContainer1.Size = new System.Drawing.Size(830, 524);
+            this.splitContainer1.SplitterDistance = 140;
             this.splitContainer1.TabIndex = 7;
             // 
             // PatientListForm
             // 
-            this.ClientSize = new System.Drawing.Size(776, 524);
+            this.ClientSize = new System.Drawing.Size(830, 524);
             this.Controls.Add(this.splitContainer1);
             this.Name = "PatientListForm";
             this.Text = "病患資料";

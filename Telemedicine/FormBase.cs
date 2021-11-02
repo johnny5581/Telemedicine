@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -156,6 +157,75 @@ namespace Telemedicine
                     return default(T);
             }
             return PickerDialog.GetSelection(this, "please select one", options, textResolver);
+        }
+        #endregion
+
+        #region DataModel
+        protected abstract class DataModelBase
+        {
+            private PropertyInfo[] _properties;
+            protected virtual void Bind(object model)
+            {
+                if (model != null)
+                {
+                    if (_properties == null)
+                        _properties = GetType().GetProperties();
+                    var srcProps = model.GetType().GetProperties();
+                    foreach (var srcProp in srcProps)
+                    {
+                        var tgtProp = _properties.FirstOrDefault(r => r.Name == srcProp.Name && r.PropertyType.IsAssignableFrom(srcProp.PropertyType) && r.CanWrite);
+                        if (tgtProp != null)
+                            tgtProp.SetValue(this, srcProp.GetValue(model, null), null);
+                    }
+                }
+            }
+        }
+        protected abstract class DataModelBase<T> : DataModelBase
+        {
+            private readonly T _data;
+
+            public DataModelBase(T data) : this(data, true)
+            {
+            }
+            public DataModelBase(T data, bool binding)
+            {
+                _data = data;
+                if (binding)
+                    Bind(data);
+            }
+            public T Data
+            {
+                get { return _data; }
+            }
+        }
+
+        protected abstract class DataModelBase<T1, T2> : DataModelBase
+        {
+            private readonly T1 _data1;
+            private readonly T2 _data2;
+
+            public DataModelBase(T1 data1, T2 data2)
+                : this(data1, data2, true)
+            {
+            }
+            public DataModelBase(T1 data1, T2 data2, bool binding)
+            {
+                _data1 = data1;
+                _data2 = data2;
+                if (binding)
+                {
+                    Bind(data1);
+                    Bind(data2);
+                }
+            }
+            public T1 Data1
+            {
+                get { return _data1; }
+            }
+            public T2 Data2
+            {
+                get { return _data2; }
+            }
         }
         #endregion
     }

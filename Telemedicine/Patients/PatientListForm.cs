@@ -30,6 +30,8 @@ namespace Telemedicine.Patients
             comboOrg.BindOrganizations("全部");
         }
 
+        public Patient SelectedPatient { get; private set; }
+
         private void NameFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             e.Value = PatientController.GetName(e.Value as List<HumanName>) ?? "";
@@ -100,6 +102,15 @@ namespace Telemedicine.Patients
                 MsgBoxHelper.Info("刪除成功");
                 ActionSearch();
             });
+        }
+
+        private void dgvData_DataSelected(object sender, CgDataGridPanel.DataSelectedEventArgs e)
+        {
+            if(MdiParent == null)
+            {
+                SelectedPatient = e.Data as Patient;
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }
