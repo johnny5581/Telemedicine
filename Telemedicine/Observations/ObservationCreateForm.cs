@@ -99,7 +99,7 @@ namespace Telemedicine.Observations
                 if (textPatId.Text.IsNullOrEmpty())
                     throw new Exception("沒有選擇病患");
 
-                var list = dgvData.GetSortableSource<ObservationData>().Select(r=>r.Data).ToList();
+                var list = dgvData.GetSortableSource<ObservationData>().Select(r => r.Data).ToList();
                 if (list.Count == 0)
                     throw new Exception("沒有新增數值");
                 else if (list.Count == 1)
@@ -135,7 +135,7 @@ namespace Telemedicine.Observations
             });
         }
 
-        
+
 
         private class ObservationData : DataModelBase<Observation>
         {
@@ -171,6 +171,52 @@ namespace Telemedicine.Observations
             public string Value { get; set; }
             public string Unit { get; set; }
             public string Effecitve { get; set; }
+        }
+
+        private void cgIconButton1_Click(object sender, EventArgs e)
+        {
+            var vs = VitalSign.BloodPressurePanel;
+            var baseTime = new DateTime(2020, 7, 1);
+            var list = dgvData.GetSortableSource<ObservationData>();
+            for (var d = 0; d < 7; d++)
+            {
+                for (var s = 0; s < 2; s++)
+                {
+
+                    var observation = new Observation();
+                    observation.Status = ObservationStatus.Final;
+                    observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay));
+                    observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.Item, vs.ItemDisplay);
+                    observation.Effective = new FhirDateTime(baseTime.AddDays(d).GetDateTimeAt(null, null, null, s == 0 ? 8 : 20, 0, 0));
+
+                    var sbp = new Observation.ComponentComponent();
+                    sbp.Code = new CodeableConcept(VitalSign.SystolicBloodPressure.CodeSystem,
+                        VitalSign.SystolicBloodPressure.Code,
+                        VitalSign.SystolicBloodPressure.Item,
+                        VitalSign.SystolicBloodPressure.ItemDisplay);
+                    sbp.Value = GetValueQuantity((80+d+s).ToString(), VitalSign.SystolicBloodPressure);
+                    observation.Component.Add(sbp);
+
+                    var dbp = new Observation.ComponentComponent();
+                    dbp.Code = new CodeableConcept(VitalSign.DistolicBloodPressure.CodeSystem,
+                        VitalSign.DistolicBloodPressure.Code,
+                        VitalSign.DistolicBloodPressure.Item,
+                        VitalSign.DistolicBloodPressure.ItemDisplay);
+                    dbp.Value = GetValueQuantity((110+d+s).ToString(), VitalSign.DistolicBloodPressure);
+                    observation.Component.Add(dbp);
+                    var data = new ObservationData(observation);
+                    list.Add(data);
+                }
+            }
+            list.NotifyListChanged(ListChangedType.Reset);
+        }
+        public Quantity GetValueQuantity(string valueText, VitalSign vs, bool throwOnError = true)
+        {
+            var value = valueText.ToNullable<decimal>();
+            if (value == null && throwOnError)
+                throw new FormatException("can't convert value to decimal: " + valueText);
+            var quantity = new Quantity(value.Value, vs.Unit, vs.UnitSystem);
+            return quantity;
         }
     }
 }

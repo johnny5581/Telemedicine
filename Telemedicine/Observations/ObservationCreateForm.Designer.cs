@@ -44,6 +44,7 @@ namespace Telemedicine.Observations
             this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
+            this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -90,6 +91,7 @@ namespace Telemedicine.Observations
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cgIconButton1);
             this.panel1.Controls.Add(this.buttonItemEdit);
             this.panel1.Controls.Add(this.buttonItemDelete);
             this.panel1.Controls.Add(this.buttonItemAdd);
@@ -227,6 +229,20 @@ namespace Telemedicine.Observations
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
             // 
+            // cgIconButton1
+            // 
+            this.cgIconButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton1.IconSize = 0;
+            this.cgIconButton1.Location = new System.Drawing.Point(111, 9);
+            this.cgIconButton1.Name = "cgIconButton1";
+            this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton1.TabIndex = 3;
+            this.cgIconButton1.Text = "批次新增";
+            this.cgIconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton1.UseVisualStyleBackColor = true;
+            this.cgIconButton1.Click += new System.EventHandler(this.cgIconButton1_Click);
+            // 
             // ObservationCreateForm
             // 
             this.ClientSize = new System.Drawing.Size(646, 337);
@@ -262,5 +278,6 @@ namespace Telemedicine.Observations
         private Forms.CgIconButton buttonUpload;
         private Forms.CgIconButton buttonItemEdit;
         private Forms.CgIconButton buttonPat;
+        private Forms.CgIconButton cgIconButton1;
     }
 }
