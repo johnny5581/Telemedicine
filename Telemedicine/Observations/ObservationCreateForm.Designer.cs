@@ -36,11 +36,11 @@ namespace Telemedicine.Observations
             this.textBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textMedId = new Telemedicine.Forms.CgLabelControl();
-            this.textMedSearch = new Telemedicine.Forms.CgTextBox();
+            this.textMedId = new Telemedicine.Forms.CgTextBox();
             this.cgDataGridPanel1 = new Telemedicine.Forms.CgDataGridPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
             this.buttonUpload = new Telemedicine.Forms.CgIconButton();
@@ -115,31 +115,20 @@ namespace Telemedicine.Observations
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.textMedId);
-            this.groupBox2.Controls.Add(this.textMedSearch);
-            this.groupBox2.Location = new System.Drawing.Point(12, 186);
+            this.groupBox2.Location = new System.Drawing.Point(12, 214);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(177, 85);
+            this.groupBox2.Size = new System.Drawing.Size(177, 57);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "處方簽";
             // 
             // textMedId
             // 
-            this.textMedId.Header = "#";
-            this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedId.Location = new System.Drawing.Point(6, 49);
+            this.textMedId.Location = new System.Drawing.Point(6, 21);
             this.textMedId.Name = "textMedId";
-            this.textMedId.Padding = new System.Windows.Forms.Padding(1);
-            this.textMedId.Size = new System.Drawing.Size(165, 14);
-            this.textMedId.TabIndex = 9;
-            // 
-            // textMedSearch
-            // 
-            this.textMedSearch.Location = new System.Drawing.Point(6, 21);
-            this.textMedSearch.Name = "textMedSearch";
-            this.textMedSearch.Size = new System.Drawing.Size(165, 22);
-            this.textMedSearch.TabIndex = 8;
-            this.textMedSearch.WatermarkText = "輸入查詢後按下Enter";
+            this.textMedId.Size = new System.Drawing.Size(165, 22);
+            this.textMedId.TabIndex = 8;
+            this.textMedId.WatermarkText = "輸入MedReqID";
             // 
             // cgDataGridPanel1
             // 
@@ -164,6 +153,7 @@ namespace Telemedicine.Observations
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cgIconButton1);
             this.panel1.Controls.Add(this.buttonItemDelete);
             this.panel1.Controls.Add(this.buttonItemAdd);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -171,6 +161,18 @@ namespace Telemedicine.Observations
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(432, 38);
             this.panel1.TabIndex = 0;
+            // 
+            // cgIconButton1
+            // 
+            this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton1.IconSize = 0;
+            this.cgIconButton1.Location = new System.Drawing.Point(273, 9);
+            this.cgIconButton1.Name = "cgIconButton1";
+            this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton1.TabIndex = 2;
+            this.cgIconButton1.Text = "修改";
+            this.cgIconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton1.UseVisualStyleBackColor = true;
             // 
             // buttonItemDelete
             // 
@@ -188,7 +190,7 @@ namespace Telemedicine.Observations
             // 
             this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonItemAdd.IconSize = 0;
-            this.buttonItemAdd.Location = new System.Drawing.Point(273, 9);
+            this.buttonItemAdd.Location = new System.Drawing.Point(192, 9);
             this.buttonItemAdd.Name = "buttonItemAdd";
             this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
             this.buttonItemAdd.TabIndex = 0;
@@ -236,13 +238,13 @@ namespace Telemedicine.Observations
         private Forms.CgLabelTextBox textName;
         private Forms.CgTextBox textSearchPat;
         private System.Windows.Forms.GroupBox groupBox2;
-        private Forms.CgTextBox textMedSearch;
-        private Forms.CgLabelControl textMedId;
+        private Forms.CgTextBox textMedId;
         private Forms.CgDataGridPanel cgDataGridPanel1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Panel panel1;
         private Forms.CgIconButton buttonItemAdd;
         private Forms.CgIconButton buttonItemDelete;
         private Forms.CgIconButton buttonUpload;
+        private Forms.CgIconButton cgIconButton1;
     }
 }

@@ -31,7 +31,7 @@ namespace Hl7.Fhir.Rest
             Client = new HttpClient(messageHandler);
             Client.DefaultRequestHeaders.Add("User-Agent", $".NET FhirClient for FHIR");
             if (Token != null)
-                Client.DefaultRequestHeaders.Add("Authorization", Token);
+                Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
             Client.Timeout = new TimeSpan(0, 0, 0, Settings.Timeout);
         }
 
@@ -70,7 +70,7 @@ namespace Hl7.Fhir.Rest
                 LastResult = response.ToEntryResponse(body);
 
                 if (handler != null)
-                {                    
+                {
                     handler(requestMessage, outgoingBody, response, body);
                 }
 
@@ -107,6 +107,6 @@ namespace Hl7.Fhir.Rest
     }
 
     public delegate void TransactionEventHandler(HttpRequestMessage request, byte[] requestBody, HttpResponseMessage response, byte[] responseBody);
-    
+
 
 }

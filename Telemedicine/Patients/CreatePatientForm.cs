@@ -174,11 +174,23 @@ namespace Telemedicine.Patients
                     }
                 }
             };
+            comboBoxCountry.SelectedIndex = 0;
+            comboBoxPostalCode.SelectedIndex = 0;
 
             comboOrg.AddTextItem("Organization/MITW.ForIdentifier");
             comboOrg.AddTextItem("Organization/MITW.ForContact");
             comboOrg.AddTextItem("Organization/MITW.ForPHR");
             comboOrg.AddTextItem("Organization/MITW.ForEMS");
+            comboOrg.SelectedIndex = 0;
+
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForIdentifier");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForContact");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForPHR");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForEMS");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.Common");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.BloodPressure");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.ECG");
+            comboMeta.SelectedIndex = 0;
         }
 
         public void LoadPatient(Patient patient)
@@ -215,7 +227,7 @@ namespace Telemedicine.Patients
                         break;
                     }
                 }
-                
+
                 var prefix = addr.PostalCode + addr.Country + addr.District + addr.City;
                 textBoxAddress1.Text = addr.Text.Replace(prefix, "");
             }
@@ -235,11 +247,14 @@ namespace Telemedicine.Patients
             textBoxBirthdate.ReadOnly = true;
             textBoxIdentifier.ReadOnly = true;
 
+
+
+
         }
 
         private void FormPtNew_Load(object sender, EventArgs e)
         {
-            
+
         }
         private void ComboBoxCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -265,7 +280,7 @@ namespace Telemedicine.Patients
                 //使用身分證檢核有無重複
                 //有   詢問是否更新
                 //沒有 要新增
-            
+
                 string pGendetr = "Unknown";
                 if (radioButtonMale.Checked)
                     pGendetr = "male";
@@ -355,7 +370,18 @@ namespace Telemedicine.Patients
                             City = comboBoxPostalCode.Text.ToString(),
                         }
                     }
+
                 };
+                var meta = comboMeta.Text;
+                if (meta.IsNotNullOrEmpty())
+                {
+
+                    patient1.Meta = new Meta
+                    {
+                        Profile = new List<string> { meta }
+                    };
+                }
+
                 ActionSave(patient1);
                 MsgBoxHelper.Info("建立成功");
             });

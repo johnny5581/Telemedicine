@@ -51,6 +51,8 @@ namespace Telemedicine
                 {
                     ((DateTimePicker)c).Value = DateTime.Now;
                 }
+                else if (typeof(ComboBox).IsAssignableFrom(t))
+                    ((ComboBox)c).SelectedIndex = 0;
                 else
                     c.Text = null;
             }
