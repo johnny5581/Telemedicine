@@ -151,6 +151,7 @@ namespace Telemedicine.Patients
             this.textIdentifier.Padding = new System.Windows.Forms.Padding(1);
             this.textIdentifier.Size = new System.Drawing.Size(224, 30);
             this.textIdentifier.TabIndex = 4;
+            this.textIdentifier.Text = "X123456789";
             // 
             // textName
             // 

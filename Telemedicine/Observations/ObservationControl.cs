@@ -60,7 +60,7 @@ namespace Telemedicine.Observations
             var vs = GetVitalSign();
             var observation = _lastModel ?? new Observation();
             observation.Status = ObservationStatus.Final;
-            observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay));
+            observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay, vs.CategoryDisplay));
             observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.Item, vs.ItemDisplay);
             observation.Effective = new FhirDateTime(dateDate.Value.Date + dateTime.Value.TimeOfDay);
             

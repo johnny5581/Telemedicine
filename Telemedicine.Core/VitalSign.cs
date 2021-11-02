@@ -52,8 +52,8 @@ namespace Telemedicine
         public static VitalSign Oxygen = new VitalSign("59408-5", "Oxygen saturation in Arterial blood by Pulse oximetry", "SPO2血氧飽和濃度", "%");
         public static VitalSign HeartRate = new VitalSign("8867-4", "Heart Rate", "心率", "{beats}/min");
         public static VitalSign BloodPressurePanel = new VitalSign("35094-2", "Blood Pressure Panel", "血壓", "mmHg");
-        public static VitalSign SystolicBloodPressure = new VitalSign("8480-6", "Systolic Blood Pressure", "收縮壓", "mmHg");
-        public static VitalSign DistolicBloodPressure = new VitalSign("8480-4", "Distolic Blood Pressure", "舒張壓", "mmHg");
+        public static VitalSign SystolicBloodPressure = new VitalSign("8480-6", "Systolic Blood Pressure", "收縮壓", "mm[Hg]");
+        public static VitalSign DistolicBloodPressure = new VitalSign("8462-4", "Distolic Blood Pressure", "舒張壓", "mm[Hg]");
         //public static VitalSign Tempalte = new VitalSign("", "", "", "");
 
 
