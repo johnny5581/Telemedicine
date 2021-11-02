@@ -1,5 +1,5 @@
 ﻿
-namespace Telemedicine.MediRequests
+namespace Telemedicine.Meds
 {
     partial class MedicationRequestListForm
     {
@@ -34,7 +34,6 @@ namespace Telemedicine.MediRequests
             this.buttonSearch = new Telemedicine.Forms.CgIconButton();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.groupSearch = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -42,7 +41,7 @@ namespace Telemedicine.MediRequests
             this.comboStatus = new Telemedicine.Forms.CgLabelComboBox();
             this.textSubject = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
-            this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
+            this.textMedId = new Telemedicine.Forms.CgLabelTextBox();
             this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -70,6 +69,7 @@ namespace Telemedicine.MediRequests
             this.buttonSearch.Text = "查詢";
             this.buttonSearch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
             // 
             // dgvData
             // 
@@ -85,22 +85,16 @@ namespace Telemedicine.MediRequests
             // contextMenuStrip
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuEdit,
             this.menuDelete});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(99, 48);
-            // 
-            // menuEdit
-            // 
-            this.menuEdit.Name = "menuEdit";
-            this.menuEdit.Size = new System.Drawing.Size(98, 22);
-            this.menuEdit.Text = "修改";
+            this.contextMenuStrip.Size = new System.Drawing.Size(99, 26);
             // 
             // menuDelete
             // 
             this.menuDelete.Name = "menuDelete";
             this.menuDelete.Size = new System.Drawing.Size(98, 22);
             this.menuDelete.Text = "刪除";
+            this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
             // groupSearch
             // 
@@ -125,7 +119,7 @@ namespace Telemedicine.MediRequests
             this.flowLayoutPanel1.Controls.Add(this.comboStatus);
             this.flowLayoutPanel1.Controls.Add(this.textSubject);
             this.flowLayoutPanel1.Controls.Add(this.textPatIdentifier);
-            this.flowLayoutPanel1.Controls.Add(this.textPatName);
+            this.flowLayoutPanel1.Controls.Add(this.textMedId);
             this.flowLayoutPanel1.Controls.Add(this.comboPatOrg);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 21);
@@ -166,7 +160,7 @@ namespace Telemedicine.MediRequests
             // 
             // textPatIdentifier
             // 
-            this.textPatIdentifier.Header = "病患身分證";
+            this.textPatIdentifier.Header = "病患識別碼";
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatIdentifier.Location = new System.Drawing.Point(233, 3);
             this.textPatIdentifier.Name = "textPatIdentifier";
@@ -174,15 +168,15 @@ namespace Telemedicine.MediRequests
             this.textPatIdentifier.Size = new System.Drawing.Size(224, 30);
             this.textPatIdentifier.TabIndex = 4;
             // 
-            // textPatName
+            // textMedId
             // 
-            this.textPatName.Header = "藥品代碼";
-            this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatName.Location = new System.Drawing.Point(233, 39);
-            this.textPatName.Name = "textPatName";
-            this.textPatName.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatName.Size = new System.Drawing.Size(224, 30);
-            this.textPatName.TabIndex = 5;
+            this.textMedId.Header = "藥品代碼";
+            this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedId.Location = new System.Drawing.Point(233, 39);
+            this.textMedId.Name = "textMedId";
+            this.textMedId.Padding = new System.Windows.Forms.Padding(1);
+            this.textMedId.Size = new System.Drawing.Size(224, 30);
+            this.textMedId.TabIndex = 5;
             // 
             // comboPatOrg
             // 
@@ -251,7 +245,6 @@ namespace Telemedicine.MediRequests
         private Forms.CgIconButton buttonSearch;
         private Forms.CgDataGridPanel dgvData;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem menuEdit;
         private System.Windows.Forms.ToolStripMenuItem menuDelete;
         private System.Windows.Forms.GroupBox groupSearch;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -259,7 +252,7 @@ namespace Telemedicine.MediRequests
         private Forms.CgLabelComboBox comboStatus;
         private Forms.CgLabelTextBox textSubject;
         private Forms.CgLabelTextBox textPatIdentifier;
-        private Forms.CgLabelTextBox textPatName;
+        private Forms.CgLabelTextBox textMedId;
         private Forms.CgLabelComboBox comboPatOrg;
         private Forms.CgIconButton buttonClear;
         private System.Windows.Forms.SplitContainer splitContainer1;

@@ -45,10 +45,10 @@ namespace Telemedicine.Observations
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
             this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
+            this.textMedReq = new Telemedicine.Forms.CgLabelComboBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
             this.labelDateRange = new Telemedicine.Forms.CgLabelCustomControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textMedReq = new Telemedicine.Forms.CgLabelComboBox();
             this.contextMenuStrip.SuspendLayout();
             this.groupSearch.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -215,6 +215,17 @@ namespace Telemedicine.Observations
             this.comboPatOrg.Size = new System.Drawing.Size(194, 31);
             this.comboPatOrg.TabIndex = 6;
             // 
+            // textMedReq
+            // 
+            this.textMedReq.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.textMedReq.Header = "醫囑單";
+            this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedReq.Location = new System.Drawing.Point(398, 3);
+            this.textMedReq.Name = "textMedReq";
+            this.textMedReq.Padding = new System.Windows.Forms.Padding(1);
+            this.textMedReq.Size = new System.Drawing.Size(194, 31);
+            this.textMedReq.TabIndex = 7;
+            // 
             // buttonClear
             // 
             this.buttonClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -260,17 +271,6 @@ namespace Telemedicine.Observations
             this.splitContainer1.Size = new System.Drawing.Size(776, 609);
             this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 7;
-            // 
-            // textMedReq
-            // 
-            this.textMedReq.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.textMedReq.Header = "醫囑單";
-            this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedReq.Location = new System.Drawing.Point(398, 3);
-            this.textMedReq.Name = "textMedReq";
-            this.textMedReq.Padding = new System.Windows.Forms.Padding(1);
-            this.textMedReq.Size = new System.Drawing.Size(194, 31);
-            this.textMedReq.TabIndex = 7;
             // 
             // ObservationListForm
             // 

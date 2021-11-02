@@ -39,6 +39,9 @@ namespace Telemedicine
             this.menuObservationSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.視窗ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.傳輸監控ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMedReq = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMedReqCreate = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMedReqSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +60,8 @@ namespace Telemedicine
             // 
             this.menuData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuPatient,
-            this.menuObservation});
+            this.menuObservation,
+            this.menuMedReq});
             this.menuData.Name = "menuData";
             this.menuData.Size = new System.Drawing.Size(43, 20);
             this.menuData.Text = "資料";
@@ -74,14 +78,14 @@ namespace Telemedicine
             // menuPatientCreate
             // 
             this.menuPatientCreate.Name = "menuPatientCreate";
-            this.menuPatientCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuPatientCreate.Size = new System.Drawing.Size(146, 22);
             this.menuPatientCreate.Text = "初診資料建立";
             this.menuPatientCreate.Click += new System.EventHandler(this.menuPatientCreate_Click);
             // 
             // menuPatientSearch
             // 
             this.menuPatientSearch.Name = "menuPatientSearch";
-            this.menuPatientSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuPatientSearch.Size = new System.Drawing.Size(146, 22);
             this.menuPatientSearch.Text = "查詢";
             this.menuPatientSearch.Click += new System.EventHandler(this.menuPatientFind_Click);
             // 
@@ -97,14 +101,14 @@ namespace Telemedicine
             // menuObservationCreate
             // 
             this.menuObservationCreate.Name = "menuObservationCreate";
-            this.menuObservationCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationCreate.Size = new System.Drawing.Size(98, 22);
             this.menuObservationCreate.Text = "新增";
             this.menuObservationCreate.Click += new System.EventHandler(this.menuObservationPersonal_Click);
             // 
             // menuObservationSearch
             // 
             this.menuObservationSearch.Name = "menuObservationSearch";
-            this.menuObservationSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuObservationSearch.Size = new System.Drawing.Size(98, 22);
             this.menuObservationSearch.Text = "查詢";
             this.menuObservationSearch.Click += new System.EventHandler(this.menuObservationSearch_Click);
             // 
@@ -122,6 +126,29 @@ namespace Telemedicine
             this.傳輸監控ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.傳輸監控ToolStripMenuItem.Text = "傳輸監控";
             this.傳輸監控ToolStripMenuItem.Click += new System.EventHandler(this.傳輸監控ToolStripMenuItem_Click);
+            // 
+            // menuMedReq
+            // 
+            this.menuMedReq.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuMedReqCreate,
+            this.menuMedReqSearch});
+            this.menuMedReq.Name = "menuMedReq";
+            this.menuMedReq.Size = new System.Drawing.Size(180, 22);
+            this.menuMedReq.Text = "處方";
+            // 
+            // menuMedReqCreate
+            // 
+            this.menuMedReqCreate.Name = "menuMedReqCreate";
+            this.menuMedReqCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuMedReqCreate.Text = "開立";
+            this.menuMedReqCreate.Click += new System.EventHandler(this.menuMedReqCreate_Click);
+            // 
+            // menuMedReqSearch
+            // 
+            this.menuMedReqSearch.Name = "menuMedReqSearch";
+            this.menuMedReqSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuMedReqSearch.Text = "查詢";
+            this.menuMedReqSearch.Click += new System.EventHandler(this.menuMedReqSearch_Click);
             // 
             // MainForm
             // 
@@ -149,6 +176,9 @@ namespace Telemedicine
         private System.Windows.Forms.ToolStripMenuItem menuPatient;
         private System.Windows.Forms.ToolStripMenuItem menuPatientCreate;
         private System.Windows.Forms.ToolStripMenuItem menuPatientSearch;
+        private System.Windows.Forms.ToolStripMenuItem menuMedReq;
+        private System.Windows.Forms.ToolStripMenuItem menuMedReqCreate;
+        private System.Windows.Forms.ToolStripMenuItem menuMedReqSearch;
     }
 }
 

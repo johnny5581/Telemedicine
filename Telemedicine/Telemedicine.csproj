@@ -150,17 +150,32 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MediRequests\MedicationRequestCreateForm.cs">
+    <Compile Include="Meds\MedicationRequestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationRequestControl.Designer.cs">
+      <DependentUpon>MedicationRequestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Meds\MedicationRequestCreateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MediRequests\MedicationRequestCreateForm.Designer.cs">
+    <Compile Include="Meds\MedicationRequestCreateForm.Designer.cs">
       <DependentUpon>MedicationRequestCreateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MediRequests\MedicationRequestListForm.cs">
+    <Compile Include="Meds\MedicationRequestDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MediRequests\MedicationRequestListForm.Designer.cs">
+    <Compile Include="Meds\MedicationRequestListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationRequestListForm.Designer.cs">
       <DependentUpon>MedicationRequestListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Meds\MedicationListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationListForm.Designer.cs">
+      <DependentUpon>MedicationListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Observations\CreateSingleForm.cs">
       <SubType>Form</SubType>
@@ -233,10 +248,16 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MediRequests\MedicationRequestCreateForm.resx">
+    <EmbeddedResource Include="Meds\MedicationListForm.resx">
+      <DependentUpon>MedicationListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Meds\MedicationRequestControl.resx">
+      <DependentUpon>MedicationRequestControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Meds\MedicationRequestCreateForm.resx">
       <DependentUpon>MedicationRequestCreateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MediRequests\MedicationRequestListForm.resx">
+    <EmbeddedResource Include="Meds\MedicationRequestListForm.resx">
       <DependentUpon>MedicationRequestListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Observations\CreateSingleForm.resx">

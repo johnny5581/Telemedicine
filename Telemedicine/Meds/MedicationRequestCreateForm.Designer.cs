@@ -1,5 +1,5 @@
 ﻿
-namespace Telemedicine.MediRequests
+namespace Telemedicine.Meds
 {
     partial class MedicationRequestCreateForm
     {
@@ -36,13 +36,13 @@ namespace Telemedicine.MediRequests
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
             this.groupPat = new System.Windows.Forms.GroupBox();
+            this.radioPatIPD = new System.Windows.Forms.RadioButton();
+            this.radioPatOPD = new System.Windows.Forms.RadioButton();
             this.buttonPat = new Telemedicine.Forms.CgIconButton();
             this.textPatId = new Telemedicine.Forms.CgLabelControl();
             this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
-            this.radioPatOPD = new System.Windows.Forms.RadioButton();
-            this.radopPatIPD = new System.Windows.Forms.RadioButton();
             this.buttonCreate = new Telemedicine.Forms.CgIconButton();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -58,10 +58,10 @@ namespace Telemedicine.MediRequests
             this.groupBox3.Controls.Add(this.panel1);
             this.groupBox3.Location = new System.Drawing.Point(195, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(409, 223);
+            this.groupBox3.Size = new System.Drawing.Size(409, 222);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "用藥";
+            this.groupBox3.Text = "給藥";
             // 
             // dgvData
             // 
@@ -69,8 +69,8 @@ namespace Telemedicine.MediRequests
             this.dgvData.InfoBoxVisible = false;
             this.dgvData.Location = new System.Drawing.Point(3, 56);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(403, 164);
-            this.dgvData.TabIndex = 3;
+            this.dgvData.Size = new System.Drawing.Size(403, 163);
+            this.dgvData.TabIndex = 1;
             this.dgvData.TopPanelVisible = false;
             // 
             // panel1
@@ -96,6 +96,7 @@ namespace Telemedicine.MediRequests
             this.buttonItemEdit.Text = "修改";
             this.buttonItemEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonItemEdit.UseVisualStyleBackColor = true;
+            this.buttonItemEdit.Click += new System.EventHandler(this.buttonItemEdit_Click);
             // 
             // buttonItemDelete
             // 
@@ -109,6 +110,7 @@ namespace Telemedicine.MediRequests
             this.buttonItemDelete.Text = "刪除";
             this.buttonItemDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonItemDelete.UseVisualStyleBackColor = true;
+            this.buttonItemDelete.Click += new System.EventHandler(this.buttonItemDelete_Click);
             // 
             // buttonItemAdd
             // 
@@ -122,10 +124,11 @@ namespace Telemedicine.MediRequests
             this.buttonItemAdd.Text = "新增";
             this.buttonItemAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonItemAdd.UseVisualStyleBackColor = true;
+            this.buttonItemAdd.Click += new System.EventHandler(this.buttonItemAdd_Click);
             // 
             // groupPat
             // 
-            this.groupPat.Controls.Add(this.radopPatIPD);
+            this.groupPat.Controls.Add(this.radioPatIPD);
             this.groupPat.Controls.Add(this.radioPatOPD);
             this.groupPat.Controls.Add(this.buttonPat);
             this.groupPat.Controls.Add(this.textPatId);
@@ -139,6 +142,28 @@ namespace Telemedicine.MediRequests
             this.groupPat.TabStop = false;
             this.groupPat.Text = "病患資料";
             // 
+            // radioPatIPD
+            // 
+            this.radioPatIPD.AutoSize = true;
+            this.radioPatIPD.Location = new System.Drawing.Point(6, 187);
+            this.radioPatIPD.Name = "radioPatIPD";
+            this.radioPatIPD.Size = new System.Drawing.Size(47, 16);
+            this.radioPatIPD.TabIndex = 9;
+            this.radioPatIPD.Text = "住院";
+            this.radioPatIPD.UseVisualStyleBackColor = true;
+            // 
+            // radioPatOPD
+            // 
+            this.radioPatOPD.AutoSize = true;
+            this.radioPatOPD.Checked = true;
+            this.radioPatOPD.Location = new System.Drawing.Point(6, 165);
+            this.radioPatOPD.Name = "radioPatOPD";
+            this.radioPatOPD.Size = new System.Drawing.Size(47, 16);
+            this.radioPatOPD.TabIndex = 8;
+            this.radioPatOPD.TabStop = true;
+            this.radioPatOPD.Text = "門診";
+            this.radioPatOPD.UseVisualStyleBackColor = true;
+            // 
             // buttonPat
             // 
             this.buttonPat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -150,6 +175,7 @@ namespace Telemedicine.MediRequests
             this.buttonPat.Text = "選擇病人";
             this.buttonPat.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonPat.UseVisualStyleBackColor = true;
+            this.buttonPat.Click += new System.EventHandler(this.buttonPat_Click);
             // 
             // textPatId
             // 
@@ -191,34 +217,12 @@ namespace Telemedicine.MediRequests
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
             // 
-            // radioPatOPD
-            // 
-            this.radioPatOPD.AutoSize = true;
-            this.radioPatOPD.Checked = true;
-            this.radioPatOPD.Location = new System.Drawing.Point(6, 165);
-            this.radioPatOPD.Name = "radioPatOPD";
-            this.radioPatOPD.Size = new System.Drawing.Size(47, 16);
-            this.radioPatOPD.TabIndex = 8;
-            this.radioPatOPD.TabStop = true;
-            this.radioPatOPD.Text = "門診";
-            this.radioPatOPD.UseVisualStyleBackColor = true;
-            // 
-            // radopPatIPD
-            // 
-            this.radopPatIPD.AutoSize = true;
-            this.radopPatIPD.Location = new System.Drawing.Point(6, 187);
-            this.radopPatIPD.Name = "radopPatIPD";
-            this.radopPatIPD.Size = new System.Drawing.Size(47, 16);
-            this.radopPatIPD.TabIndex = 9;
-            this.radopPatIPD.Text = "住院";
-            this.radopPatIPD.UseVisualStyleBackColor = true;
-            // 
             // buttonCreate
             // 
             this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonCreate.IconSize = 0;
-            this.buttonCreate.Location = new System.Drawing.Point(454, 241);
+            this.buttonCreate.Location = new System.Drawing.Point(460, 240);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(144, 53);
             this.buttonCreate.TabIndex = 6;
@@ -229,7 +233,7 @@ namespace Telemedicine.MediRequests
             // 
             // MedicationRequestCreateForm
             // 
-            this.ClientSize = new System.Drawing.Size(616, 306);
+            this.ClientSize = new System.Drawing.Size(616, 305);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupPat);
@@ -251,13 +255,13 @@ namespace Telemedicine.MediRequests
         private Forms.CgLabelTextBox textPatBrithDate;
         private Forms.CgLabelTextBox textPatName;
         private System.Windows.Forms.GroupBox groupBox3;
-        private Forms.CgDataGridPanel dgvData;
         private System.Windows.Forms.Panel panel1;
-        private Forms.CgIconButton buttonItemEdit;
         private Forms.CgIconButton buttonItemDelete;
         private Forms.CgIconButton buttonItemAdd;
-        private System.Windows.Forms.RadioButton radopPatIPD;
+        private System.Windows.Forms.RadioButton radioPatIPD;
         private System.Windows.Forms.RadioButton radioPatOPD;
         private Forms.CgIconButton buttonCreate;
+        private Forms.CgDataGridPanel dgvData;
+        private Forms.CgIconButton buttonItemEdit;
     }
 }
