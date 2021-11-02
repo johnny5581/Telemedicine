@@ -29,25 +29,104 @@ namespace Telemedicine.MediRequests
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupPat = new System.Windows.Forms.GroupBox();
-            this.buttonPat = new Telemedicine.Forms.CgIconButton();
-            this.textPatId = new Telemedicine.Forms.CgLabelControl();
-            this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
-            this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
-            this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonItemEdit = new Telemedicine.Forms.CgIconButton();
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
-            this.groupPat.SuspendLayout();
+            this.groupPat = new System.Windows.Forms.GroupBox();
+            this.buttonPat = new Telemedicine.Forms.CgIconButton();
+            this.textPatId = new Telemedicine.Forms.CgLabelControl();
+            this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
+            this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
+            this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
+            this.radioPatOPD = new System.Windows.Forms.RadioButton();
+            this.radopPatIPD = new System.Windows.Forms.RadioButton();
+            this.buttonCreate = new Telemedicine.Forms.CgIconButton();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupPat.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.dgvData);
+            this.groupBox3.Controls.Add(this.panel1);
+            this.groupBox3.Location = new System.Drawing.Point(195, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(409, 223);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "用藥";
+            // 
+            // dgvData
+            // 
+            this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvData.InfoBoxVisible = false;
+            this.dgvData.Location = new System.Drawing.Point(3, 56);
+            this.dgvData.Name = "dgvData";
+            this.dgvData.Size = new System.Drawing.Size(403, 164);
+            this.dgvData.TabIndex = 3;
+            this.dgvData.TopPanelVisible = false;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.buttonItemEdit);
+            this.panel1.Controls.Add(this.buttonItemDelete);
+            this.panel1.Controls.Add(this.buttonItemAdd);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 18);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(403, 38);
+            this.panel1.TabIndex = 0;
+            // 
+            // buttonItemEdit
+            // 
+            this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonItemEdit.IconSize = 0;
+            this.buttonItemEdit.Location = new System.Drawing.Point(244, 9);
+            this.buttonItemEdit.Name = "buttonItemEdit";
+            this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemEdit.TabIndex = 2;
+            this.buttonItemEdit.Text = "修改";
+            this.buttonItemEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonItemEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonItemDelete
+            // 
+            this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonItemDelete.IconSize = 0;
+            this.buttonItemDelete.Location = new System.Drawing.Point(325, 9);
+            this.buttonItemDelete.Name = "buttonItemDelete";
+            this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemDelete.TabIndex = 1;
+            this.buttonItemDelete.Text = "刪除";
+            this.buttonItemDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonItemDelete.UseVisualStyleBackColor = true;
+            // 
+            // buttonItemAdd
+            // 
+            this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonItemAdd.IconSize = 0;
+            this.buttonItemAdd.Location = new System.Drawing.Point(163, 9);
+            this.buttonItemAdd.Name = "buttonItemAdd";
+            this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemAdd.TabIndex = 0;
+            this.buttonItemAdd.Text = "新增";
+            this.buttonItemAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonItemAdd.UseVisualStyleBackColor = true;
             // 
             // groupPat
             // 
+            this.groupPat.Controls.Add(this.radopPatIPD);
+            this.groupPat.Controls.Add(this.radioPatOPD);
             this.groupPat.Controls.Add(this.buttonPat);
             this.groupPat.Controls.Add(this.textPatId);
             this.groupPat.Controls.Add(this.textPatSex);
@@ -55,7 +134,7 @@ namespace Telemedicine.MediRequests
             this.groupPat.Controls.Add(this.textPatName);
             this.groupPat.Location = new System.Drawing.Point(12, 12);
             this.groupPat.Name = "groupPat";
-            this.groupPat.Size = new System.Drawing.Size(177, 167);
+            this.groupPat.Size = new System.Drawing.Size(177, 222);
             this.groupPat.TabIndex = 2;
             this.groupPat.TabStop = false;
             this.groupPat.Text = "病患資料";
@@ -112,89 +191,53 @@ namespace Telemedicine.MediRequests
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
             // 
-            // groupBox3
+            // radioPatOPD
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.dgvData);
-            this.groupBox3.Controls.Add(this.panel1);
-            this.groupBox3.Location = new System.Drawing.Point(195, 12);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(409, 291);
-            this.groupBox3.TabIndex = 5;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "用藥";
+            this.radioPatOPD.AutoSize = true;
+            this.radioPatOPD.Checked = true;
+            this.radioPatOPD.Location = new System.Drawing.Point(6, 165);
+            this.radioPatOPD.Name = "radioPatOPD";
+            this.radioPatOPD.Size = new System.Drawing.Size(47, 16);
+            this.radioPatOPD.TabIndex = 8;
+            this.radioPatOPD.TabStop = true;
+            this.radioPatOPD.Text = "門診";
+            this.radioPatOPD.UseVisualStyleBackColor = true;
             // 
-            // dgvData
+            // radopPatIPD
             // 
-            this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvData.InfoBoxVisible = false;
-            this.dgvData.Location = new System.Drawing.Point(3, 56);
-            this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(403, 232);
-            this.dgvData.TabIndex = 3;
-            this.dgvData.TopPanelVisible = false;
+            this.radopPatIPD.AutoSize = true;
+            this.radopPatIPD.Location = new System.Drawing.Point(6, 187);
+            this.radopPatIPD.Name = "radopPatIPD";
+            this.radopPatIPD.Size = new System.Drawing.Size(47, 16);
+            this.radopPatIPD.TabIndex = 9;
+            this.radopPatIPD.Text = "住院";
+            this.radopPatIPD.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // buttonCreate
             // 
-            this.panel1.Controls.Add(this.buttonItemEdit);
-            this.panel1.Controls.Add(this.buttonItemDelete);
-            this.panel1.Controls.Add(this.buttonItemAdd);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 18);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(403, 38);
-            this.panel1.TabIndex = 0;
-            // 
-            // buttonItemEdit
-            // 
-            this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemEdit.IconSize = 0;
-            this.buttonItemEdit.Location = new System.Drawing.Point(244, 9);
-            this.buttonItemEdit.Name = "buttonItemEdit";
-            this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
-            this.buttonItemEdit.TabIndex = 2;
-            this.buttonItemEdit.Text = "修改";
-            this.buttonItemEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.buttonItemEdit.UseVisualStyleBackColor = true;
-            // 
-            // buttonItemDelete
-            // 
-            this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemDelete.IconSize = 0;
-            this.buttonItemDelete.Location = new System.Drawing.Point(325, 9);
-            this.buttonItemDelete.Name = "buttonItemDelete";
-            this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
-            this.buttonItemDelete.TabIndex = 1;
-            this.buttonItemDelete.Text = "刪除";
-            this.buttonItemDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.buttonItemDelete.UseVisualStyleBackColor = true;
-            // 
-            // buttonItemAdd
-            // 
-            this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAdd.IconSize = 0;
-            this.buttonItemAdd.Location = new System.Drawing.Point(163, 9);
-            this.buttonItemAdd.Name = "buttonItemAdd";
-            this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
-            this.buttonItemAdd.TabIndex = 0;
-            this.buttonItemAdd.Text = "新增";
-            this.buttonItemAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.buttonItemAdd.UseVisualStyleBackColor = true;
+            this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonCreate.IconSize = 0;
+            this.buttonCreate.Location = new System.Drawing.Point(454, 241);
+            this.buttonCreate.Name = "buttonCreate";
+            this.buttonCreate.Size = new System.Drawing.Size(144, 53);
+            this.buttonCreate.TabIndex = 6;
+            this.buttonCreate.Text = "建立";
+            this.buttonCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonCreate.UseVisualStyleBackColor = true;
+            this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
             // MedicationRequestCreateForm
             // 
-            this.ClientSize = new System.Drawing.Size(616, 516);
+            this.ClientSize = new System.Drawing.Size(616, 306);
+            this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupPat);
             this.Name = "MedicationRequestCreateForm";
-            this.groupPat.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.groupPat.ResumeLayout(false);
+            this.groupPat.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -213,5 +256,8 @@ namespace Telemedicine.MediRequests
         private Forms.CgIconButton buttonItemEdit;
         private Forms.CgIconButton buttonItemDelete;
         private Forms.CgIconButton buttonItemAdd;
+        private System.Windows.Forms.RadioButton radopPatIPD;
+        private System.Windows.Forms.RadioButton radioPatOPD;
+        private Forms.CgIconButton buttonCreate;
     }
 }

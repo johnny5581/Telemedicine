@@ -169,12 +169,33 @@ namespace Telemedicine.Controllers
         {
             return Search(criteria.ToArray());
         }
+        public IList<T> SearchPost(IEnumerable<string> criteria)
+        {
+            return SearchPost(criteria.ToArray());
+        }
         public IList<T> Search(bool throwOnNoCriteria, params string[] criteria)
         {
             if (criteria.Length == 0 && throwOnNoCriteria)
                 throw new InvalidOperationException("no search criteria");
-            criteria = criteria.Concat(new string[] { "_count=100" }).ToArray();
-            var bundle = ExecuteClient(client => client.Search<T>(criteria));
+            //criteria = criteria.Concat(new string[] { "_count=100" }).ToArray();
+            var bundle = ExecuteClient(client => client.Search<T>(criteria, pageSize: 100));
+            var list = new List<T>();
+            if (bundle.Entry.Count > 0)
+            {
+                foreach (var entry in bundle.Entry)
+                {
+                    var item = (T)entry.Resource;
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+        public IList<T> SearchPost(bool throwOnNoCriteria, params string[] criteria)
+        {
+            if (criteria.Length == 0 && throwOnNoCriteria)
+                throw new InvalidOperationException("no search criteria");
+            //criteria = criteria.Concat(new string[] { "_count=100" }).ToArray();
+            var bundle = ExecuteClient(client => client.SearchUsingPost<T>(criteria, pageSize: 100));
             var list = new List<T>();
             if (bundle.Entry.Count > 0)
             {
@@ -190,7 +211,15 @@ namespace Telemedicine.Controllers
         {
             return Search(true, criteria);
         }
+        public IList<T> SearchPost(params string[] criteria)
+        {
+            return SearchPost(true, criteria);
+        }
         public IList<T> SearchAll()
+        {
+            return Search(false);
+        }
+        public IList<T> SearchPostAll()
         {
             return Search(false);
         }

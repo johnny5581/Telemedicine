@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hl7.Fhir.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,17 @@ namespace Telemedicine.MediRequests
         public MedicationRequestCreateForm()
         {
             InitializeComponent();
+        }
+
+        private void buttonCreate_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                var request = new MedicationRequest();
+                request.Status = MedicationRequest.medicationrequestStatus.Active;
+                request.Intent = MedicationRequest.medicationRequestIntent.Order;
+
+            });
         }
     }
 }

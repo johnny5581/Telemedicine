@@ -118,7 +118,16 @@ namespace Telemedicine.Observations
                 criteria.Add("code=" + vsCode);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
-            var obs = _ctrlObs.Search(criteria);
+            if (checkDateRange.Checked)
+            {
+                var begin = dateBeginDate.Value.Date + dateBeginTime.Value.TimeOfDay;
+                var end = dateEndDate.Value.Date + dateEndTime.Value.TimeOfDay;
+                var datBegin = begin.ToString("yyyy-MM-dd");
+                var datEnd = end.ToString("yyyy-MM-dd");
+                criteria.Add("date=gt" + datBegin);
+                criteria.Add("date=lt" + datEnd);
+            }
+            var obs = _ctrlObs.SearchPost(criteria);
             var dataList = obs.Select(r => new ObservationData(r)).ToList();
             dgvData.SetSource(dataList);
         }

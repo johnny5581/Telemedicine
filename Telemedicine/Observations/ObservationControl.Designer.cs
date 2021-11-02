@@ -30,12 +30,12 @@ namespace Telemedicine.Observations
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dateTime = new System.Windows.Forms.DateTimePicker();
             this.textValue2 = new Telemedicine.Forms.CgLabelTextBox();
+            this.dateDate = new System.Windows.Forms.DateTimePicker();
             this.textUnit = new Telemedicine.Forms.CgLabelTextBox();
             this.comboItem = new Telemedicine.Forms.CgLabelComboBox();
             this.textValue = new Telemedicine.Forms.CgLabelTextBox();
-            this.dateTime = new System.Windows.Forms.DateTimePicker();
-            this.dateDate = new System.Windows.Forms.DateTimePicker();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,10 +50,20 @@ namespace Telemedicine.Observations
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(266, 206);
+            this.groupBox2.Size = new System.Drawing.Size(266, 250);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生理數值";
+            // 
+            // dateTime
+            // 
+            this.dateTime.CustomFormat = "HH:mm:ss";
+            this.dateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTime.Location = new System.Drawing.Point(164, 222);
+            this.dateTime.Name = "dateTime";
+            this.dateTime.ShowUpDown = true;
+            this.dateTime.Size = new System.Drawing.Size(93, 22);
+            this.dateTime.TabIndex = 10;
             // 
             // textValue2
             // 
@@ -66,6 +76,15 @@ namespace Telemedicine.Observations
             this.textValue2.Size = new System.Drawing.Size(251, 30);
             this.textValue2.TabIndex = 3;
             this.textValue2.Visible = false;
+            // 
+            // dateDate
+            // 
+            this.dateDate.CustomFormat = "yyyy-MM-dd";
+            this.dateDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateDate.Location = new System.Drawing.Point(46, 222);
+            this.dateDate.Name = "dateDate";
+            this.dateDate.Size = new System.Drawing.Size(112, 22);
+            this.dateDate.TabIndex = 9;
             // 
             // textUnit
             // 
@@ -103,31 +122,12 @@ namespace Telemedicine.Observations
             this.textValue.Size = new System.Drawing.Size(251, 30);
             this.textValue.TabIndex = 0;
             // 
-            // dateTime
-            // 
-            this.dateTime.CustomFormat = "HH:mm:ss";
-            this.dateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTime.Location = new System.Drawing.Point(164, 163);
-            this.dateTime.Name = "dateTime";
-            this.dateTime.ShowUpDown = true;
-            this.dateTime.Size = new System.Drawing.Size(93, 22);
-            this.dateTime.TabIndex = 10;
-            // 
-            // dateDate
-            // 
-            this.dateDate.CustomFormat = "yyyy-MM-dd";
-            this.dateDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateDate.Location = new System.Drawing.Point(46, 163);
-            this.dateDate.Name = "dateDate";
-            this.dateDate.Size = new System.Drawing.Size(112, 22);
-            this.dateDate.TabIndex = 9;
-            // 
             // ObservationControl
             // 
             this.Controls.Add(this.groupBox2);
             this.Name = "ObservationControl";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(272, 212);
+            this.Size = new System.Drawing.Size(272, 256);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
