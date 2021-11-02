@@ -66,7 +66,18 @@ namespace Telemedicine.Observations
             obs.Subject = new ResourceReference("Patient/" + id);
             obs.Effective = FhirDateTime.Now();
             var valueQuantity = new Quantity(value.To<decimal>(), vs.Unit, vs.UnitSystem);
+
+
             //valueQuantity.Code = vs.Code;
+            if (vs.BodySite!=null)
+            {
+                obs.BodySite = new CodeableConcept { };
+                foreach (var item in vs.BodySite)
+                {
+                    obs.BodySite.Coding.Add(new Coding(item.CodeSystem,item.Code,item.CodeDisplay));
+                }
+            }
+            //
             obs.Value = valueQuantity;
             _ctrlObs.Create(obs);
             MsgBoxHelper.Info("上傳成功");
