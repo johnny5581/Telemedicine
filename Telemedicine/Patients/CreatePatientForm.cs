@@ -265,10 +265,7 @@ namespace Telemedicine.Patients
                 //使用身分證檢核有無重複
                 //有   詢問是否更新
                 //沒有 要新增
-                var whereObj = new
-                {
-                    resourceType = "Patient",
-                };
+            
                 string pGendetr = "Unknown";
                 if (radioButtonMale.Checked)
                     pGendetr = "male";
@@ -336,7 +333,14 @@ namespace Telemedicine.Patients
                                                                     "N", textBoxContactRelationship.Text)
                             },
                             Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
-                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax, Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxContactTelecom.Text) },
+                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax
+                                            , Hl7.Fhir.Model.ContactPoint.ContactPointUse.Mobile, textBoxContactTelecom.Text),
+                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Email
+                                            , Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxEmail.Text),
+                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Url
+                                            , Hl7.Fhir.Model.ContactPoint.ContactPointUse.Temp, textBoxUrl.Text),
+
+                            },
                         }
                     },
                     ManagingOrganization = new Hl7.Fhir.Model.ResourceReference("Organization/MITW.ForContact"),
