@@ -102,26 +102,33 @@ namespace Telemedicine.Observations
                 var list = dgvData.GetSortableSource<ObservationData>().Select(r=>r.Data).ToList();
                 if (list.Count == 0)
                     throw new Exception("沒有新增數值");
-                else if (list.Count == 1)
+                //else if (list.Count == 1)
+                //{
+                //    var observation = list[0];
+                //    observation.Subject = new ResourceReference("Patient/" + textPatId.Text);
+                //    if (textMedId.Text.IsNotNullOrEmpty())
+                //        observation.BasedOn.Add(new ResourceReference("MedicationRequest/" + textMedId.Text));
+                //    _ctrlObs.Create(observation);
+                //}
+                //else
+                //{
+                //    var bundle = new Bundle();
+                //    bundle.Type = Bundle.BundleType.Transaction;
+                //    for (var i = 0; i < list.Count; i++)
+                //    {
+                //        list[i].Subject = new ResourceReference("Patient/" + textPatId.Text);
+                //        if (textMedId.Text.IsNotNullOrEmpty())
+                //            list[i].BasedOn.Add(new ResourceReference("MedicationRequest/" + textMedId.Text));
+                //        bundle.Entry.Add(new Bundle.EntryComponent { Resource = list[i] });
+                //    }
+                //    _ctrlObs.CreateBundle(bundle);
+                //}
+                foreach(var observation in list)
                 {
-                    var observation = list[0];
                     observation.Subject = new ResourceReference("Patient/" + textPatId.Text);
                     if (textMedId.Text.IsNotNullOrEmpty())
                         observation.BasedOn.Add(new ResourceReference("MedicationRequest/" + textMedId.Text));
                     _ctrlObs.Create(observation);
-                }
-                else
-                {
-                    var bundle = new Bundle();
-                    bundle.Type = Bundle.BundleType.Transaction;
-                    for (var i = 0; i < list.Count; i++)
-                    {
-                        list[i].Subject = new ResourceReference("Patient/" + textPatId.Text);
-                        if (textMedId.Text.IsNotNullOrEmpty())
-                            list[i].BasedOn.Add(new ResourceReference("MedicationRequest/" + textMedId.Text));
-                        bundle.Entry.Add(new Bundle.EntryComponent { Resource = list[i] });
-                    }
-                    _ctrlObs.CreateBundle(bundle);
                 }
                 MsgBoxHelper.Info("上傳成功");
                 dgvData.ClearSource();

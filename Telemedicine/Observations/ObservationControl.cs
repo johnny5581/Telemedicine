@@ -61,7 +61,7 @@ namespace Telemedicine.Observations
             var observation = _lastModel ?? new Observation();
             observation.Status = ObservationStatus.Final;
             observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay));
-            observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.ItemDisplay, vs.Item);
+            observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.Item, vs.ItemDisplay);
             observation.Effective = new FhirDateTime(dateDate.Value.Date + dateTime.Value.TimeOfDay);
             
             if(vs.Code != VitalSign.BloodPressurePanel.Code)
@@ -72,17 +72,17 @@ namespace Telemedicine.Observations
             {
                 var sbp = new Observation.ComponentComponent();
                 sbp.Code = new CodeableConcept(VitalSign.SystolicBloodPressure.CodeSystem,
-                    VitalSign.SystolicBloodPressure.Code, 
-                    VitalSign.SystolicBloodPressure.ItemDisplay,
-                    VitalSign.SystolicBloodPressure.Item);
+                    VitalSign.SystolicBloodPressure.Code,
+                    VitalSign.SystolicBloodPressure.Item, 
+                    VitalSign.SystolicBloodPressure.ItemDisplay);
                 sbp.Value = GetValueQuantity(textValue.Text, VitalSign.SystolicBloodPressure);
                 observation.Component.Add(sbp);
 
                 var dbp = new Observation.ComponentComponent();
                 dbp.Code = new CodeableConcept(VitalSign.DistolicBloodPressure.CodeSystem,
                     VitalSign.DistolicBloodPressure.Code,
-                    VitalSign.DistolicBloodPressure.ItemDisplay,
-                    VitalSign.DistolicBloodPressure.Item);
+                    VitalSign.DistolicBloodPressure.Item,
+                    VitalSign.DistolicBloodPressure.ItemDisplay);
                 dbp.Value = GetValueQuantity(textValue.Text, VitalSign.DistolicBloodPressure);
                 observation.Component.Add(dbp);
             }

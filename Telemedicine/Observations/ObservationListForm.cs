@@ -171,11 +171,17 @@ namespace Telemedicine.Observations
                 {
                     var sbp = data.Component.FirstOrDefault(r => r.Code.Coding.FirstOrDefault()?.Code == VitalSign.SystolicBloodPressure.Code);
                     var dbp = data.Component.FirstOrDefault(r => r.Code.Coding.FirstOrDefault()?.Code == VitalSign.DistolicBloodPressure.Code);
-                    Value = $"SBP:{(sbp?.Value as Quantity)?.Value}, DBP: {(dbp?.Value as Quantity)?.Value}";
+                    var qsbp = sbp?.Value as Quantity;
+                    var qdbp = dbp?.Value as Quantity;
+                    Value = $"SBP:{qsbp?.Value}, DBP: {qdbp?.Value}";
+                    Unit = $"{qsbp?.Unit}, {qdbp?.Unit}";
                 }
                 else
+                {
                     Value = quantity?.Value.ToString(false);
-                Unit = quantity?.Unit;
+                    Unit = quantity?.Unit;
+                }
+                Effecitve = (data.Effective as FhirDateTime).ToDateTime().ToString("yyyy-MM-dd HH:mm:ss");
             }
             [DisplayName("#")]
             public string Id { get; set; }
@@ -187,6 +193,7 @@ namespace Telemedicine.Observations
             public string Code { get; set; }
             public string Value { get; set; }
             public string Unit { get; set; }
+            public string Effecitve { get; set; }
         }
     }
 }
