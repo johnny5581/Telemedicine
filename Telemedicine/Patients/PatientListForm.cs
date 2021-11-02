@@ -24,13 +24,16 @@ namespace Telemedicine.Patients
 
             dgvData.AddTextColumn<Patient>(r => r.Id, "#");
             dgvData.AddTextColumn<Patient>(r => r.Name, formatter: NameFormatter);
+            dgvData.AddTextColumn<Patient>(r => r.BirthDate);
+            dgvData.AddTextColumn<Patient>(r => r.Gender);
 
-            
             comboOrg.BindOrganizations("全部");
         }
 
         private void NameFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
+            e.Value = PatientController.GetName(e.Value as List<HumanName>) ?? "";
+            e.FormattingApplied = true;
         }
 
         private void PatientFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
@@ -59,7 +62,7 @@ namespace Telemedicine.Patients
             var org = comboOrg.SelectedValue as string;
 
             dgvData.ClearSource();
-            
+
             var criteria = new List<string>();
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
@@ -79,11 +82,22 @@ namespace Telemedicine.Patients
 
         private void menuEdit_Click(object sender, EventArgs e)
         {
-            
+            Execute(() =>
+            {
+                var item = GetSelectedItem<Patient>(dgvData);
+                var d = new CreatePatientForm();
+                d.LoadPatient(item);
+                d.Show();
+            });
         }
 
         private void menuDelete_Click(object sender, EventArgs e)
         {
+            Execute(() =>
+            {
+                var item = GetSelectedItem<Patient>(dgvData);
+                _ctrlPat.Delete(item);
+            });
         }
     }
 }
