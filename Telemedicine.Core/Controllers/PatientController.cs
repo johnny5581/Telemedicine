@@ -30,6 +30,17 @@ namespace Telemedicine.Controllers
             return pat;
         }
 
+        public Patient SearchSingle(IEnumerable<string> criteria)
+        {
+            var pats = Search(criteria);
+            Patient pat = null;
+            if (pats.Count > 1)
+                pat = Interactive(ia => ia.SingleSelection(pats, r => GetName(r)));
+            else if (pats.Count == 1)
+                pat = pats[0];
+            return pat;
+        }
+
         /// <summary>
         /// 查詢多個使用者
         /// </summary>        

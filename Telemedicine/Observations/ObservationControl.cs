@@ -81,12 +81,17 @@ namespace Telemedicine.Observations
             var model = _lastModel;
             if(model == null)
             {
-                model = new Observation();                
+                model = new Observation();
+                model.Status = ObservationStatus.Final;
             }
 
-            model.Value = GetValueQuantity();
-            
-            
+            var valueQuantity = GetValueQuantity();
+            model.Value = valueQuantity;
+            var effective = dateDate.Value.Date + dateTime.Value.TimeOfDay;
+            model.Effective = new FhirDateTime(effective);
+
+            model.Code.Coding.Clear();
+            model.Code.Coding.Add(new Coding(vs.CodeSystem, vs.Code, vs.Item));
 
 
             return model;

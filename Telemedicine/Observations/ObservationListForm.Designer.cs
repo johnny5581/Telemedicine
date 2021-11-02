@@ -42,8 +42,10 @@ namespace Telemedicine.Observations
             this.comboVitalSign = new Telemedicine.Forms.CgLabelComboBox();
             this.textSubject = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
-            this.labelDateRange = new Telemedicine.Forms.CgLabelCustomControl();
+            this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
+            this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
+            this.labelDateRange = new Telemedicine.Forms.CgLabelCustomControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.contextMenuStrip.SuspendLayout();
             this.groupSearch.SuspendLayout();
@@ -88,19 +90,21 @@ namespace Telemedicine.Observations
             this.menuEdit,
             this.menuDelete});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(99, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 70);
             // 
             // menuEdit
             // 
             this.menuEdit.Name = "menuEdit";
-            this.menuEdit.Size = new System.Drawing.Size(98, 22);
+            this.menuEdit.Size = new System.Drawing.Size(180, 22);
             this.menuEdit.Text = "修改";
+            this.menuEdit.Click += new System.EventHandler(this.menuEdit_Click);
             // 
             // menuDelete
             // 
             this.menuDelete.Name = "menuDelete";
-            this.menuDelete.Size = new System.Drawing.Size(98, 22);
+            this.menuDelete.Size = new System.Drawing.Size(180, 22);
             this.menuDelete.Text = "刪除";
+            this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
             // groupSearch
             // 
@@ -126,6 +130,8 @@ namespace Telemedicine.Observations
             this.flowLayoutPanel1.Controls.Add(this.comboVitalSign);
             this.flowLayoutPanel1.Controls.Add(this.textSubject);
             this.flowLayoutPanel1.Controls.Add(this.textPatIdentifier);
+            this.flowLayoutPanel1.Controls.Add(this.textPatName);
+            this.flowLayoutPanel1.Controls.Add(this.comboPatOrg);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 21);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -173,16 +179,26 @@ namespace Telemedicine.Observations
             this.textPatIdentifier.Size = new System.Drawing.Size(224, 30);
             this.textPatIdentifier.TabIndex = 4;
             // 
-            // labelDateRange
+            // textPatName
             // 
-            this.labelDateRange.ComponentHeight = 26;
-            this.labelDateRange.Header = "日期區間";
-            this.labelDateRange.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.labelDateRange.Location = new System.Drawing.Point(6, 111);
-            this.labelDateRange.Name = "labelDateRange";
-            this.labelDateRange.Padding = new System.Windows.Forms.Padding(1);
-            this.labelDateRange.Size = new System.Drawing.Size(458, 34);
-            this.labelDateRange.TabIndex = 5;
+            this.textPatName.Header = "病患姓名";
+            this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textPatName.Location = new System.Drawing.Point(463, 3);
+            this.textPatName.Name = "textPatName";
+            this.textPatName.Padding = new System.Windows.Forms.Padding(1);
+            this.textPatName.Size = new System.Drawing.Size(194, 30);
+            this.textPatName.TabIndex = 5;
+            // 
+            // comboPatOrg
+            // 
+            this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboPatOrg.Header = "病患組織";
+            this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.comboPatOrg.Location = new System.Drawing.Point(463, 39);
+            this.comboPatOrg.Name = "comboPatOrg";
+            this.comboPatOrg.Padding = new System.Windows.Forms.Padding(1);
+            this.comboPatOrg.Size = new System.Drawing.Size(194, 31);
+            this.comboPatOrg.TabIndex = 6;
             // 
             // buttonClear
             // 
@@ -199,6 +215,17 @@ namespace Telemedicine.Observations
             this.buttonClear.Text = "清除";
             this.buttonClear.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonClear.UseVisualStyleBackColor = true;
+            // 
+            // labelDateRange
+            // 
+            this.labelDateRange.ComponentHeight = 26;
+            this.labelDateRange.Header = "日期區間";
+            this.labelDateRange.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.labelDateRange.Location = new System.Drawing.Point(6, 111);
+            this.labelDateRange.Name = "labelDateRange";
+            this.labelDateRange.Padding = new System.Windows.Forms.Padding(1);
+            this.labelDateRange.Size = new System.Drawing.Size(458, 34);
+            this.labelDateRange.TabIndex = 5;
             // 
             // splitContainer1
             // 
@@ -250,5 +277,7 @@ namespace Telemedicine.Observations
         private System.Windows.Forms.ToolStripMenuItem menuDelete;
         private Forms.CgLabelTextBox textPatIdentifier;
         private Forms.CgLabelCustomControl labelDateRange;
+        private Forms.CgLabelTextBox textPatName;
+        private Forms.CgLabelComboBox comboPatOrg;
     }
 }

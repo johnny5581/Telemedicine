@@ -14,9 +14,26 @@ namespace Telemedicine
         public static void BindVitalSigns(this ICgComboBox comboBox, string notSpecifyText = null)
         {
             comboBox.Items.Clear();
+            int index = -1;
             if (notSpecifyText != null)
-                comboBox.AddTextItem(notSpecifyText, null);
-            comboBox.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false));
+                index = comboBox.AddTextItem(notSpecifyText, null);
+            comboBox.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);
+            comboBox.SelectedIndex = index == -1 ? VitalSign.VitalSigns.Length - 1 : index;
+        }
+
+        public static void BindOrganizations(this ICgComboBox comboBox, string notSpecifyText = null)
+        {
+            comboBox.Items.Clear();
+            int index = -1;
+            if (notSpecifyText != null)
+                index = comboBox.AddTextItem(notSpecifyText, null);
+            
+            comboBox.AddTextItem("Organization/MITW.ForIdentifier");
+            comboBox.AddTextItem("Organization/MITW.ForContact");
+            comboBox.AddTextItem("Organization/MITW.ForPHR");
+            comboBox.AddTextItem("Organization/MITW.ForEMS");
+
+            comboBox.SelectedIndex = index == -1 ? comboBox.Items.Count - 1 : index;
         }
 
 
@@ -30,7 +47,7 @@ namespace Telemedicine
                 {
                     ((ComboBox)c).SelectedIndex = -1;
                 }
-                else if(typeof(DateTimePicker).IsAssignableFrom(t))
+                else if (typeof(DateTimePicker).IsAssignableFrom(t))
                 {
                     ((DateTimePicker)c).Value = DateTime.Now;
                 }
@@ -83,12 +100,20 @@ namespace Telemedicine
             FormHelper.ClearControls(controls);
         }
 
-        
+
         public virtual void Show(Form mainForm)
         {
             MdiParent = mainForm;
             WindowState = FormWindowState.Maximized;
             Show();
+        }
+
+        protected T GetSelectedItem<T>(CgDataGridPanel panel, bool throwOnError = true)
+        {
+            var item = (T)panel.GetSelectedItem();
+            if (item == null && throwOnError)
+                throw new Exception("沒有選擇任何資料");
+            return item;
         }
 
         #region Executing
@@ -119,7 +144,7 @@ namespace Telemedicine
         #region Interactive
         T IInteractive.SingleSelection<T>(IEnumerable<T> options, Func<T, string> textResolver)
         {
-            if(typeof(T) == typeof(Patient))
+            if (typeof(T) == typeof(Patient))
             {
                 var d = new Patients.PatientPickerDialog();
                 d.LoadPatients((IEnumerable<Patient>)options);
@@ -127,7 +152,7 @@ namespace Telemedicine
                     return (T)(object)d.SelectedPatient;
                 else
                     return default(T);
-            }    
+            }
             return PickerDialog.GetSelection(this, "please select one", options, textResolver);
         }
         #endregion
@@ -145,7 +170,7 @@ namespace Telemedicine
         public override void Show(Form mainForm)
         {
             //base.Show(mainForm);
-            
+
             ShowDialog();
         }
     }
@@ -159,7 +184,7 @@ namespace Telemedicine
 
         #region Executing
         protected void Execute(Action action)
-        {            
+        {
             FormHelper.TryExecute(FindForm()?.Text ?? Text, action);
         }
         protected void Execute(Action action, Action<Exception> errorHandler)

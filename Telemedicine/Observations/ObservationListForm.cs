@@ -37,7 +37,9 @@ namespace Telemedicine.Observations
             dgvData.AddTextColumn("Unit", "Unit", "Value", UnitFormatter);
 
             comboVitalSign.SelectedIndex = comboVitalSign.AddTextItem("全部", null);
-            comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);
+            //comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);
+            comboVitalSign.BindVitalSigns("全部");
+            comboPatOrg.BindOrganizations("全部");
 
             dateBeginDate = new DateTimePicker();
             dateBeginDate.CustomFormat = "yyyy-MM-dd";
@@ -58,8 +60,8 @@ namespace Telemedicine.Observations
             dateEndTime.ShowUpDown = true;
             dateEndTime.Dock = DockStyle.Fill;
             labelDateRange.LayoutPanel.ChangeLayout(
-                new ColumnStyle[] { new ColumnStyle(SizeType.Percent, 30), new ColumnStyle(SizeType.Percent, 20), new ColumnStyle(SizeType.Absolute, 20), new ColumnStyle(SizeType.Percent, 30), new ColumnStyle(SizeType.Percent, 20) }, 
-                new RowStyle[] { new RowStyle(SizeType.Percent, 100 )});
+                new ColumnStyle[] { new ColumnStyle(SizeType.Percent, 30), new ColumnStyle(SizeType.Percent, 20), new ColumnStyle(SizeType.Absolute, 20), new ColumnStyle(SizeType.Percent, 30), new ColumnStyle(SizeType.Percent, 20) },
+                new RowStyle[] { new RowStyle(SizeType.Percent, 100) });
             labelDateRange.LayoutPanel.AddControlToPosition(dateBeginDate, 0, 0);
             labelDateRange.LayoutPanel.AddControlToPosition(dateBeginTime, 1, 0);
             labelDateRange.LayoutPanel.AddControlToPosition(new Label { Text = "~", TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, 0);
@@ -70,7 +72,7 @@ namespace Telemedicine.Observations
         private void PatientFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var value = e.Value as ResourceReference;
-            if(value != null)
+            if (value != null)
             {
                 e.Value = value.Reference ?? "";
                 e.FormattingApplied = true;
@@ -80,7 +82,7 @@ namespace Telemedicine.Observations
         private void DateTimeFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var value = e.Value as FhirDateTime;
-            if(value != null)
+            if (value != null)
             {
                 e.Value = value.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss");
                 e.FormattingApplied = true;
@@ -135,8 +137,8 @@ namespace Telemedicine.Observations
         private void ActionClearScreen()
         {
             ClearControls(textId, comboVitalSign, textSubject, textPatIdentifier);
-            
-            dgvData.ClearSource();            
+
+            dgvData.ClearSource();
         }
 
         private void ActionSearch()
@@ -144,17 +146,31 @@ namespace Telemedicine.Observations
             var id = textId.Text;
             var patId = textSubject.Text;
             var patIdentifier = textPatIdentifier.Text;
+            var patName = textPatName.Text;
+            var patOrg = comboPatOrg.SelectedValue as string;
             var vsCode = comboVitalSign.SelectedValue as string;
             var dateBegin = dateBeginDate.Value.Date + dateBeginTime.Value.TimeOfDay;
             var dateEnd = dateEndDate.Value.Date + dateEndTime.Value.TimeOfDay;
-            if (patId.IsNullOrEmpty() && patIdentifier.IsNotNullOrEmpty())
+
+            dgvData.ClearSource();
+            if (patId.IsNullOrEmpty())
             {
                 // 先找看看使用者
-                var pat = _ctrlPat.SearchByIdentifierSingle(patIdentifier);
-                if (pat != null)
+                var patCriteria = new List<string>();
+                if (patIdentifier.IsNotNullOrEmpty())
+                    patCriteria.Add("identifier=" + patIdentifier);
+                if (patName.IsNotNullOrEmpty())
+                    patCriteria.Add("name=" + patName);
+                if (patOrg.IsNotNullOrEmpty())
+                    patCriteria.Add("organization=" + patOrg);
+                if (patCriteria.Count > 0)
+                {
+                    var pat = _ctrlPat.SearchSingle(patCriteria);
+                    if (pat == null) // 沒有找到病人
+                        return;
                     patId = pat.Id;
+                }
             }
-            dgvData.ClearSource();
             var criteria = new List<string>();
             if (patId.IsNotNullOrEmpty())
                 criteria.Add("subject=" + patId);
@@ -168,6 +184,38 @@ namespace Telemedicine.Observations
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             Execute(ActionSearch);
+        }
+
+        private void menuEdit_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                var item = GetSelectedItem<Observation>(dgvData);
+                using (var d = new ObservationDialog())
+                {
+                    d.MainComponent.LoadModel(item);
+                    if (d.ShowDialog() == DialogResult.OK)
+                    {
+                        var newItem = d.MainComponent.GetModel();
+                        _ctrlObs.Update(newItem);
+                        MsgBoxHelper.Info("更新成功");
+                        ActionSearch();
+                    }
+                }
+            });
+        }
+
+        private void menuDelete_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                var item = GetSelectedItem<Observation>(dgvData);
+
+                _ctrlObs.Delete(item);
+                MsgBoxHelper.Info("刪除成功");
+                ActionSearch();
+
+            });
         }
     }
 }

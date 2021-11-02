@@ -31,7 +31,7 @@ namespace Telemedicine.Controllers
                 throw new NullReferenceException("endpoint can not be null");
             var setting = new FhirClientSettings
             {
-                 PreferredFormat = ResourceFormat.Json,
+                PreferredFormat = ResourceFormat.Json,
             };
             return new FhirClient(endpoint, setting);
         }
@@ -41,6 +41,30 @@ namespace Telemedicine.Controllers
         {
             var client = GetClient();
             return action(client);
+        }
+        public void ExecuteClient(Action<FhirClient> action)
+        {
+            var client = GetClient();
+            action(client);
+        }
+        protected bool TryExecuteClient(Action<FhirClient> action)
+        {
+            Exception exception;
+            return TryExecuteClient(action, out exception);
+        }
+        protected bool TryExecuteClient(Action<FhirClient> action, out Exception exception)
+        {
+            try
+            {
+                ExecuteClient(action);
+                exception = null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
         }
         protected bool TryExecuteClient<T>(Func<FhirClient, T> action, out T value)
         {
@@ -75,7 +99,7 @@ namespace Telemedicine.Controllers
             var interactive = _interactive ?? _gInteractive;
             if (interactive == null)
                 throw new NotSupportedException("no interactive instance");
-            return action(interactive); 
+            return action(interactive);
         }
     }
     public abstract class ControllerBase<T> : ControllerBase
@@ -107,6 +131,23 @@ namespace Telemedicine.Controllers
             });
         }
 
+        public void Delete(T model)
+        {
+            ExecuteClient(client =>
+            {
+                client.Delete(model);
+            });
+        }
+
+        public bool TryDelete(T model)
+        {
+            return TryExecuteClient(client => client.Delete(model));
+        }
+        public bool TryDelete(T model, out Exception exception)
+        {
+            return TryExecuteClient(client => client.Delete(model), out exception);
+        }
+
         public IList<T> Search(params KeyValuePair<string, string>[] searchParams)
         {
             var criteria = searchParams.Select(r => string.Format("{0}={1}", r.Key, r.Value)).ToArray();
@@ -121,8 +162,10 @@ namespace Telemedicine.Controllers
         {
             return Search(criteria.ToArray());
         }
-        public IList<T> Search(params string[] criteria)
+        public IList<T> Search(bool throwOnNoCriteria, params string[] criteria)
         {
+            if (criteria.Length == 0 && throwOnNoCriteria)
+                throw new InvalidOperationException("no search criteria");
             var bundle = ExecuteClient(client => client.Search<T>(criteria));
             var list = new List<T>();
             if (bundle.Entry.Count > 0)
@@ -134,6 +177,14 @@ namespace Telemedicine.Controllers
                 }
             }
             return list;
+        }
+        public IList<T> Search(params string[] criteria)
+        {
+            return Search(true, criteria);
+        }
+        public IList<T> SearchAll()
+        {
+            return Search(false);
         }
     }
 }
