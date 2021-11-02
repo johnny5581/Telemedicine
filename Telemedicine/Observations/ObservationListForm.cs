@@ -31,12 +31,14 @@ namespace Telemedicine.Observations
             dgvData.AddTextColumn<ObservationData>(r => r.Id);
             dgvData.AddTextColumn<ObservationData>(r => r.PatId);
             dgvData.AddTextColumn<ObservationData>(r => r.MedId);
+            dgvData.AddTextColumn<ObservationData>(r => r.Effecitve);
 
             dgvData.AddTextColumn<ObservationData>(r => r.Category);
             dgvData.AddTextColumn<ObservationData>(r => r.Item);
             dgvData.AddTextColumn<ObservationData>(r => r.Code);
             dgvData.AddTextColumn<ObservationData>(r => r.Value);
             dgvData.AddTextColumn<ObservationData>(r => r.Unit);
+
 
             comboVitalSign.SelectedIndex = comboVitalSign.AddTextItem("全部", null);
             //comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);

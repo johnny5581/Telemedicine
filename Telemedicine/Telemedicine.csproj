@@ -150,6 +150,18 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MediRequests\MedicationRequestCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MediRequests\MedicationRequestCreateForm.Designer.cs">
+      <DependentUpon>MedicationRequestCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediRequests\MedicationRequestListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MediRequests\MedicationRequestListForm.Designer.cs">
+      <DependentUpon>MedicationRequestListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Observations\CreateSingleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,6 +232,12 @@
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MediRequests\MedicationRequestCreateForm.resx">
+      <DependentUpon>MedicationRequestCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MediRequests\MedicationRequestListForm.resx">
+      <DependentUpon>MedicationRequestListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Observations\CreateSingleForm.resx">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
@@ -312,5 +330,6 @@
     <EmbeddedResource Include="Forms\EmbeddedResources\favicon.ico" />
     <EmbeddedResource Include="Forms\EmbeddedResources\splash.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
