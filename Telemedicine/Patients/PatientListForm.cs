@@ -27,7 +27,19 @@ namespace Telemedicine.Patients
             dgvData.AddTextColumn<Patient>(r => r.BirthDate);
             dgvData.AddTextColumn<Patient>(r => r.Gender);
 
+            dgvData.AddTextColumn<Patient>(r => r.Deceased, formatter: BooleanFormatter);
+
             comboOrg.BindOrganizations("全部");
+        }
+
+        private void BooleanFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        {
+            var value = e.Value as FhirBoolean;
+            if(value != null)
+            {
+                e.Value = (value.Value ?? false) ? "Y" : "N";
+                e.FormattingApplied = true;
+            }
         }
 
         public Patient SelectedPatient { get; private set; }
