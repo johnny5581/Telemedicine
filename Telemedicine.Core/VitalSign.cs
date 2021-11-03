@@ -14,7 +14,7 @@ namespace Telemedicine
             string categoryDisplay = "Vital Signs",
             string codeSystem = "http://loinc.org",
             string categorySystem = "http://terminology.hl7.org/CodeSystem/observation-category",
-            string unitSystem = "http://unitsofmeasure.org")
+            string unitSystem = "http://unitsofmeasure.org", List<BodySiteObj> bodySite = null)
         {
             Item = item;
             ItemDisplay = itemName;
@@ -25,7 +25,7 @@ namespace Telemedicine
             CodeSystem = codeSystem;
             Unit = unit;
             UnitSystem = unitSystem;
-
+            BodySite = bodySite;
         }
         public string ItemDisplay { get; set; }
         public string Item { get; set; }
@@ -36,6 +36,7 @@ namespace Telemedicine
         public string CodeSystem { get; set; }
         public string Unit { get; set; }
         public string UnitSystem { get; set; }
+        public List<BodySiteObj> BodySite { get; set; }
 
         public override string ToString()
         {
@@ -54,9 +55,27 @@ namespace Telemedicine
         public static VitalSign BloodPressurePanel = new VitalSign("35094-2", "Blood Pressure Panel", "血壓", "mmHg");
         public static VitalSign SystolicBloodPressure = new VitalSign("8480-6", "Systolic Blood Pressure", "收縮壓", "mm[Hg]");
         public static VitalSign DistolicBloodPressure = new VitalSign("8462-4", "Distolic Blood Pressure", "舒張壓", "mm[Hg]");
+        
+        
+
+        public static VitalSign Femoralbody = new VitalSign("38263-0", "DXA Femur [T-score] Bone density", "股骨幹", "{T-score}"
+                                                                , "image", "Image"
+                                                                  , bodySite: new List<BodySiteObj> {
+                                                                      new BodySiteObj
+                                                                      {
+                                                                          CodeSystem ="https://mitw.dicom.org.tw/MITW WG2 Vital Sign Code System.xlsx",
+                                                                          Code = "Femoral body",
+                                                                          CodeDisplay = "Femoral body",
+                                                                      }
+                                                                });
         //public static VitalSign Tempalte = new VitalSign("", "", "", "");
 
-
+        public class BodySiteObj
+        {
+            public string Code { get; set; }
+            public string CodeSystem { get; set; }
+            public string CodeDisplay { get; set; }
+        }
 
         public static VitalSign[] VitalSigns = new VitalSign[]
         {
