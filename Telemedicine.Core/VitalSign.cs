@@ -69,7 +69,7 @@ namespace Telemedicine
                                                                       }
                                                                 });
         //public static VitalSign Tempalte = new VitalSign("", "", "", "");
-
+        public static VitalSign ECG = new VitalSign("131328", "MDC_ECG_ELEC_POTL", "心電圖", "mm[Hg]");
         public class BodySiteObj
         {
             public string Code { get; set; }
@@ -92,6 +92,7 @@ namespace Telemedicine
             Femoralbody,
             //SystolicBloodPressure,
             //DistolicBloodPressure,
+            ECG,
         };
     }
 }

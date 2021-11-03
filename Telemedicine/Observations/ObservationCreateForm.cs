@@ -129,6 +129,9 @@ namespace Telemedicine.Observations
                     observation.Subject = new ResourceReference("Patient/" + textPatId.Text);
                     if (textMedId.Text.IsNotNullOrEmpty())
                         observation.BasedOn.Add(new ResourceReference("MedicationRequest/" + textMedId.Text));
+                    else if(textSrvId.Text.IsNotNullOrEmpty())
+                        observation.BasedOn.Add(new ResourceReference("ServiceRequest/" + textSrvId.Text));
+
                     _ctrlObs.Create(observation);
                 }
                 MsgBoxHelper.Info("上傳成功");

@@ -33,6 +33,7 @@ namespace Telemedicine.Observations
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cgIconButton2 = new Telemedicine.Forms.CgIconButton();
             this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
             this.buttonItemEdit = new Telemedicine.Forms.CgIconButton();
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
@@ -45,7 +46,7 @@ namespace Telemedicine.Observations
             this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
-            this.cgIconButton2 = new Telemedicine.Forms.CgIconButton();
+            this.textSrvId = new Telemedicine.Forms.CgTextBox();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -102,6 +103,20 @@ namespace Telemedicine.Observations
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(432, 63);
             this.panel1.TabIndex = 0;
+            // 
+            // cgIconButton2
+            // 
+            this.cgIconButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cgIconButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton2.IconSize = 0;
+            this.cgIconButton2.Location = new System.Drawing.Point(273, 34);
+            this.cgIconButton2.Name = "cgIconButton2";
+            this.cgIconButton2.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton2.TabIndex = 4;
+            this.cgIconButton2.Text = "新增EKG";
+            this.cgIconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton2.UseVisualStyleBackColor = true;
+            this.cgIconButton2.Click += new System.EventHandler(this.cgIconButton2_Click);
             // 
             // cgIconButton1
             // 
@@ -161,13 +176,14 @@ namespace Telemedicine.Observations
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textSrvId);
             this.groupBox2.Controls.Add(this.textMedId);
-            this.groupBox2.Location = new System.Drawing.Point(12, 214);
+            this.groupBox2.Location = new System.Drawing.Point(12, 185);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(177, 57);
+            this.groupBox2.Size = new System.Drawing.Size(177, 86);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "處方簽";
+            this.groupBox2.Text = "關聯";
             // 
             // textMedId
             // 
@@ -175,7 +191,6 @@ namespace Telemedicine.Observations
             this.textMedId.Name = "textMedId";
             this.textMedId.Size = new System.Drawing.Size(165, 22);
             this.textMedId.TabIndex = 8;
-            this.textMedId.Text = "9401";
             this.textMedId.WatermarkText = "輸入MedReqID";
             // 
             // groupBox1
@@ -245,19 +260,13 @@ namespace Telemedicine.Observations
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
             // 
-            // cgIconButton2
+            // textSrvId
             // 
-            this.cgIconButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cgIconButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cgIconButton2.IconSize = 0;
-            this.cgIconButton2.Location = new System.Drawing.Point(273, 34);
-            this.cgIconButton2.Name = "cgIconButton2";
-            this.cgIconButton2.Size = new System.Drawing.Size(75, 23);
-            this.cgIconButton2.TabIndex = 4;
-            this.cgIconButton2.Text = "新增EKG";
-            this.cgIconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cgIconButton2.UseVisualStyleBackColor = true;
-            this.cgIconButton2.Click += new System.EventHandler(this.cgIconButton2_Click);
+            this.textSrvId.Location = new System.Drawing.Point(6, 49);
+            this.textSrvId.Name = "textSrvId";
+            this.textSrvId.Size = new System.Drawing.Size(165, 22);
+            this.textSrvId.TabIndex = 9;
+            this.textSrvId.WatermarkText = "輸入ServiceReqID";
             // 
             // ObservationCreateForm
             // 
@@ -296,5 +305,6 @@ namespace Telemedicine.Observations
         private Forms.CgIconButton buttonPat;
         private Forms.CgIconButton cgIconButton1;
         private Forms.CgIconButton cgIconButton2;
+        private Forms.CgTextBox textSrvId;
     }
 }
