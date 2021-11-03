@@ -33,6 +33,7 @@ namespace Telemedicine.Observations
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
             this.buttonItemEdit = new Telemedicine.Forms.CgIconButton();
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
@@ -44,7 +45,7 @@ namespace Telemedicine.Observations
             this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
-            this.cgIconButton1 = new Telemedicine.Forms.CgIconButton();
+            this.cgIconButton2 = new Telemedicine.Forms.CgIconButton();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -83,14 +84,15 @@ namespace Telemedicine.Observations
             // 
             this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvData.InfoBoxVisible = false;
-            this.dgvData.Location = new System.Drawing.Point(3, 56);
+            this.dgvData.Location = new System.Drawing.Point(3, 81);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(432, 199);
+            this.dgvData.Size = new System.Drawing.Size(432, 174);
             this.dgvData.TabIndex = 3;
             this.dgvData.TopPanelVisible = false;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cgIconButton2);
             this.panel1.Controls.Add(this.cgIconButton1);
             this.panel1.Controls.Add(this.buttonItemEdit);
             this.panel1.Controls.Add(this.buttonItemDelete);
@@ -98,15 +100,29 @@ namespace Telemedicine.Observations
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 18);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(432, 38);
+            this.panel1.Size = new System.Drawing.Size(432, 63);
             this.panel1.TabIndex = 0;
+            // 
+            // cgIconButton1
+            // 
+            this.cgIconButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton1.IconSize = 0;
+            this.cgIconButton1.Location = new System.Drawing.Point(192, 9);
+            this.cgIconButton1.Name = "cgIconButton1";
+            this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton1.TabIndex = 3;
+            this.cgIconButton1.Text = "批次新增";
+            this.cgIconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton1.UseVisualStyleBackColor = true;
+            this.cgIconButton1.Click += new System.EventHandler(this.cgIconButton1_Click);
             // 
             // buttonItemEdit
             // 
             this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonItemEdit.IconSize = 0;
-            this.buttonItemEdit.Location = new System.Drawing.Point(273, 9);
+            this.buttonItemEdit.Location = new System.Drawing.Point(354, 9);
             this.buttonItemEdit.Name = "buttonItemEdit";
             this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
             this.buttonItemEdit.TabIndex = 2;
@@ -120,7 +136,7 @@ namespace Telemedicine.Observations
             this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonItemDelete.IconSize = 0;
-            this.buttonItemDelete.Location = new System.Drawing.Point(354, 9);
+            this.buttonItemDelete.Location = new System.Drawing.Point(354, 34);
             this.buttonItemDelete.Name = "buttonItemDelete";
             this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
             this.buttonItemDelete.TabIndex = 1;
@@ -134,7 +150,7 @@ namespace Telemedicine.Observations
             this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonItemAdd.IconSize = 0;
-            this.buttonItemAdd.Location = new System.Drawing.Point(192, 9);
+            this.buttonItemAdd.Location = new System.Drawing.Point(273, 9);
             this.buttonItemAdd.Name = "buttonItemAdd";
             this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
             this.buttonItemAdd.TabIndex = 0;
@@ -229,19 +245,19 @@ namespace Telemedicine.Observations
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
             // 
-            // cgIconButton1
+            // cgIconButton2
             // 
-            this.cgIconButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cgIconButton1.IconSize = 0;
-            this.cgIconButton1.Location = new System.Drawing.Point(111, 9);
-            this.cgIconButton1.Name = "cgIconButton1";
-            this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
-            this.cgIconButton1.TabIndex = 3;
-            this.cgIconButton1.Text = "批次新增";
-            this.cgIconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cgIconButton1.UseVisualStyleBackColor = true;
-            this.cgIconButton1.Click += new System.EventHandler(this.cgIconButton1_Click);
+            this.cgIconButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cgIconButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cgIconButton2.IconSize = 0;
+            this.cgIconButton2.Location = new System.Drawing.Point(273, 34);
+            this.cgIconButton2.Name = "cgIconButton2";
+            this.cgIconButton2.Size = new System.Drawing.Size(75, 23);
+            this.cgIconButton2.TabIndex = 4;
+            this.cgIconButton2.Text = "新增EKG";
+            this.cgIconButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cgIconButton2.UseVisualStyleBackColor = true;
+            this.cgIconButton2.Click += new System.EventHandler(this.cgIconButton2_Click);
             // 
             // ObservationCreateForm
             // 
@@ -279,5 +295,6 @@ namespace Telemedicine.Observations
         private Forms.CgIconButton buttonItemEdit;
         private Forms.CgIconButton buttonPat;
         private Forms.CgIconButton cgIconButton1;
+        private Forms.CgIconButton cgIconButton2;
     }
 }

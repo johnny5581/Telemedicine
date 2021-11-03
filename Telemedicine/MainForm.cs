@@ -122,7 +122,7 @@ namespace Telemedicine
 
         private void 查詢ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Vaccs.VaccCreateForm>());
+            Execute(() => FindView<Vaccs.VaccListForm>());
         }
     }
 }

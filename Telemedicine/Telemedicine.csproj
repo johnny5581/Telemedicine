@@ -144,6 +144,12 @@
     </Compile>
     <Compile Include="Forms\SortableBindingList.cs" />
     <Compile Include="Forms\WinMonitor.cs" />
+    <Compile Include="Observations\ObservationEKGControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationEKGControl.Designer.cs">
+      <DependentUpon>ObservationEKGControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vaccs\VaccControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -309,6 +315,9 @@
     <Compile Include="TransactionMonitorDialog.Designer.cs">
       <DependentUpon>TransactionMonitorDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Observations\ObservationEKGControl.resx">
+      <DependentUpon>ObservationEKGControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vaccs\VaccControl.resx">
       <DependentUpon>VaccControl.cs</DependentUpon>
     </EmbeddedResource>

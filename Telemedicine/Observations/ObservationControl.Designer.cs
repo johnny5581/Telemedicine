@@ -107,7 +107,7 @@ namespace Telemedicine.Observations
             this.comboItem.Location = new System.Drawing.Point(6, 21);
             this.comboItem.Name = "comboItem";
             this.comboItem.Padding = new System.Windows.Forms.Padding(1);
-            this.comboItem.Size = new System.Drawing.Size(251, 28);
+            this.comboItem.Size = new System.Drawing.Size(251, 31);
             this.comboItem.TabIndex = 1;
             this.comboItem.SelectedIndexChanged += new System.EventHandler(this.comboItem_SelectedIndexChanged);
             // 

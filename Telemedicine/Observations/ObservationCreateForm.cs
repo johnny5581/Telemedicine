@@ -195,7 +195,7 @@ namespace Telemedicine.Observations
                         VitalSign.SystolicBloodPressure.Code,
                         VitalSign.SystolicBloodPressure.Item,
                         VitalSign.SystolicBloodPressure.ItemDisplay);
-                    sbp.Value = GetValueQuantity((80+d+s).ToString(), VitalSign.SystolicBloodPressure);
+                    sbp.Value = GetValueQuantity((80 + d + s).ToString(), VitalSign.SystolicBloodPressure);
                     observation.Component.Add(sbp);
 
                     var dbp = new Observation.ComponentComponent();
@@ -203,7 +203,7 @@ namespace Telemedicine.Observations
                         VitalSign.DistolicBloodPressure.Code,
                         VitalSign.DistolicBloodPressure.Item,
                         VitalSign.DistolicBloodPressure.ItemDisplay);
-                    dbp.Value = GetValueQuantity((110+d+s).ToString(), VitalSign.DistolicBloodPressure);
+                    dbp.Value = GetValueQuantity((110 + d + s).ToString(), VitalSign.DistolicBloodPressure);
                     observation.Component.Add(dbp);
                     var data = new ObservationData(observation);
                     list.Add(data);
@@ -218,6 +218,58 @@ namespace Telemedicine.Observations
                 throw new FormatException("can't convert value to decimal: " + valueText);
             var quantity = new Quantity(value.Value, vs.Unit, vs.UnitSystem);
             return quantity;
+        }
+
+        private void cgIconButton2_Click(object sender, EventArgs e)
+        {
+            var list = dgvData.GetSortableSource<ObservationData>();
+            Execute(() =>
+            {
+                var observation = new Observation();
+                observation.Status = ObservationStatus.Final;
+                observation.Effective = FhirDateTime.Now();
+                observation.Category.Add(new CodeableConcept("http://terminology.hl7.org/CodeSystem/observation-category", "procedure", "Procedure", null));
+                observation.Code = new CodeableConcept("http://loinc.org", "131328", "MDC_ECG_ELEC_POTL", null);
+                observation.Code.Coding.Add(new Coding("http://unitsofmeasure.org", "mV", "mV"));
+
+                var sys = new[] {
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131329", Display = "MDC_ECG_ELEC_POTL_I" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131330", Display = "MDC_ECG_ELEC_POTL_II" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131389", Display = "MDC_ECG_ELEC_POTL_III" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131390", Display = "MDC_ECG_ELEC_POTL_AVR" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131391", Display = "MDC_ECG_ELEC_POTL_AVL" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131392", Display = "MDC_ECG_ELEC_POTL_AVF" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131331", Display = "MDC_ECG_ELEC_POTL_V1" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131332", Display = "MDC_ECG_ELEC_POTL_V2" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131333", Display = "MDC_ECG_ELEC_POTL_V3" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131334", Display = "MDC_ECG_ELEC_POTL_V4" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131335", Display = "MDC_ECG_ELEC_POTL_V5" },
+                    new { System = "urn:oid:2.16.840.1.113883.6.24", Code="131336", Display = "MDC_ECG_ELEC_POTL_V6" },
+                };
+
+                var refs = _ctrlObs.Read("Observation/11405");
+
+                foreach (var s in sys)
+                {
+                    var com = new Observation.ComponentComponent();
+                    com.Code = new CodeableConcept(s.System, s.Code, s.Display, null);
+                    var data = new SampledData();
+                    data.Origin = new Quantity();
+                    data.Origin.Value = 0;
+                    data.Period = 1;
+                    data.Factor = 1;
+                    data.LowerLimit = -6;
+                    data.UpperLimit = 6;
+                    data.Dimensions = 1;
+                    data.Data = (refs.Component.FirstOrDefault(r => r.Code.Coding[0].Code == s.Code)?.Value as SampledData).Data;
+
+                    com.Value = data;
+                    observation.Component.Add(com);
+                };
+                var d = new ObservationData(observation);
+                list.Add(d);
+                list.NotifyListChanged(ListChangedType.Reset);
+            });
         }
     }
 }
