@@ -144,6 +144,27 @@
     </Compile>
     <Compile Include="Forms\SortableBindingList.cs" />
     <Compile Include="Forms\WinMonitor.cs" />
+    <Compile Include="Immunizations\ImmunizationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Immunizations\ImmunizationControl.Designer.cs">
+      <DependentUpon>ImmunizationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Immunizations\ImmunizationCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Immunizations\ImmunizationCreateForm.Designer.cs">
+      <DependentUpon>ImmunizationCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Immunizations\ImmunizationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Immunizations\ImmunizationListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Immunizations\ImmunizationListForm.Designer.cs">
+      <DependentUpon>ImmunizationListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -267,6 +288,15 @@
     <Compile Include="TransactionMonitorDialog.Designer.cs">
       <DependentUpon>TransactionMonitorDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Immunizations\ImmunizationControl.resx">
+      <DependentUpon>ImmunizationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Immunizations\ImmunizationCreateForm.resx">
+      <DependentUpon>ImmunizationCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Immunizations\ImmunizationListForm.resx">
+      <DependentUpon>ImmunizationListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

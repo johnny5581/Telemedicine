@@ -116,7 +116,7 @@ namespace Telemedicine.Observations
                 criteria.Add("date=gt" + datBegin);
                 criteria.Add("date=lt" + datEnd);
             }
-            var obs = _ctrlObs.SearchPost(criteria);
+            var obs = _ctrlObs.Search(criteria);
             var dataList = obs.Select(r => new ObservationData(r)).ToList();
             dgvData.SetSource(dataList);
         }
