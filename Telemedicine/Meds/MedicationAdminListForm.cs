@@ -39,6 +39,7 @@ namespace Telemedicine.Meds
             var status = comboStatus.SelectedValue as string;
             var medId = textMedId.Text;
             var patOrg = comboPatOrg.SelectedValue as string;
+            var medReq = textMedReq.Text;
 
             dgvData.ClearSource();
             var criteria = new List<string>();
@@ -47,13 +48,15 @@ namespace Telemedicine.Meds
             if (patIdentifier.IsNotNullOrEmpty())
                 criteria.Add("subject.identifier=" + patIdentifier);
             if (status.IsNotNullOrEmpty())
-                criteria.Add("status=" + status);
+                criteria.Add("status=" + status.ToLower());
             if (medId.IsNotNullOrEmpty())
                 criteria.Add("code=" + medId);
             if (patOrg.IsNotNullOrEmpty())
                 criteria.Add("subject.organization=" + patOrg);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
+            if (medReq.IsNotNullOrEmpty())
+                criteria.Add("request=MedicationRequest/" + medReq);
             var reqs = _ctrlMedAdm.Search(criteria);
             var dataList = reqs.Select(r => new DataModel(r)).ToList();
             dgvData.SetSource(dataList);

@@ -45,6 +45,7 @@ namespace Telemedicine.Meds
             this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.textMedReq = new Telemedicine.Forms.CgLabelTextBox();
             this.contextMenuStrip.SuspendLayout();
             this.groupSearch.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -84,15 +85,16 @@ namespace Telemedicine.Meds
             // 
             // contextMenuStrip
             // 
+            this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuDelete});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(99, 26);
+            this.contextMenuStrip.Size = new System.Drawing.Size(109, 28);
             // 
             // menuDelete
             // 
             this.menuDelete.Name = "menuDelete";
-            this.menuDelete.Size = new System.Drawing.Size(98, 22);
+            this.menuDelete.Size = new System.Drawing.Size(108, 24);
             this.menuDelete.Text = "刪除";
             this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
@@ -121,6 +123,7 @@ namespace Telemedicine.Meds
             this.flowLayoutPanel1.Controls.Add(this.textPatIdentifier);
             this.flowLayoutPanel1.Controls.Add(this.textMedId);
             this.flowLayoutPanel1.Controls.Add(this.comboPatOrg);
+            this.flowLayoutPanel1.Controls.Add(this.textMedReq);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 21);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -134,7 +137,7 @@ namespace Telemedicine.Meds
             this.textId.Location = new System.Drawing.Point(3, 3);
             this.textId.Name = "textId";
             this.textId.Padding = new System.Windows.Forms.Padding(1);
-            this.textId.Size = new System.Drawing.Size(224, 30);
+            this.textId.Size = new System.Drawing.Size(224, 33);
             this.textId.TabIndex = 0;
             // 
             // comboStatus
@@ -142,20 +145,20 @@ namespace Telemedicine.Meds
             this.comboStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboStatus.Header = "狀態";
             this.comboStatus.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboStatus.Location = new System.Drawing.Point(3, 39);
+            this.comboStatus.Location = new System.Drawing.Point(3, 42);
             this.comboStatus.Name = "comboStatus";
             this.comboStatus.Padding = new System.Windows.Forms.Padding(1);
-            this.comboStatus.Size = new System.Drawing.Size(224, 31);
+            this.comboStatus.Size = new System.Drawing.Size(224, 34);
             this.comboStatus.TabIndex = 2;
             // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 73);
+            this.textSubject.Location = new System.Drawing.Point(3, 79);
             this.textSubject.Name = "textSubject";
             this.textSubject.Padding = new System.Windows.Forms.Padding(1);
-            this.textSubject.Size = new System.Drawing.Size(224, 30);
+            this.textSubject.Size = new System.Drawing.Size(224, 33);
             this.textSubject.TabIndex = 3;
             // 
             // textPatIdentifier
@@ -165,17 +168,17 @@ namespace Telemedicine.Meds
             this.textPatIdentifier.Location = new System.Drawing.Point(233, 3);
             this.textPatIdentifier.Name = "textPatIdentifier";
             this.textPatIdentifier.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatIdentifier.Size = new System.Drawing.Size(224, 30);
+            this.textPatIdentifier.Size = new System.Drawing.Size(224, 33);
             this.textPatIdentifier.TabIndex = 4;
             // 
             // textMedId
             // 
             this.textMedId.Header = "藥品代碼";
             this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedId.Location = new System.Drawing.Point(233, 39);
+            this.textMedId.Location = new System.Drawing.Point(233, 42);
             this.textMedId.Name = "textMedId";
             this.textMedId.Padding = new System.Windows.Forms.Padding(1);
-            this.textMedId.Size = new System.Drawing.Size(224, 30);
+            this.textMedId.Size = new System.Drawing.Size(224, 33);
             this.textMedId.TabIndex = 5;
             // 
             // comboPatOrg
@@ -183,10 +186,10 @@ namespace Telemedicine.Meds
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(233, 75);
+            this.comboPatOrg.Location = new System.Drawing.Point(233, 81);
             this.comboPatOrg.Name = "comboPatOrg";
             this.comboPatOrg.Padding = new System.Windows.Forms.Padding(1);
-            this.comboPatOrg.Size = new System.Drawing.Size(224, 31);
+            this.comboPatOrg.Size = new System.Drawing.Size(224, 34);
             this.comboPatOrg.TabIndex = 6;
             // 
             // buttonClear
@@ -223,6 +226,16 @@ namespace Telemedicine.Meds
             this.splitContainer1.SplitterDistance = 158;
             this.splitContainer1.TabIndex = 8;
             // 
+            // textMedReq
+            // 
+            this.textMedReq.Header = "用藥代號";
+            this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedReq.Location = new System.Drawing.Point(463, 3);
+            this.textMedReq.Name = "textMedReq";
+            this.textMedReq.Padding = new System.Windows.Forms.Padding(1);
+            this.textMedReq.Size = new System.Drawing.Size(224, 33);
+            this.textMedReq.TabIndex = 8;
+            // 
             // MedicationAdminListForm
             // 
             this.ClientSize = new System.Drawing.Size(767, 561);
@@ -256,5 +269,6 @@ namespace Telemedicine.Meds
         private Forms.CgLabelComboBox comboPatOrg;
         private Forms.CgIconButton buttonClear;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private Forms.CgLabelTextBox textMedReq;
     }
 }

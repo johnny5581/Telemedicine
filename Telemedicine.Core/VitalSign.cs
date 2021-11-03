@@ -59,11 +59,11 @@ namespace Telemedicine
         
 
         public static VitalSign Femoralbody = new VitalSign("38263-0", "DXA Femur [T-score] Bone density", "股骨幹", "{T-score}"
-                                                                , "image", "Image"
+                                                                , "imaging", "Imaging"
                                                                   , bodySite: new List<BodySiteObj> {
                                                                       new BodySiteObj
                                                                       {
-                                                                          CodeSystem ="https://mitw.dicom.org.tw/MITW WG2 Vital Sign Code System.xlsx",
+                                                                          CodeSystem ="https://mitw.dicom.org.tw/MITW%20WG2%20Vital%20Sign%20Code%20System.xlsx",
                                                                           Code = "Femoral body",
                                                                           CodeDisplay = "Femoral body",
                                                                       }
@@ -89,6 +89,7 @@ namespace Telemedicine
             Oxygen,
             HeartRate, 
             BloodPressurePanel,
+            Femoralbody,
             //SystolicBloodPressure,
             //DistolicBloodPressure,
         };

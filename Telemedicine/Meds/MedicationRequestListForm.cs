@@ -42,6 +42,7 @@ namespace Telemedicine.Meds
             var status = comboStatus.SelectedValue as string;
             var medId = textMedId.Text;
             var patOrg = comboPatOrg.SelectedValue as string;
+            
 
             dgvData.ClearSource();
             var criteria = new List<string>();
@@ -50,13 +51,14 @@ namespace Telemedicine.Meds
             if (patIdentifier.IsNotNullOrEmpty())
                 criteria.Add("subject.identifier=" + patIdentifier);
             if (status.IsNotNullOrEmpty())
-                criteria.Add("status=" + status);
+                criteria.Add("status=" + status.ToLower());
             if (medId.IsNotNullOrEmpty())
                 criteria.Add("code=" + medId);
             if (patOrg.IsNotNullOrEmpty())
                 criteria.Add("subject.organization=" + patOrg);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
+            
             var reqs = _ctrlMedReq.Search(criteria);
             var dataList = reqs.Select(r => new MedicationRequestData(r)).ToList();
             dgvData.SetSource(dataList);
@@ -106,6 +108,11 @@ namespace Telemedicine.Meds
                 SelectedMedicationRequest = item.Data;
                 DialogResult = DialogResult.OK;
             }
+        }
+
+        private void cgLabelTextBox1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

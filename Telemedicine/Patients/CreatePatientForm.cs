@@ -344,8 +344,10 @@ namespace Telemedicine.Patients
                             },
                             Relationship = new List<Hl7.Fhir.Model.CodeableConcept>
                             {
-                                new Hl7.Fhir.Model.CodeableConcept("http://hl7.org/fhir/ValueSet/patient-contactrelationship",
-                                                                    "N", textBoxContactRelationship.Text)
+                                //http://terminology.hl7.org/CodeSystem/v2-0131
+                                //"http://hl7.org/fhir/ValueSet/patient-contactrelationship"
+                                new Hl7.Fhir.Model.CodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0131",
+                                                                    "N","Next-of-Kin", textBoxContactRelationship.Text)
                             },
                             Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
                                 new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax

@@ -63,7 +63,16 @@ namespace Telemedicine.Observations
             observation.Category.Add(new CodeableConcept(vs.CategorySystem, vs.Category, vs.CategoryDisplay, vs.CategoryDisplay));
             observation.Code = new CodeableConcept(vs.CodeSystem, vs.Code, vs.Item, vs.ItemDisplay);
             observation.Effective = new FhirDateTime(dateDate.Value.Date + dateTime.Value.TimeOfDay);
-
+            if (vs.Code == VitalSign.Femoralbody.Code)
+            {
+                observation.BodySite = new CodeableConcept { };
+                foreach (var item in vs.BodySite)
+                {
+                    observation.BodySite.Coding.Add(new Coding(item.CodeSystem, item.Code, item.CodeDisplay));
+                    //observation.BodySite.Coding
+                }
+                observation.BodySite.Text = vs.ItemDisplay;
+            }
             if (vs.Code == VitalSign.BloodPressurePanel.Code)
             {
                 var sbp = new Observation.ComponentComponent();
@@ -87,14 +96,7 @@ namespace Telemedicine.Observations
                 observation.Value = GetValueQuantity(textValue.Text, vs);
             }
 
-            if (vs.Code == VitalSign.Femoralbody.Code)
-            {
-                observation.BodySite = new CodeableConcept { };
-                foreach (var item in vs.BodySite)
-                {
-                    observation.BodySite.Coding.Add(new Coding(item.CodeSystem, item.Code, item.CodeDisplay));
-                }
-            }
+            
             return observation;
         }
 
