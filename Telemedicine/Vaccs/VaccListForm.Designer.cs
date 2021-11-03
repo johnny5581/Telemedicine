@@ -1,7 +1,7 @@
 ﻿
-namespace Telemedicine.Immunizations
+namespace Telemedicine.Vaccs
 {
-    partial class ImmunizationListForm
+    partial class VaccListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace Telemedicine.Immunizations
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImmunizationListForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VaccListForm));
             this.buttonSearch = new Telemedicine.Forms.CgIconButton();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -222,11 +222,11 @@ namespace Telemedicine.Immunizations
             this.splitContainer1.SplitterDistance = 187;
             this.splitContainer1.TabIndex = 8;
             // 
-            // ImmunizationListForm
+            // VaccListForm
             // 
             this.ClientSize = new System.Drawing.Size(767, 561);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "ImmunizationListForm";
+            this.Name = "VaccListForm";
             this.Text = "用藥紀錄";
             this.contextMenuStrip.ResumeLayout(false);
             this.groupSearch.ResumeLayout(false);

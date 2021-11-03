@@ -11,22 +11,22 @@ using System.Windows.Forms;
 using Telemedicine.Controllers;
 using Telemedicine.Forms;
 
-namespace Telemedicine.Immunizations
+namespace Telemedicine.Vaccs
 {
-    public partial class ImmunizationListForm : FormBase
+    public partial class VaccListForm : FormBase
     {
         private CompositionController _ctrlComposition;
-        private ImmunizationController _ctrlImmu;
+        private ObservationController _ctrlObs;
         private DateTimePicker dateBeginDate;
         private DateTimePicker dateBeginTime;
         private DateTimePicker dateEndDate;
         private DateTimePicker dateEndTime;
-        public ImmunizationListForm()
+        public VaccListForm()
         {
             InitializeComponent();
 
             _ctrlComposition = new CompositionController(this);
-            _ctrlImmu = new ImmunizationController(this);
+            _ctrlObs = new ObservationController(this);
 
             dgvData.AutoGenerateColumns = true;
             comboPatOrg.BindOrganizations("全部");
@@ -165,7 +165,7 @@ namespace Telemedicine.Immunizations
                 criteria.Add("date=gt" + datBegin);
                 criteria.Add("date=lt" + datEnd);
             }
-            var list = _ctrlImmu.Search(criteria);
+            var list = _ctrlObs.Search(criteria);
             var dataList = list.Select(r => new DataModel(r)).ToList();
             dgvData.SetSource(dataList);
         }
@@ -174,9 +174,9 @@ namespace Telemedicine.Immunizations
             Execute(ActionSearch);
         }
 
-        private class DataModel : DataModelBase<Immunization>
+        private class DataModel : DataModelBase<Observation>
         {
-            public DataModel(Immunization data) : base(data)
+            public DataModel(Observation data) : base(data)
             {
             }
 

@@ -114,5 +114,15 @@ namespace Telemedicine
         {
             Execute(() => FindView<Immunizations.ImmunizationListForm>());
         }
+
+        private void 建立ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Vaccs.VaccCreateForm>());
+        }
+
+        private void 查詢ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Vaccs.VaccCreateForm>());
+        }
     }
 }

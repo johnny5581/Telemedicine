@@ -48,6 +48,9 @@ namespace Telemedicine
             this.查詢ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.視窗ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.傳輸監控ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.檢驗紀錄ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.建立ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.查詢ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,7 +72,8 @@ namespace Telemedicine
             this.menuObservation,
             this.menuMedReq,
             this.menuMedAdm,
-            this.注射ToolStripMenuItem});
+            this.注射ToolStripMenuItem,
+            this.檢驗紀錄ToolStripMenuItem});
             this.menuData.Name = "menuData";
             this.menuData.Size = new System.Drawing.Size(43, 20);
             this.menuData.Text = "資料";
@@ -178,14 +182,14 @@ namespace Telemedicine
             // 建立ToolStripMenuItem
             // 
             this.建立ToolStripMenuItem.Name = "建立ToolStripMenuItem";
-            this.建立ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.建立ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.建立ToolStripMenuItem.Text = "建立";
             this.建立ToolStripMenuItem.Click += new System.EventHandler(this.建立ToolStripMenuItem_Click);
             // 
             // 查詢ToolStripMenuItem
             // 
             this.查詢ToolStripMenuItem.Name = "查詢ToolStripMenuItem";
-            this.查詢ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.查詢ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.查詢ToolStripMenuItem.Text = "查詢";
             this.查詢ToolStripMenuItem.Click += new System.EventHandler(this.查詢ToolStripMenuItem_Click);
             // 
@@ -203,6 +207,29 @@ namespace Telemedicine
             this.傳輸監控ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.傳輸監控ToolStripMenuItem.Text = "傳輸監控";
             this.傳輸監控ToolStripMenuItem.Click += new System.EventHandler(this.傳輸監控ToolStripMenuItem_Click);
+            // 
+            // 檢驗紀錄ToolStripMenuItem
+            // 
+            this.檢驗紀錄ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.建立ToolStripMenuItem1,
+            this.查詢ToolStripMenuItem1});
+            this.檢驗紀錄ToolStripMenuItem.Name = "檢驗紀錄ToolStripMenuItem";
+            this.檢驗紀錄ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.檢驗紀錄ToolStripMenuItem.Text = "檢驗紀錄";
+            // 
+            // 建立ToolStripMenuItem1
+            // 
+            this.建立ToolStripMenuItem1.Name = "建立ToolStripMenuItem1";
+            this.建立ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.建立ToolStripMenuItem1.Text = "建立";
+            this.建立ToolStripMenuItem1.Click += new System.EventHandler(this.建立ToolStripMenuItem1_Click);
+            // 
+            // 查詢ToolStripMenuItem1
+            // 
+            this.查詢ToolStripMenuItem1.Name = "查詢ToolStripMenuItem1";
+            this.查詢ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.查詢ToolStripMenuItem1.Text = "查詢";
+            this.查詢ToolStripMenuItem1.Click += new System.EventHandler(this.查詢ToolStripMenuItem1_Click);
             // 
             // MainForm
             // 
@@ -239,6 +266,9 @@ namespace Telemedicine
         private System.Windows.Forms.ToolStripMenuItem 注射ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 建立ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 查詢ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 檢驗紀錄ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 建立ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 查詢ToolStripMenuItem1;
     }
 }
 
