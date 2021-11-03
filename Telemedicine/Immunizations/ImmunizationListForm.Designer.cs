@@ -38,13 +38,13 @@ namespace Telemedicine.Immunizations
             this.groupSearch = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.textId = new Telemedicine.Forms.CgLabelTextBox();
-            this.comboStatus = new Telemedicine.Forms.CgLabelComboBox();
             this.textSubject = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
-            this.textMedId = new Telemedicine.Forms.CgLabelTextBox();
             this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.labelDateRange = new Telemedicine.Forms.CgLabelCustomControl();
+            this.checkDateRange = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip.SuspendLayout();
             this.groupSearch.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -79,7 +79,7 @@ namespace Telemedicine.Immunizations
             this.dgvData.InfoBoxTextFormat = "{0} rows";
             this.dgvData.Location = new System.Drawing.Point(0, 0);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(767, 399);
+            this.dgvData.Size = new System.Drawing.Size(767, 370);
             this.dgvData.TabIndex = 4;
             // 
             // contextMenuStrip
@@ -98,28 +98,27 @@ namespace Telemedicine.Immunizations
             // 
             // groupSearch
             // 
+            this.groupSearch.Controls.Add(this.checkDateRange);
             this.groupSearch.Controls.Add(this.flowLayoutPanel1);
             this.groupSearch.Controls.Add(this.buttonClear);
             this.groupSearch.Controls.Add(this.buttonSearch);
+            this.groupSearch.Controls.Add(this.labelDateRange);
             this.groupSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupSearch.Location = new System.Drawing.Point(0, 0);
             this.groupSearch.Name = "groupSearch";
-            this.groupSearch.Size = new System.Drawing.Size(767, 158);
+            this.groupSearch.Size = new System.Drawing.Size(767, 187);
             this.groupSearch.TabIndex = 6;
             this.groupSearch.TabStop = false;
             this.groupSearch.Text = "查詢條件";
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Controls.Add(this.textId);
-            this.flowLayoutPanel1.Controls.Add(this.comboStatus);
             this.flowLayoutPanel1.Controls.Add(this.textSubject);
             this.flowLayoutPanel1.Controls.Add(this.textPatIdentifier);
-            this.flowLayoutPanel1.Controls.Add(this.textMedId);
             this.flowLayoutPanel1.Controls.Add(this.comboPatOrg);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 21);
@@ -137,22 +136,11 @@ namespace Telemedicine.Immunizations
             this.textId.Size = new System.Drawing.Size(224, 30);
             this.textId.TabIndex = 0;
             // 
-            // comboStatus
-            // 
-            this.comboStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboStatus.Header = "狀態";
-            this.comboStatus.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboStatus.Location = new System.Drawing.Point(3, 39);
-            this.comboStatus.Name = "comboStatus";
-            this.comboStatus.Padding = new System.Windows.Forms.Padding(1);
-            this.comboStatus.Size = new System.Drawing.Size(224, 31);
-            this.comboStatus.TabIndex = 2;
-            // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 73);
+            this.textSubject.Location = new System.Drawing.Point(3, 39);
             this.textSubject.Name = "textSubject";
             this.textSubject.Padding = new System.Windows.Forms.Padding(1);
             this.textSubject.Size = new System.Drawing.Size(224, 30);
@@ -162,28 +150,18 @@ namespace Telemedicine.Immunizations
             // 
             this.textPatIdentifier.Header = "病患識別碼";
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatIdentifier.Location = new System.Drawing.Point(233, 3);
+            this.textPatIdentifier.Location = new System.Drawing.Point(3, 75);
             this.textPatIdentifier.Name = "textPatIdentifier";
             this.textPatIdentifier.Padding = new System.Windows.Forms.Padding(1);
             this.textPatIdentifier.Size = new System.Drawing.Size(224, 30);
             this.textPatIdentifier.TabIndex = 4;
-            // 
-            // textMedId
-            // 
-            this.textMedId.Header = "藥品代碼";
-            this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedId.Location = new System.Drawing.Point(233, 39);
-            this.textMedId.Name = "textMedId";
-            this.textMedId.Padding = new System.Windows.Forms.Padding(1);
-            this.textMedId.Size = new System.Drawing.Size(224, 30);
-            this.textMedId.TabIndex = 5;
             // 
             // comboPatOrg
             // 
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(233, 75);
+            this.comboPatOrg.Location = new System.Drawing.Point(233, 3);
             this.comboPatOrg.Name = "comboPatOrg";
             this.comboPatOrg.Padding = new System.Windows.Forms.Padding(1);
             this.comboPatOrg.Size = new System.Drawing.Size(224, 31);
@@ -220,17 +198,39 @@ namespace Telemedicine.Immunizations
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvData);
             this.splitContainer1.Size = new System.Drawing.Size(767, 561);
-            this.splitContainer1.SplitterDistance = 158;
+            this.splitContainer1.SplitterDistance = 187;
             this.splitContainer1.TabIndex = 8;
             // 
-            // MedicationAdminListForm
+            // labelDateRange
+            // 
+            this.labelDateRange.ComponentHeight = 26;
+            this.labelDateRange.Header = "日期區間";
+            this.labelDateRange.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.labelDateRange.Location = new System.Drawing.Point(7, 143);
+            this.labelDateRange.Name = "labelDateRange";
+            this.labelDateRange.Padding = new System.Windows.Forms.Padding(1);
+            this.labelDateRange.Size = new System.Drawing.Size(459, 34);
+            this.labelDateRange.TabIndex = 7;
+            // 
+            // checkDateRange
+            // 
+            this.checkDateRange.AutoSize = true;
+            this.checkDateRange.Location = new System.Drawing.Point(472, 161);
+            this.checkDateRange.Name = "checkDateRange";
+            this.checkDateRange.Size = new System.Drawing.Size(62, 16);
+            this.checkDateRange.TabIndex = 10;
+            this.checkDateRange.Text = "Enabled";
+            this.checkDateRange.UseVisualStyleBackColor = true;
+            // 
+            // ImmunizationListForm
             // 
             this.ClientSize = new System.Drawing.Size(767, 561);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "MedicationAdminListForm";
+            this.Name = "ImmunizationListForm";
             this.Text = "用藥紀錄";
             this.contextMenuStrip.ResumeLayout(false);
             this.groupSearch.ResumeLayout(false);
+            this.groupSearch.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -249,12 +249,12 @@ namespace Telemedicine.Immunizations
         private System.Windows.Forms.GroupBox groupSearch;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private Forms.CgLabelTextBox textId;
-        private Forms.CgLabelComboBox comboStatus;
         private Forms.CgLabelTextBox textSubject;
         private Forms.CgLabelTextBox textPatIdentifier;
-        private Forms.CgLabelTextBox textMedId;
         private Forms.CgLabelComboBox comboPatOrg;
         private Forms.CgIconButton buttonClear;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private Forms.CgLabelCustomControl labelDateRange;
+        private System.Windows.Forms.CheckBox checkDateRange;
     }
 }

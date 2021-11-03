@@ -40,11 +40,14 @@ namespace Telemedicine
             this.menuMedReq = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMedReqCreate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMedReqSearch = new System.Windows.Forms.ToolStripMenuItem();
-            this.視窗ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.傳輸監控ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMedAdm = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMedAdmCreate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMedAdmSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.注射ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.建立ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.查詢ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.視窗ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.傳輸監控ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +68,8 @@ namespace Telemedicine
             this.menuPatient,
             this.menuObservation,
             this.menuMedReq,
-            this.menuMedAdm});
+            this.menuMedAdm,
+            this.注射ToolStripMenuItem});
             this.menuData.Name = "menuData";
             this.menuData.Size = new System.Drawing.Size(43, 20);
             this.menuData.Text = "資料";
@@ -128,16 +132,62 @@ namespace Telemedicine
             // menuMedReqCreate
             // 
             this.menuMedReqCreate.Name = "menuMedReqCreate";
-            this.menuMedReqCreate.Size = new System.Drawing.Size(180, 22);
+            this.menuMedReqCreate.Size = new System.Drawing.Size(98, 22);
             this.menuMedReqCreate.Text = "開立";
             this.menuMedReqCreate.Click += new System.EventHandler(this.menuMedReqCreate_Click);
             // 
             // menuMedReqSearch
             // 
             this.menuMedReqSearch.Name = "menuMedReqSearch";
-            this.menuMedReqSearch.Size = new System.Drawing.Size(180, 22);
+            this.menuMedReqSearch.Size = new System.Drawing.Size(98, 22);
             this.menuMedReqSearch.Text = "查詢";
             this.menuMedReqSearch.Click += new System.EventHandler(this.menuMedReqSearch_Click);
+            // 
+            // menuMedAdm
+            // 
+            this.menuMedAdm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuMedAdmCreate,
+            this.menuMedAdmSearch});
+            this.menuMedAdm.Name = "menuMedAdm";
+            this.menuMedAdm.Size = new System.Drawing.Size(180, 22);
+            this.menuMedAdm.Text = "用藥紀錄";
+            // 
+            // menuMedAdmCreate
+            // 
+            this.menuMedAdmCreate.Name = "menuMedAdmCreate";
+            this.menuMedAdmCreate.Size = new System.Drawing.Size(98, 22);
+            this.menuMedAdmCreate.Text = "建立";
+            this.menuMedAdmCreate.Click += new System.EventHandler(this.menuMedAdmCreate_Click);
+            // 
+            // menuMedAdmSearch
+            // 
+            this.menuMedAdmSearch.Name = "menuMedAdmSearch";
+            this.menuMedAdmSearch.Size = new System.Drawing.Size(98, 22);
+            this.menuMedAdmSearch.Text = "查詢";
+            this.menuMedAdmSearch.Click += new System.EventHandler(this.menuMedAdmSearch_Click);
+            // 
+            // 注射ToolStripMenuItem
+            // 
+            this.注射ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.建立ToolStripMenuItem,
+            this.查詢ToolStripMenuItem});
+            this.注射ToolStripMenuItem.Name = "注射ToolStripMenuItem";
+            this.注射ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.注射ToolStripMenuItem.Text = "疫苗注射";
+            // 
+            // 建立ToolStripMenuItem
+            // 
+            this.建立ToolStripMenuItem.Name = "建立ToolStripMenuItem";
+            this.建立ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.建立ToolStripMenuItem.Text = "建立";
+            this.建立ToolStripMenuItem.Click += new System.EventHandler(this.建立ToolStripMenuItem_Click);
+            // 
+            // 查詢ToolStripMenuItem
+            // 
+            this.查詢ToolStripMenuItem.Name = "查詢ToolStripMenuItem";
+            this.查詢ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.查詢ToolStripMenuItem.Text = "查詢";
+            this.查詢ToolStripMenuItem.Click += new System.EventHandler(this.查詢ToolStripMenuItem_Click);
             // 
             // 視窗ToolStripMenuItem
             // 
@@ -153,29 +203,6 @@ namespace Telemedicine
             this.傳輸監控ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.傳輸監控ToolStripMenuItem.Text = "傳輸監控";
             this.傳輸監控ToolStripMenuItem.Click += new System.EventHandler(this.傳輸監控ToolStripMenuItem_Click);
-            // 
-            // menuMedAdm
-            // 
-            this.menuMedAdm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuMedAdmCreate,
-            this.menuMedAdmSearch});
-            this.menuMedAdm.Name = "menuMedAdm";
-            this.menuMedAdm.Size = new System.Drawing.Size(180, 22);
-            this.menuMedAdm.Text = "用藥紀錄";
-            // 
-            // menuMedAdmCreate
-            // 
-            this.menuMedAdmCreate.Name = "menuMedAdmCreate";
-            this.menuMedAdmCreate.Size = new System.Drawing.Size(180, 22);
-            this.menuMedAdmCreate.Text = "建立";
-            this.menuMedAdmCreate.Click += new System.EventHandler(this.menuMedAdmCreate_Click);
-            // 
-            // menuMedAdmSearch
-            // 
-            this.menuMedAdmSearch.Name = "menuMedAdmSearch";
-            this.menuMedAdmSearch.Size = new System.Drawing.Size(180, 22);
-            this.menuMedAdmSearch.Text = "查詢";
-            this.menuMedAdmSearch.Click += new System.EventHandler(this.menuMedAdmSearch_Click);
             // 
             // MainForm
             // 
@@ -209,6 +236,9 @@ namespace Telemedicine
         private System.Windows.Forms.ToolStripMenuItem menuMedAdm;
         private System.Windows.Forms.ToolStripMenuItem menuMedAdmCreate;
         private System.Windows.Forms.ToolStripMenuItem menuMedAdmSearch;
+        private System.Windows.Forms.ToolStripMenuItem 注射ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 建立ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 查詢ToolStripMenuItem;
     }
 }
 

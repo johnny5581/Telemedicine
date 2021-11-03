@@ -17,6 +17,10 @@ namespace Telemedicine.Immunizations
     {
         private MedicationAdministrationController _ctrlMedAdm;
         private PatientController _ctrlPat;
+        private DateTimePicker dateBeginDate;
+        private DateTimePicker dateBeginTime;
+        private DateTimePicker dateEndDate;
+        private DateTimePicker dateEndTime;
         public ImmunizationListForm()
         {
             InitializeComponent();
@@ -26,8 +30,33 @@ namespace Telemedicine.Immunizations
 
             dgvData.AutoGenerateColumns = true;
             comboPatOrg.BindOrganizations("全部");
-            comboStatus.AddTextItem("全部", null);
-            comboStatus.AddItemRange(Enum.GetNames(typeof(MedicationAdministration.MedicationAdministrationStatusCodes)), r=>r);
+
+            dateBeginDate = new DateTimePicker();
+            dateBeginDate.CustomFormat = "yyyy-MM-dd";
+            dateBeginDate.Format = DateTimePickerFormat.Custom;
+            dateBeginDate.Dock = DockStyle.Fill;
+            dateBeginTime = new DateTimePicker();
+            dateBeginTime.CustomFormat = "HH:mm:ss";
+            dateBeginTime.Format = DateTimePickerFormat.Custom;
+            dateBeginTime.ShowUpDown = true;
+            dateBeginTime.Dock = DockStyle.Fill;
+            dateEndDate = new DateTimePicker();
+            dateEndDate.CustomFormat = "yyyy-MM-dd";
+            dateEndDate.Format = DateTimePickerFormat.Custom;
+            dateEndDate.Dock = DockStyle.Fill;
+            dateEndTime = new DateTimePicker();
+            dateEndTime.CustomFormat = "HH:mm:ss";
+            dateEndTime.Format = DateTimePickerFormat.Custom;
+            dateEndTime.ShowUpDown = true;
+            dateEndTime.Dock = DockStyle.Fill;
+            labelDateRange.LayoutPanel.ChangeLayout(
+                new ColumnStyle[] { new ColumnStyle(SizeType.Percent, 30), new ColumnStyle(SizeType.Percent, 20), new ColumnStyle(SizeType.Absolute, 20), new ColumnStyle(SizeType.Percent, 30), new ColumnStyle(SizeType.Percent, 20) },
+                new RowStyle[] { new RowStyle(SizeType.Percent, 100) });
+            labelDateRange.LayoutPanel.AddControlToPosition(dateBeginDate, 0, 0);
+            labelDateRange.LayoutPanel.AddControlToPosition(dateBeginTime, 1, 0);
+            labelDateRange.LayoutPanel.AddControlToPosition(new Label { Text = "~", TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, 0);
+            labelDateRange.LayoutPanel.AddControlToPosition(dateEndDate, 3, 0);
+            labelDateRange.LayoutPanel.AddControlToPosition(dateEndTime, 4, 0);
         }
 
         private void ActionSearch()
@@ -36,8 +65,6 @@ namespace Telemedicine.Immunizations
             var id = textId.Text;
             var patId = textSubject.Text;
             var patIdentifier = textPatIdentifier.Text;
-            var status = comboStatus.SelectedValue as string;
-            var medId = textMedId.Text;
             var patOrg = comboPatOrg.SelectedValue as string;
 
             dgvData.ClearSource();
@@ -46,14 +73,19 @@ namespace Telemedicine.Immunizations
                 criteria.Add("subject=" + patId);
             if (patIdentifier.IsNotNullOrEmpty())
                 criteria.Add("subject.identifier=" + patIdentifier);
-            if (status.IsNotNullOrEmpty())
-                criteria.Add("status=" + status);
-            if (medId.IsNotNullOrEmpty())
-                criteria.Add("code=" + medId);
             if (patOrg.IsNotNullOrEmpty())
                 criteria.Add("subject.organization=" + patOrg);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
+            if (checkDateRange.Checked)
+            {
+                var begin = dateBeginDate.Value.Date + dateBeginTime.Value.TimeOfDay;
+                var end = dateEndDate.Value.Date + dateEndTime.Value.TimeOfDay;
+                var datBegin = begin.ToString("yyyy-MM-dd");
+                var datEnd = end.ToString("yyyy-MM-dd");
+                criteria.Add("date=gt" + datBegin);
+                criteria.Add("date=lt" + datEnd);
+            }
             var reqs = _ctrlMedAdm.Search(criteria);
             var dataList = reqs.Select(r => new DataModel(r)).ToList();
             dgvData.SetSource(dataList);
