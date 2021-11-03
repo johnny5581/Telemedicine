@@ -94,5 +94,15 @@ namespace Telemedicine
 
             Execute(() => FindView<Meds.MedicationRequestListForm>());
         }
+
+        private void menuMedAdmCreate_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Meds.MedicationAdminCreateForm>());
+        }
+
+        private void menuMedAdmSearch_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Meds.MedicationAdminListForm>());
+        }
     }
 }

@@ -150,11 +150,23 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Meds\MedicationAdminControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationAdminControl.Designer.cs">
+      <DependentUpon>MedicationAdminControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Meds\MedicationRequestControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Meds\MedicationRequestControl.Designer.cs">
       <DependentUpon>MedicationRequestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Meds\MedicationAdminCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationAdminCreateForm.Designer.cs">
+      <DependentUpon>MedicationAdminCreateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Meds\MedicationRequestCreateForm.cs">
       <SubType>Form</SubType>
@@ -162,8 +174,17 @@
     <Compile Include="Meds\MedicationRequestCreateForm.Designer.cs">
       <DependentUpon>MedicationRequestCreateForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Meds\MedicationAdminDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Meds\MedicationRequestDialog.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationAdminListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Meds\MedicationAdminListForm.Designer.cs">
+      <DependentUpon>MedicationAdminListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Meds\MedicationRequestListForm.cs">
       <SubType>Form</SubType>
@@ -177,6 +198,7 @@
     <Compile Include="Meds\MedicationListForm.Designer.cs">
       <DependentUpon>MedicationListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Meds\MedModels.cs" />
     <Compile Include="Observations\CreateSingleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,11 +273,20 @@
     <EmbeddedResource Include="Meds\MedicationListForm.resx">
       <DependentUpon>MedicationListForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Meds\MedicationAdminControl.resx">
+      <DependentUpon>MedicationAdminControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Meds\MedicationRequestControl.resx">
       <DependentUpon>MedicationRequestControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Meds\MedicationAdminCreateForm.resx">
+      <DependentUpon>MedicationAdminCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Meds\MedicationRequestCreateForm.resx">
       <DependentUpon>MedicationRequestCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Meds\MedicationAdminListForm.resx">
+      <DependentUpon>MedicationAdminListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Meds\MedicationRequestListForm.resx">
       <DependentUpon>MedicationRequestListForm.cs</DependentUpon>

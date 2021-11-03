@@ -13,24 +13,21 @@ using Telemedicine.Forms;
 
 namespace Telemedicine.Meds
 {
-    public partial class MedicationRequestListForm : FormBase
+    public partial class MedicationAdminListForm : FormBase
     {
-        private MedicationRequestController _ctrlMedReq;
+        private MedicationAdministrationController _ctrlMedAdm;
         private PatientController _ctrlPat;
-
-        public MedicationRequest SelectedMedicationRequest { get; private set; }
-
-        public MedicationRequestListForm()
+        public MedicationAdminListForm()
         {
             InitializeComponent();
 
-            _ctrlMedReq = new MedicationRequestController(this);
+            _ctrlMedAdm = new MedicationAdministrationController(this);
             _ctrlPat = new PatientController(this);
 
             dgvData.AutoGenerateColumns = true;
             comboPatOrg.BindOrganizations("全部");
             comboStatus.AddTextItem("全部", null);
-            comboStatus.AddItemRange(Enum.GetNames(typeof(MedicationRequest.medicationrequestStatus)), r=>r);
+            comboStatus.AddItemRange(Enum.GetNames(typeof(MedicationAdministration.MedicationAdministrationStatusCodes)), r=>r);
         }
 
         private void ActionSearch()
@@ -57,8 +54,8 @@ namespace Telemedicine.Meds
                 criteria.Add("subject.organization=" + patOrg);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
-            var reqs = _ctrlMedReq.Search(criteria);
-            var dataList = reqs.Select(r => new MedicationRequestData(r)).ToList();
+            var reqs = _ctrlMedAdm.Search(criteria);
+            var dataList = reqs.Select(r => new DataModel(r)).ToList();
             dgvData.SetSource(dataList);
         }
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -66,9 +63,9 @@ namespace Telemedicine.Meds
             Execute(ActionSearch);
         }
 
-        private class MedicationRequestData : DataModelBase<MedicationRequest>
+        private class DataModel : DataModelBase<MedicationAdministration>
         {
-            public MedicationRequestData(MedicationRequest data) : base(data)
+            public DataModel(MedicationAdministration data) : base(data)
             {
                 PatId = data.Subject.Reference;
                 if (data.Medication is ResourceReference)
@@ -76,36 +73,41 @@ namespace Telemedicine.Meds
                 else if (data.Medication is CodeableConcept)
                     MedId = (data.Medication as CodeableConcept).Coding.FirstOrDefault()?.Code;
                 Status = data.Status.ToString(false);
-                Intent = data.Intent.ToString(false);
+                Quantity = data.Dosage.Dose.Value.ToString(false);
+                Unit = data.Dosage.Dose.Unit;
+
+                ResetEffective();
+            }
+
+            public void ResetEffective()
+            {
+                if (Data.Effective is Period)
+                {
+                    var period = Data.Effective as Period;
+                    Effective = $"{new FhirDateTime(period.Start).ToDateTime().ToString("yyyy-MM-dd")} - {new FhirDateTime(period.End).ToDateTime().ToString("yyyy-MM-dd")}";
+                }
+                else if (Data.Effective is FhirDateTime)
+                    Effective = $"{(Data.Effective as FhirDateTime).ToDateTime().ToString("yyyy-MM-dd")}";
             }
 
             [DisplayName("#")]
             public string Id { get; set; }
-            public string PatId { get; set; }
             public string MedId { get; set; }
+            public string PatId { get; set; }
             public string Status { get; set; }
-            public string Intent { get; set; }
-            public string AuthoredOn { get; set; }
+            public string Quantity { get; set; }
+            public string Unit { get; set; }
+            public string Effective { get; set; }
         }
         private void menuDelete_Click(object sender, EventArgs e)
         {
             Execute(() =>
             {
-                var item = GetSelectedItem<MedicationRequestData>(dgvData);
-                _ctrlMedReq.Delete(item.Data);
+                var item = GetSelectedItem<DataModel>(dgvData);
+                _ctrlMedAdm.Delete(item.Data);
                 MsgBoxHelper.Info("刪除成功");
                 ActionSearch();
             });
-        }
-
-        private void dgvData_DataSelected(object sender, CgDataGridPanel.DataSelectedEventArgs e)
-        {
-            if (MdiParent == null)
-            {
-                var item = e.Data as MedicationRequestData;
-                SelectedMedicationRequest = item.Data;
-                DialogResult = DialogResult.OK;
-            }
         }
     }
 }

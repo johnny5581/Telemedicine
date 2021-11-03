@@ -1,7 +1,7 @@
 ﻿
 namespace Telemedicine.Meds
 {
-    partial class MedicationRequestCreateForm
+    partial class MedicationAdminCreateForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,17 +36,19 @@ namespace Telemedicine.Meds
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
             this.groupPat = new System.Windows.Forms.GroupBox();
-            this.radioPatIPD = new System.Windows.Forms.RadioButton();
-            this.radioPatOPD = new System.Windows.Forms.RadioButton();
             this.buttonPat = new Telemedicine.Forms.CgIconButton();
             this.textPatId = new Telemedicine.Forms.CgLabelControl();
             this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
             this.buttonCreate = new Telemedicine.Forms.CgIconButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonMedReq = new Telemedicine.Forms.CgIconButton();
+            this.textMedRedId = new Telemedicine.Forms.CgLabelControl();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupPat.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox3
@@ -58,10 +60,10 @@ namespace Telemedicine.Meds
             this.groupBox3.Controls.Add(this.panel1);
             this.groupBox3.Location = new System.Drawing.Point(195, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(409, 222);
+            this.groupBox3.Size = new System.Drawing.Size(409, 257);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "給藥";
+            this.groupBox3.Text = "用藥紀錄";
             // 
             // dgvData
             // 
@@ -69,7 +71,7 @@ namespace Telemedicine.Meds
             this.dgvData.InfoBoxVisible = false;
             this.dgvData.Location = new System.Drawing.Point(3, 56);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(403, 163);
+            this.dgvData.Size = new System.Drawing.Size(403, 198);
             this.dgvData.TabIndex = 1;
             this.dgvData.TopPanelVisible = false;
             // 
@@ -128,8 +130,6 @@ namespace Telemedicine.Meds
             // 
             // groupPat
             // 
-            this.groupPat.Controls.Add(this.radioPatIPD);
-            this.groupPat.Controls.Add(this.radioPatOPD);
             this.groupPat.Controls.Add(this.buttonPat);
             this.groupPat.Controls.Add(this.textPatId);
             this.groupPat.Controls.Add(this.textPatSex);
@@ -137,32 +137,10 @@ namespace Telemedicine.Meds
             this.groupPat.Controls.Add(this.textPatName);
             this.groupPat.Location = new System.Drawing.Point(12, 12);
             this.groupPat.Name = "groupPat";
-            this.groupPat.Size = new System.Drawing.Size(177, 222);
+            this.groupPat.Size = new System.Drawing.Size(177, 168);
             this.groupPat.TabIndex = 2;
             this.groupPat.TabStop = false;
             this.groupPat.Text = "病患資料";
-            // 
-            // radioPatIPD
-            // 
-            this.radioPatIPD.AutoSize = true;
-            this.radioPatIPD.Location = new System.Drawing.Point(6, 187);
-            this.radioPatIPD.Name = "radioPatIPD";
-            this.radioPatIPD.Size = new System.Drawing.Size(47, 16);
-            this.radioPatIPD.TabIndex = 9;
-            this.radioPatIPD.Text = "住院";
-            this.radioPatIPD.UseVisualStyleBackColor = true;
-            // 
-            // radioPatOPD
-            // 
-            this.radioPatOPD.AutoSize = true;
-            this.radioPatOPD.Checked = true;
-            this.radioPatOPD.Location = new System.Drawing.Point(6, 165);
-            this.radioPatOPD.Name = "radioPatOPD";
-            this.radioPatOPD.Size = new System.Drawing.Size(47, 16);
-            this.radioPatOPD.TabIndex = 8;
-            this.radioPatOPD.TabStop = true;
-            this.radioPatOPD.Text = "門診";
-            this.radioPatOPD.UseVisualStyleBackColor = true;
             // 
             // buttonPat
             // 
@@ -222,7 +200,7 @@ namespace Telemedicine.Meds
             this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonCreate.IconSize = 0;
-            this.buttonCreate.Location = new System.Drawing.Point(460, 240);
+            this.buttonCreate.Location = new System.Drawing.Point(460, 275);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(144, 53);
             this.buttonCreate.TabIndex = 6;
@@ -231,18 +209,53 @@ namespace Telemedicine.Meds
             this.buttonCreate.UseVisualStyleBackColor = true;
             this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
-            // MedicationRequestCreateForm
+            // groupBox1
             // 
-            this.ClientSize = new System.Drawing.Size(616, 305);
+            this.groupBox1.Controls.Add(this.buttonMedReq);
+            this.groupBox1.Controls.Add(this.textMedRedId);
+            this.groupBox1.Location = new System.Drawing.Point(12, 186);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(177, 81);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "處方籤";
+            // 
+            // buttonMedReq
+            // 
+            this.buttonMedReq.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonMedReq.IconSize = 0;
+            this.buttonMedReq.Location = new System.Drawing.Point(96, 20);
+            this.buttonMedReq.Name = "buttonMedReq";
+            this.buttonMedReq.Size = new System.Drawing.Size(75, 23);
+            this.buttonMedReq.TabIndex = 7;
+            this.buttonMedReq.Text = "選擇處方籤";
+            this.buttonMedReq.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonMedReq.UseVisualStyleBackColor = true;
+            this.buttonMedReq.Click += new System.EventHandler(this.buttonMedReq_Click);
+            // 
+            // textMedRedId
+            // 
+            this.textMedRedId.Header = "#";
+            this.textMedRedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedRedId.Location = new System.Drawing.Point(6, 49);
+            this.textMedRedId.Name = "textMedRedId";
+            this.textMedRedId.Padding = new System.Windows.Forms.Padding(1);
+            this.textMedRedId.Size = new System.Drawing.Size(165, 14);
+            this.textMedRedId.TabIndex = 6;
+            // 
+            // MedicationAdminCreateForm
+            // 
+            this.ClientSize = new System.Drawing.Size(616, 340);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupPat);
-            this.Name = "MedicationRequestCreateForm";
-            this.Text = "開立處方籤";
+            this.Name = "MedicationAdminCreateForm";
+            this.Text = "用藥紀錄建立";
             this.groupBox3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.groupPat.ResumeLayout(false);
-            this.groupPat.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -256,13 +269,14 @@ namespace Telemedicine.Meds
         private Forms.CgLabelTextBox textPatBrithDate;
         private Forms.CgLabelTextBox textPatName;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Panel panel1;
-        private Forms.CgIconButton buttonItemDelete;
-        private Forms.CgIconButton buttonItemAdd;
-        private System.Windows.Forms.RadioButton radioPatIPD;
-        private System.Windows.Forms.RadioButton radioPatOPD;
         private Forms.CgIconButton buttonCreate;
         private Forms.CgDataGridPanel dgvData;
+        private System.Windows.Forms.Panel panel1;
         private Forms.CgIconButton buttonItemEdit;
+        private Forms.CgIconButton buttonItemDelete;
+        private Forms.CgIconButton buttonItemAdd;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private Forms.CgIconButton buttonMedReq;
+        private Forms.CgLabelControl textMedRedId;
     }
 }

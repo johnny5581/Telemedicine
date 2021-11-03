@@ -1,7 +1,7 @@
 ﻿
 namespace Telemedicine.Meds
 {
-    partial class MedicationRequestListForm
+    partial class MedicationAdminListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace Telemedicine.Meds
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MedicationRequestListForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MedicationAdminListForm));
             this.buttonSearch = new Telemedicine.Forms.CgIconButton();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -81,7 +81,6 @@ namespace Telemedicine.Meds
             this.dgvData.Name = "dgvData";
             this.dgvData.Size = new System.Drawing.Size(767, 399);
             this.dgvData.TabIndex = 4;
-            this.dgvData.DataSelected += new Telemedicine.Forms.CgDataGridPanel.DataSelectedEventHandler(this.dgvData_DataSelected);
             // 
             // contextMenuStrip
             // 
@@ -224,12 +223,12 @@ namespace Telemedicine.Meds
             this.splitContainer1.SplitterDistance = 158;
             this.splitContainer1.TabIndex = 8;
             // 
-            // MedicationRequestListForm
+            // MedicationAdminListForm
             // 
             this.ClientSize = new System.Drawing.Size(767, 561);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "MedicationRequestListForm";
-            this.Text = "處方籤查詢";
+            this.Name = "MedicationAdminListForm";
+            this.Text = "用藥紀錄";
             this.contextMenuStrip.ResumeLayout(false);
             this.groupSearch.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);

@@ -120,6 +120,24 @@ namespace Telemedicine.Controllers
         {
 
         }
+        public T Read(string location)
+        {
+            return ExecuteClient(client =>
+            {
+                return client.Read<T>(location);
+            });
+        }
+
+        public T SearchById(string id)
+        {
+            return ExecuteClient(client =>
+            {
+                var bundle = client.SearchById<T>(id);
+                if (bundle.Entry.Count > 0)                
+                    return bundle.Entry[0].Resource as T;                
+                return null;
+            });
+        }
         public string Create(T model)
         {
             return ExecuteClient(client =>
