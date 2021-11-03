@@ -93,24 +93,7 @@ namespace Telemedicine.Observations
             var dateEnd = dateEndDate.Value.Date + dateEndTime.Value.TimeOfDay;
 
             dgvData.ClearSource();
-            if (patId.IsNullOrEmpty())
-            {
-                // 先找看看使用者
-                var patCriteria = new List<string>();
-                if (patIdentifier.IsNotNullOrEmpty())
-                    patCriteria.Add("identifier=" + patIdentifier);
-                if (patName.IsNotNullOrEmpty())
-                    patCriteria.Add("name=" + patName);
-                if (patOrg.IsNotNullOrEmpty())
-                    patCriteria.Add("organization=" + patOrg);
-                if (patCriteria.Count > 0)
-                {
-                    var pat = _ctrlPat.SearchSingle(patCriteria);
-                    if (pat == null) // 沒有找到病人
-                        return;
-                    patId = pat.Id;
-                }
-            }
+            
             var criteria = new List<string>();
             if (patId.IsNotNullOrEmpty())
                 criteria.Add("subject=" + patId);
@@ -118,6 +101,12 @@ namespace Telemedicine.Observations
                 criteria.Add("code=" + vsCode);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
+            if (patIdentifier.IsNotNullOrEmpty())
+                criteria.Add("subject.identifier=" + patIdentifier);
+            if (patName.IsNotNullOrEmpty())
+                criteria.Add("subject.name=" + patName);
+            if (patOrg.IsNotNullOrEmpty())
+                criteria.Add("subject.organization=" + patOrg);
             if (checkDateRange.Checked)
             {
                 var begin = dateBeginDate.Value.Date + dateBeginTime.Value.TimeOfDay;
