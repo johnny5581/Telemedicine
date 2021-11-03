@@ -11,11 +11,11 @@ namespace Telemedicine.Vaccs
 {
     public class VaccDialog : CgBaseDialogForm
     {
-        private ImmunizationControl control;
+        private VaccControl control;
         private decimal _quantity;
-        public new ImmunizationControl MainComponent
+        public new VaccControl MainComponent
         {
-            get { return (ImmunizationControl)base.MainComponent; }
+            get { return (VaccControl)base.MainComponent; }
         }
 
         public decimal Quantity
@@ -25,7 +25,7 @@ namespace Telemedicine.Vaccs
         
         protected override Control GetMainComponent()
         {
-            control = new ImmunizationControl();
+            control = new VaccControl();
             return control;
         }
         protected override void OnPositiveClicking(CancelEventArgs e)
