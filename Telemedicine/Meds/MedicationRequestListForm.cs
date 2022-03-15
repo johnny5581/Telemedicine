@@ -53,7 +53,7 @@ namespace Telemedicine.Meds
             if (status.IsNotNullOrEmpty())
                 criteria.Add("status=" + status.ToLower());
             if (medId.IsNotNullOrEmpty())
-                criteria.Add("code=" + medId);
+                criteria.Add("medication.code=" + medId);
             if (patOrg.IsNotNullOrEmpty())
                 criteria.Add("subject.organization=" + patOrg);
             if (id.IsNotNullOrEmpty())
