@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Telemedicine.Forms
 {
-    public class CgUserControl : UserControl
+    public class CgUserControl : UserControl, ICgComponent
     {
         public CgUserControl()
         {
@@ -19,6 +19,18 @@ namespace Telemedicine.Forms
         {
             get { return Commons.IsRuntime(); }
         }
+
+        public void RuntimeBootstrap()
+        {
+            OnRuntimeBootstrap();
+        }
+        protected virtual void OnRuntimeBootstrap()
+        {
+            foreach(Control c in Controls)
+                Commons.Boostrap(c);
+        }
     }
+
+    
 }
 

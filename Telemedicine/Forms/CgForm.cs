@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Telemedicine.Forms
 {    
-    public class CgForm : Form
+    public class CgForm : Form, ICgComponent
     {
         private static Lazy<Icon> _lazyIcon
             = new Lazy<Icon>(GetResourceIcon);
@@ -89,13 +89,23 @@ namespace Telemedicine.Forms
         }
         protected virtual void OnShowAtRuntime()
         {
-
         }
         protected virtual void OnShownAtRuntime()
         {
-
+            // 觸發Bootstrap動作
+            OnRuntimeBootstrap();
         }
         #endregion
+        void ICgComponent.RuntimeBootstrap()
+        {
+            OnRuntimeBootstrap();
+        }
+        protected virtual void OnRuntimeBootstrap()
+        {
+            foreach (Control c in Controls)
+                Commons.Boostrap(c);
+        }        
+        
     }
 
     public class CgBorderlessForm : CgForm
@@ -135,7 +145,7 @@ namespace Telemedicine.Forms
         void Show(object parentObject);
         void Close();
         object Invoke(Delegate method);
-        object Invoke(Delegate method, object[] args);
+        object Invoke(Delegate method, object[] args);                
     }
     public class CgDialogForm : CgForm, IDialog
     {

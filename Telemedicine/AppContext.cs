@@ -214,31 +214,7 @@ namespace Telemedicine
 
         public static AppContext GetContext(string[] args)
         {
-            // 查詢使用的設定檔
-            var runtimeId = ConfigurationManager.GetConfiguration("sys:runtime");
-            if (runtimeId.IsNotNullOrEmpty())
-            {
-                var lib = string.Format(SystemPrefix + "_{0}.dll", runtimeId);
-                logger.Debug("search file=" + lib);
-                if (!File.Exists(lib))
-                    throw new FileNotFoundException("lib file not found: " + lib);
-
-                return LoadEnvironmentLibFile(lib, runtimeId, args);
-            }
-
-            var multiEnvs = ConfigurationManager.GetConfiguration("sys:multi_env");
-            if (Features.GetEnabled(multiEnvs))
-            {
-                var path = Directory.GetCurrentDirectory();
-                logger.Debug("search path=" + path);
-                var libs = Directory.GetFiles(path, SystemPrefix + "_*.dll");
-                logger.Information("found libs: " + libs.Length);
-                var lib = Forms.PickerDialog.GetSelection(null, "please select runtime", libs, r => Path.GetFileName(r));
-                if (lib != null)
-                    return LoadEnvironmentLibFile(lib, runtimeId, args);
-                if (!Forms.MsgBoxHelper.YesNo("no runtime selected, use default runtime?"))
-                    throw new InvalidOperationException("no runtime selected");
-            }
+            
             // 使用預設的環境
             return new AppContext(args);
         }

@@ -113,7 +113,6 @@ namespace Telemedicine.Forms
             var d = new InputDialog(message, caption, icon, inputText);
             d.Keyboard = keyboard;
             d.SubMessage = messageError;
-
             d.IsSecretInput = secret;
             return d.ShowDialog(dialog, parent);
         }
@@ -165,27 +164,33 @@ namespace Telemedicine.Forms
     public delegate void KeyboardInputEventHandler(object sender, KeyboardInputEventArgs e);
     public class KeyboardInputEventArgs : EventArgs
     {
-        public KeyboardInputEventArgs(string keyCode)
+        public const int ModeDirect = 1;
+        public const int ModeKeyCode = 2;
+        public const int ModeCommand = 3;
+
+        
+        public KeyboardInputEventArgs(string code, int mode)
         {
-            KeyCode = keyCode;
-            IsCommand = false;
+            Code = code;
+            Mode = mode;
         }
-        public KeyboardInputEventArgs(Func<string, string> handler)
+        public KeyboardInputEventArgs(Func<string, int, int, string> handler)
         {
             Handler = handler;
-            IsCommand = true;
+            Mode = ModeCommand;            
         }
-        public bool IsCommand { get; private set; }
-        public string KeyCode { get; private set; }
-        public Func<string, string> Handler { get; private set; }
+        public string Code { get; private set; }
+        public int Mode { get; private set; }
+        public Func<string, int, int, string> Handler { get; private set; }
 
-        public string Invoke(string text)
+        public string Invoke(string text, int start, int len)
         {
             if (Handler != null)
-                return Handler(text);
+                return Handler(text, start, len);
             return text;
         }
     }
+    
     #endregion
 
     #region PickerDialog
@@ -840,7 +845,7 @@ namespace Telemedicine.Forms
             }
             public object Get(string key)
             {
-                if (_storage.ContainsKey(key))                
+                if (_storage.ContainsKey(key))
                     return _storage[key];
                 return null;
             }

@@ -49,9 +49,9 @@ namespace Telemedicine.Forms
             if (_autoFontSize)
             {
                 OnPaintBackground(e);
-
+                var rect = e.ClipRectangle.ApplyPadding(Padding);
                 // 繪製文字
-                var font = MeasureFitFont();
+                var font = MeasureFitFont(rect);
                 TextFormatFlags flag = TextFormatFlags.Default;
                 if (_fontMode != FontMode.None)
                     flag |= TextFormatFlags.EndEllipsis;
@@ -85,28 +85,29 @@ namespace Telemedicine.Forms
                         flag |= TextFormatFlags.Bottom | TextFormatFlags.Right;
                         break;
                 }
-                TextRenderer.DrawText(e.Graphics, Text, font, e.ClipRectangle, ForeColor, flag);
+                TextRenderer.DrawText(e.Graphics, Text, font, rect, ForeColor, flag);
             }
             else
                 base.OnPaint(e);
         }
-        private Font MeasureFitFont()
+        private Font MeasureFitFont(Rectangle rect)
         {
-            var fitSize = _fontProvider.GetFitSize(3f, 300f, FontValidator);
+            var fitSize = _fontProvider.GetFitSize(3f, 300f, FontValidator, new object[] { rect });
             return _fontCache.GetFont(fitSize);
         }
-        private bool FontValidator(float size)
+        private bool FontValidator(float size, object[] args)
         {
             var measureSize = TextRenderer.MeasureText(Text, _fontCache.GetFont(size));
-            switch(_fontMode)
+            var rect = (Rectangle)args[0];            
+            switch (_fontMode)
             {
                 case FontMode.Horizontal:
-                    return Size.Width > measureSize.Width;
+                    return rect.Size.Width > measureSize.Width;
                 case FontMode.Vertical:
-                    return Size.Height > measureSize.Height;
+                    return rect.Size.Height > measureSize.Height;
                 case FontMode.None:
                 default:
-                    return Size.Contains(measureSize);
+                    return rect.Size.Contains(measureSize);
             }
         }
         private void OnBaseFontChanged(Font newFont)

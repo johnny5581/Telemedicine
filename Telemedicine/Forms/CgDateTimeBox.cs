@@ -14,8 +14,12 @@ namespace Telemedicine.Forms
     [Designer(typeof(CgDateTimeBoxDesigner))]
     public class CgDateTimeBox : CgUserControl
     {
+        private const string DefaultDatFormat = "yyyyMMdd";
+
         private DateTime? _value;
         private bool _suspendChangeText;
+        private string _datFormat;
+        public static string GlobalDatFormat { get; set; }
         public CgDateTimeBox()
         {
             InitializeComponent();
@@ -47,6 +51,12 @@ namespace Telemedicine.Forms
                     return "";
                 return _value.Value.ToString("yyyyMMdd");
             }
+        }
+        [DefaultValue(null)]
+        public string DatFormat
+        {
+            get { return _datFormat ?? GlobalDatFormat ?? DefaultDatFormat; }
+            set { _datFormat = value; }
         }
         public new string Text
         {
@@ -111,7 +121,7 @@ namespace Telemedicine.Forms
         protected void ChangeValueText()
         {
             _suspendChangeText = true;
-            var text = _value.HasValue ? _value.Value.ToString("yyyy/MM/dd") : null;
+            var text = _value.HasValue ? _value.Value.ToString(DefaultDatFormat) : null;
             textBox.Text = text;
             _suspendChangeText = false;
         }
@@ -153,7 +163,7 @@ namespace Telemedicine.Forms
         {
             bool valid = false;
             DateTime d;
-            if (DateTime.TryParseExact(text, "yyyy/MM/dd", null, DateTimeStyles.None, out d))
+            if (DateTime.TryParseExact(text, DefaultDatFormat, null, DateTimeStyles.None, out d))
             {
                 date = d;
                 valid = true;

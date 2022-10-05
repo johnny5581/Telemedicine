@@ -13,10 +13,12 @@ namespace Telemedicine.Forms
     public abstract class CgLabelControlBase : CgUserControl
     {
         private TableLayoutPanel panelLayout;
-        private Label label;
+        private Label labelHeader;
         private HorizontalAlignment _headerAlign;
         private Control _control;
-        private bool _grouping;
+        private bool _grouping;        
+        private Label labelColon;
+        private string _symbolColon;
 
         public CgLabelControlBase()
         {
@@ -28,6 +30,26 @@ namespace Telemedicine.Forms
                 _control.Dock = DockStyle.Fill;
                 Controls.Add(_control);
                 Controls.SetChildIndex(_control, 0);
+            }
+        }
+        [DefaultValue(false)]
+        public bool IsColon
+        {
+            get { return labelColon.Visible; }
+            set
+            {
+                labelColon.Visible = value;
+                ResetHeaderColon();
+            }
+        }
+        [DefaultValue(null)]
+        public string ColonSymbol
+        {
+            get { return _symbolColon; }
+            set
+            {
+                _symbolColon = value;
+                ResetHeaderColon();
             }
         }
         [DefaultValue(true)]
@@ -43,10 +65,10 @@ namespace Telemedicine.Forms
         [DefaultValue("")]
         public string Header
         {
-            get { return label.Text; }
+            get { return labelHeader.Text; }
             set
             {
-                label.Text = value;
+                labelHeader.Text = value;
                 SyncOthersHeaderWidth();
             }
         }
@@ -61,15 +83,15 @@ namespace Telemedicine.Forms
                 {
                     case HorizontalAlignment.Center:
                         panelLayout.ColumnStyles[0].Width = 50f;
-                        panelLayout.ColumnStyles[2].Width = 50f;
+                        panelLayout.ColumnStyles[3].Width = 50f;
                         break;
                     case HorizontalAlignment.Left:
                         panelLayout.ColumnStyles[0].Width = 0f;
-                        panelLayout.ColumnStyles[2].Width = 100f;
+                        panelLayout.ColumnStyles[3].Width = 100f;
                         break;
                     case HorizontalAlignment.Right:
                         panelLayout.ColumnStyles[0].Width = 100f;
-                        panelLayout.ColumnStyles[2].Width = 0f;
+                        panelLayout.ColumnStyles[3].Width = 0f;
                         break;
                 }
             }
@@ -99,7 +121,7 @@ namespace Telemedicine.Forms
 
         internal int LabelWidth
         {
-            get { return label.Width + label.Margin.Horizontal; }
+            get { return labelHeader.Width + labelHeader.Margin.Horizontal + labelColon.Width + labelColon.Margin.Horizontal; }
         }
         internal int HeaderWidth
         {
@@ -110,12 +132,23 @@ namespace Telemedicine.Forms
         {
             get; set;
         }
+        [DefaultValue(typeof(Padding), "1,1,1,1")]
+        public new Padding Padding
+        {
+            get { return base.Padding; }
+            set { base.Padding = value; }
+        }
 
         internal void SetHeaderWidth(int width)
         {
             panelLayout.Width = width;
             PerformLayout();
             Refresh();
+        }
+        protected void ResetHeaderColon()
+        {            
+            labelColon.Text = _symbolColon == null || _symbolColon.Length == 0 ? ":" : _symbolColon;
+            SyncOthersHeaderWidth();
         }
         protected void SyncOthersHeaderWidth()
         {
@@ -147,13 +180,15 @@ namespace Telemedicine.Forms
         {
             base.OnFontChanged(e);
             PerformAutoSize();
-            Refresh();
+            SyncOthersHeaderWidth();
+            Invalidate();
         }
         protected override void OnParentFontChanged(EventArgs e)
         {
             base.OnParentFontChanged(e);
             PerformAutoSize();
-            Refresh();
+            SyncOthersHeaderWidth();
+            Invalidate();
         }
 
         protected void PerformAutoSize()
@@ -181,26 +216,30 @@ namespace Telemedicine.Forms
         #region designer
         private void InitializeComponent()
         {
-            this.label = new System.Windows.Forms.Label();
+            this.labelHeader = new System.Windows.Forms.Label();
             this.panelLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.labelColon = new System.Windows.Forms.Label();
             this.panelLayout.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label
+            // labelHeader
             // 
-            this.label.AutoSize = true;
-            this.label.Location = new System.Drawing.Point(3, 6);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(0, 12);
-            this.label.TabIndex = 0;
+            this.labelHeader.AutoSize = true;
+            this.labelHeader.Location = new System.Drawing.Point(3, 6);
+            this.labelHeader.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.labelHeader.Name = "labelHeader";
+            this.labelHeader.Size = new System.Drawing.Size(0, 12);
+            this.labelHeader.TabIndex = 0;
             // 
             // panelLayout
             // 
-            this.panelLayout.ColumnCount = 3;
+            this.panelLayout.ColumnCount = 4;
             this.panelLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0F));
             this.panelLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.panelLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.panelLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panelLayout.Controls.Add(this.label, 1, 1);
+            this.panelLayout.Controls.Add(this.labelColon, 2, 1);
+            this.panelLayout.Controls.Add(this.labelHeader, 1, 1);
             this.panelLayout.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLayout.Location = new System.Drawing.Point(1, 1);
             this.panelLayout.Name = "panelLayout";
@@ -211,19 +250,27 @@ namespace Telemedicine.Forms
             this.panelLayout.Size = new System.Drawing.Size(60, 25);
             this.panelLayout.TabIndex = 2;
             // 
-            // CgLabelControl
+            // labelColon
+            // 
+            this.labelColon.AutoSize = true;
+            this.labelColon.Location = new System.Drawing.Point(3, 6);
+            this.labelColon.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.labelColon.Name = "labelColon";
+            this.labelColon.Size = new System.Drawing.Size(0, 12);
+            this.labelColon.TabIndex = 1;
+            this.labelColon.Visible = false;
+            // 
+            // CgLabelControlBase
             // 
             this.Controls.Add(this.panelLayout);
-            this.Name = "CgLabelControl";
+            this.Name = "CgLabelControlBase";
             this.Padding = new System.Windows.Forms.Padding(1);
             this.Size = new System.Drawing.Size(150, 27);
             this.panelLayout.ResumeLayout(false);
             this.panelLayout.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
-
         #endregion
 
         private class CgLabelControlDesigner : ControlDesigner
@@ -321,7 +368,7 @@ namespace Telemedicine.Forms
             }
         }
 
-
+        [Browsable(true)]
         public new event EventHandler TextChanged
         {
             add { textBox.TextChanged += value; }
@@ -403,14 +450,14 @@ namespace Telemedicine.Forms
             return ((ICgComboBox)comboBox).AddItem(item, textResolver);
         }
 
-        public void AddItemRange<T, V>(IEnumerable<T> items, Func<T, string> textResolver, Func<T, V> valueResolver)
+        public void AddItemRange<T, V>(IEnumerable<T> items, Func<T, string> textResolver, Func<T, V> valueResolver, Action<T, CgComboBox.ComboBoxItem> configure = null)
         {
-            ((ICgComboBox)comboBox).AddItemRange(items, textResolver, valueResolver);
+            ((ICgComboBox)comboBox).AddItemRange(items, textResolver, valueResolver, configure);
         }
 
-        public void AddItemRange<T>(IEnumerable<T> items, Func<T, string> textResolver)
+        public void AddItemRange<T>(IEnumerable<T> items, Func<T, string> textResolver, Action<T, CgComboBox.ComboBoxItem> configure = null)
         {
-            ((ICgComboBox)comboBox).AddItemRange(items, textResolver);
+            ((ICgComboBox)comboBox).AddItemRange(items, textResolver, configure);
         }
 
         public int AddTextItem(string text)
@@ -557,6 +604,11 @@ namespace Telemedicine.Forms
         {
             return true;
         }
+
+        public void AddItemRange<T>(Func<T, string> textResolver) where T : struct
+        {
+            ((ICgComboBox)comboBox).AddItemRange(textResolver);
+        }
     }
 
     public class CgLabelDateTimePicker : CgLabelControlBase
@@ -565,17 +617,21 @@ namespace Telemedicine.Forms
         protected override Control GetMainComponent()
         {
             dateTimePicker = new DateTimePicker();
+            dateTimePicker.Value = DateTime.Now;
             return dateTimePicker;
         }
         public DateTimePicker DateTimePicker
         {
             get { return (DateTimePicker)Control; }
         }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DateTime Value
         {
             get { return dateTimePicker.Value; }
             set { dateTimePicker.Value = value; }
         }
+        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DefaultValue(null)]
+        public new string Text { get; set; }
         protected override bool IsMainComponentAutoHeight()
         {
             return true;

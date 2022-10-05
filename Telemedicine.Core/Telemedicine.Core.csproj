@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dev.Frameworks" Version="1.0.8-b20211030-366" />
-    <PackageReference Include="Dev.Logger.Public" Version="1.0.9" />
-    <PackageReference Include="Dev.Utility.Public" Version="1.0.7" />
+    <PackageReference Include="Dev.Frameworks" Version="1.0.18-b20220923-572" />
+    <PackageReference Include="Dev.Logger.Public" Version="1.0.11" />
+    <PackageReference Include="Dev.Utility.Public" Version="1.0.11" />
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' != 'net452'">

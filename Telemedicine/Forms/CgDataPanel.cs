@@ -173,7 +173,12 @@ namespace Telemedicine.Forms
         /// 自動重新調整欄位
         /// </summary>
         [DefaultValue(false)]
-        public bool AutoFitColumnWidth { get; set; }
+        public bool AutoFitColumnWidth { get; set; }        
+
+        /// <summary>
+        /// 主要元件
+        /// </summary>
+        public Control MainComponent{ get; protected set; }
         #endregion
 
         #region 事件
@@ -203,6 +208,8 @@ namespace Telemedicine.Forms
         {
             return new object[0];
         }
+
+        
         #endregion
 
 
@@ -430,11 +437,11 @@ namespace Telemedicine.Forms
         }
         private void InitializeDataComponent()
         {
-            var control = GetDataComponent();
-            if (control != null)
+            MainComponent = GetDataComponent();
+            if (MainComponent != null)
             {
-                control.Dock = DockStyle.Fill;
-                panelData.Controls.Add(control);
+                MainComponent.Dock = DockStyle.Fill;
+                panelData.Controls.Add(MainComponent);
             }
         }
         private void InitializeCustomizeComponents()

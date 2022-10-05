@@ -21,6 +21,10 @@ namespace Telemedicine.Forms
             = new Dictionary<DataGridViewColumn, List<FormattingCellEventItem>>();
         private bool _merged;
         private DataGridView dataGridView;
+        private bool _editable;
+        private bool _editing;
+        private object _cellRawValue;
+
         public CgDataGridPanel()
         {
         }
@@ -38,7 +42,7 @@ namespace Telemedicine.Forms
         }
         [DefaultValue(false), EditorBrowsable(EditorBrowsableState.Never)]
         public bool SuspendRowChanged { get; set; }
-        
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public HashSet<string> AutoFitEscapedColumns
         {
@@ -63,6 +67,20 @@ namespace Telemedicine.Forms
             get { return dataGridView.DataSource; }
         }
 
+        [DefaultValue(DataGridViewEditMode.EditProgrammatically)]
+        public DataGridViewEditMode CellEditMode
+        {
+            get { return dataGridView.EditMode; }
+            set { dataGridView.EditMode = value; }
+        }
+        [DefaultValue(false)]
+        public bool CellEditable
+        {
+            get { return _editable; }
+            set { _editable = value; }
+        }
+
+
         #endregion
 
         #region 事件
@@ -76,17 +94,11 @@ namespace Telemedicine.Forms
         public SortableBindingList<T> GetSortableSource<T>()
         {
             SortableBindingList<T> list = null;
-            if (dataGridView.DataSource != null)
-            {
-                list = dataGridView.DataSource as SortableBindingList<T>;
-                if (list == null)
-                    throw new InvalidCastException("can not convert to SortableBindingList<" + typeof(T).Name + ">");
-            }
-            else
-            {
+            if (dataGridView.DataSource == null)
                 SetBindingListSource(null, typeof(T));
-                list = dataGridView.DataSource as SortableBindingList<T>;
-            }
+            list = dataGridView.DataSource as SortableBindingList<T>;
+            if (list == null)
+                throw new InvalidCastException("can not convert to SortableBindingList<" + typeof(T).Name + ">");
             return list;
         }
         public void SetSource(DataTable table)
@@ -161,7 +173,7 @@ namespace Telemedicine.Forms
             return sb.ToString();
         }
 
-        
+
         public object GetSelectedItem()
         {
             object item = null;
@@ -180,7 +192,7 @@ namespace Telemedicine.Forms
                 items[index] = dataGridView.SelectedRows[index].DataBoundItem;
             return items;
         }
-        
+
         public ColumnBuilder<T> AppendColumn<T>() where T : DataGridViewColumn
         {
             return new ColumnBuilder<T>(this);
@@ -321,14 +333,14 @@ namespace Telemedicine.Forms
             if (AutoFitColumnWidth)
             {
                 FitColumnsWidth();
-            }            
+            }
             if (createFlag)
             {
                 bindingList.ListChanged += new ListChangedEventHandler(SortableBindingList_ListChanged);
                 bindingList.ChangeList();
             }
             dataGridView.ClearSelection();
-            SuspendRowChanged = suspendSetting;            
+            SuspendRowChanged = suspendSetting;
             return bindingList;
         }
 
@@ -393,7 +405,7 @@ namespace Telemedicine.Forms
                                 if (value == null) return false;
                                 var text = Convert.ToString(value);
                                 var keyword = e.Keyword;
-                                if(SearchIgnoreCase)
+                                if (SearchIgnoreCase)
                                 {
                                     text = text.ToUpper();
                                     keyword = keyword.ToUpper();
@@ -495,7 +507,19 @@ namespace Telemedicine.Forms
         {
             _cellFormatEventItems.Remove(e.Column);
         }
+        private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if(!_editable)            
+                dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = _cellRawValue;             
+        }
 
+        private void DataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex >= 0 && e.RowIndex >= 0)            
+                _cellRawValue = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;            
+            else
+                e.Cancel = true;
+        }
         private void DataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (SuspendRowChanged) return;
@@ -543,20 +567,20 @@ namespace Telemedicine.Forms
             dataGridView.RowHeadersVisible = false;
             dataGridView.MultiSelect = false;
             dataGridView.EnableHeadersVisualStyles = false;
-            dataGridView.RowTemplate.Height = 24;                    
+            dataGridView.RowTemplate.Height = 24;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;            
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.EditMode = DataGridViewEditMode.EditProgrammatically;
-            DataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+            dataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
             {
                 Alignment = DataGridViewContentAlignment.MiddleCenter,
                 BackColor = ColorTranslator.FromHtml("#00797B"),
                 ForeColor = ColorTranslator.FromHtml("#FFFFFF"),
                 SelectionBackColor = ColorTranslator.FromHtml("#FF7F7F"),
                 SelectionForeColor = ColorTranslator.FromHtml("#000000"),
-                WrapMode = DataGridViewTriState.False,                
+                WrapMode = DataGridViewTriState.False,
             };
-            DataGridView.DefaultCellStyle = new DataGridViewCellStyle
+            dataGridView.DefaultCellStyle = new DataGridViewCellStyle
             {
                 Alignment = DataGridViewContentAlignment.MiddleLeft,
                 BackColor = SystemColors.Window,
@@ -571,9 +595,12 @@ namespace Telemedicine.Forms
             dataGridView.CellMouseDown += DataGridView_CellMouseDown;
             dataGridView.CellMouseUp += DataGridView_CellMouseUp;
             dataGridView.ColumnRemoved += DataGridView_ColumnRemoved;
-
+            dataGridView.CellBeginEdit += DataGridView_CellBeginEdit;
+            dataGridView.CellEndEdit += DataGridView_CellEndEdit;
             return dataGridView;
         }
+
+
         public interface IMergedDataGridViewColumn
         {
             string MergedKey { get; }
@@ -789,7 +816,7 @@ namespace Telemedicine.Forms
 
             #endregion
 
-            
+
             private class DelegateBag
             {
                 private readonly Delegate _delegate;

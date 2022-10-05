@@ -10,7 +10,7 @@ namespace Telemedicine.Forms
 {
     public interface ICgComboBox
     {
-        int ItemCount { get; }        
+        int ItemCount { get; }
         CgComboBox.ComboBoxItem SelectedComboItem { get; }
         ComboBox.ObjectCollection Items { get; }
         object SelectedItem { get; }
@@ -27,8 +27,9 @@ namespace Telemedicine.Forms
         int AddItem(object item, string text, object value);
         int AddItem<T, V>(T item, Func<T, string> textResolver, Func<T, V> valueResolver);
         int AddItem<T>(T item, Func<T, string> textResolver);
-        void AddItemRange<T, V>(IEnumerable<T> items, Func<T, string> textResolver, Func<T, V> valueResolver);
-        void AddItemRange<T>(IEnumerable<T> items, Func<T, string> textResolver);
+        void AddItemRange<T, V>(IEnumerable<T> items, Func<T, string> textResolver, Func<T, V> valueResolver, Action<T, CgComboBox.ComboBoxItem> configure = null);
+        void AddItemRange<T>(IEnumerable<T> items, Func<T, string> textResolver, Action<T, CgComboBox.ComboBoxItem> configure = null);
+        void AddItemRange<T>(Func<T, string> textResolver) where T : struct;
         int AddTextItem(string text);
         int AddTextItem(string text, object value);
         void AddTextItemRange(string[] texts, object[] values);
@@ -42,7 +43,7 @@ namespace Telemedicine.Forms
         int SelectItem<T>(T item, IEqualityComparer<T> comparer = null, Func<object, T> converter = null);
         int SelectValue<T>(Func<T, bool> itemSelector, Func<object, T> converter = null);
         int SelectValue<T>(T value, IEqualityComparer<T> comparer = null, Func<object, T> converter = null);
-        
+
     }
 
     public class CgComboBox : ComboBox, ICgComboBox
@@ -134,7 +135,7 @@ namespace Telemedicine.Forms
             if (comparer == null)
                 comparer = EqualityComparer<T>.Default;
             if (converter == null)
-                converter = v => (T)v;
+                converter = GetConverter<T>();
             return GetIndexOfItem(cbItem => comparer.Equals(value, converter(cbItem.Value)));
         }
         /// <summary>
@@ -145,8 +146,14 @@ namespace Telemedicine.Forms
             if (comparer == null)
                 comparer = EqualityComparer<T>.Default;
             if (converter == null)
-                converter = v => (T)v;
-            return GetIndexOfItem(cbItem => comparer.Equals(item, converter(cbItem.Item)));
+                converter = GetConverter<T>();
+            return GetIndexOfItem(cbItem =>
+            {
+                if (!typeof(string).IsAssignableFrom(typeof(T)) && cbItem.TextOnly)
+                    return false;
+                var comparisonItem = converter(cbItem.Item);
+                return comparer.Equals(item, comparisonItem);
+            });
         }
         /// <summary>
         /// 選取第一個符合的索引
@@ -161,8 +168,14 @@ namespace Telemedicine.Forms
         public int SelectItem<T>(Func<T, bool> itemSelector, Func<object, T> converter = null)
         {
             if (converter == null)
-                converter = v => (T)v;
-            return SelectItem(cbItem => itemSelector(converter(cbItem.Item)));
+                converter = GetConverter<T>();
+            return SelectItem(cbItem =>
+            {
+                if (!typeof(string).IsAssignableFrom(typeof(T)) && cbItem.TextOnly)
+                    return false;
+                var item = converter(cbItem.Item);
+                return itemSelector(item);
+            });
         }
         /// <summary>
         /// 選取第一個符合的索引
@@ -177,7 +190,7 @@ namespace Telemedicine.Forms
         public int SelectValue<T>(Func<T, bool> itemSelector, Func<object, T> converter = null)
         {
             if (converter == null)
-                converter = v => (T)v;
+                converter = GetConverter<T>();
             return SelectItem(cbItem => itemSelector(converter(cbItem.Value)));
         }
         /// <summary>
@@ -235,18 +248,40 @@ namespace Telemedicine.Forms
         /// <summary>
         /// 批次新增項目
         /// </summary>
-        public void AddItemRange<T, V>(IEnumerable<T> items, Func<T, string> textResolver, Func<T, V> valueResolver)
+        public void AddItemRange<T, V>(IEnumerable<T> items, Func<T, string> textResolver, Func<T, V> valueResolver, Action<T, ComboBoxItem> configure = null)
         {
             foreach (var item in items)
-                AddItem(item, textResolver, valueResolver);
+            {
+                var index = AddItem(item, textResolver, valueResolver);
+                if (configure != null)
+                    configure(item, GetComboBoxItem(index));
+            }
         }
         /// <summary>
         /// 批次新增項目
         /// </summary>
-        public void AddItemRange<T>(IEnumerable<T> items, Func<T, string> textResolver)
+        public void AddItemRange<T>(IEnumerable<T> items, Func<T, string> textResolver, Action<T, ComboBoxItem> configure = null)
         {
             foreach (var item in items)
-                AddItem(item, textResolver);
+            {
+                var index = AddItem(item, textResolver);
+                if (configure != null)
+                    configure(item, GetComboBoxItem(index));
+            }
+        }
+        /// <summary>
+        /// 新增Enum項目
+        /// </summary>        
+        public void AddItemRange<T>(Func<T, string> textResolver = null) where T : struct
+        {
+            var names = Enum.GetNames(typeof(T));
+            foreach (var name in names)
+            {
+                var value = (T)Enum.Parse(typeof(T), name);
+                var text = textResolver == null ? name : (textResolver(value) ?? "");
+                var cbItem = new ComboBoxItem(value, text, value);                
+                AddItem(cbItem);
+            }
         }
         /// <summary>
         /// 新增文字項目
@@ -261,7 +296,7 @@ namespace Telemedicine.Forms
         /// </summary>
         public int AddTextItem(string text, object value)
         {
-            var cbItem = new ComboBoxItem(text, text, value);
+            var cbItem = new ComboBoxItem(text, value);
             return AddItem(cbItem);
         }
         /// <summary>
@@ -271,7 +306,7 @@ namespace Telemedicine.Forms
         {
             for (var i = 0; i < texts.Length; i++)
             {
-                var cbItem = new ComboBoxItem(texts[i], texts[i], values[i]);
+                var cbItem = new ComboBoxItem(texts[i], values[i]);
                 AddItem(cbItem);
             }
         }
@@ -314,14 +349,50 @@ namespace Telemedicine.Forms
             return comparer;
         }
 
+        private static Func<object, T> GetConverter<T>()
+        {
+            if (typeof(T).IsValueType)
+                return obj =>
+                {
+                    if (obj == null)
+                        return Activator.CreateInstance<T>();
+                    return (T)obj;
+                };
+            else
+                return obj => (T)obj;
+        }
         private void CgComboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
-            var item = e.Index < 0 ? null : GetComboBoxItem(e.Index);
-            var ev = new DrawItemStyleEventArgs(e, item);
-            OnDrawItemStyle(ev);
-            e.Graphics.FillRectangle(new SolidBrush(ev.BackColor), e.Bounds);
-            e.Graphics.DrawString(GetItemText(item), ev.Font, new SolidBrush(ev.ForeColor), e.Bounds);
+            if (e.Index >= 0)
+            {
+                var item = e.Index < 0 ? null : GetComboBoxItem(e.Index);
+                var ev = new DrawItemStyleEventArgs(e, item);
+                if (e.State.HasFlag(DrawItemState.Selected))
+                {
+                    if (item.SelectedBackColor != null)
+                        ev.BackColor = item.SelectedBackColor.Value;
+                    else if (item.BackColor != null)
+                        ev.BackColor = item.BackColor.Value;
+
+                    if (item.SelectedForeColor != null)
+                        ev.ForeColor = item.SelectedForeColor.Value;
+                    else if (item.ForeColor != null)
+                        ev.ForeColor = item.ForeColor.Value;
+                }
+                else
+                {
+                    if (item.BackColor != null)
+                        ev.BackColor = item.BackColor.Value;
+                    if (item.ForeColor != null)
+                        ev.ForeColor = item.ForeColor.Value;
+                }
+                if (item.Font != null)
+                    ev.Font = item.Font;
+                OnDrawItemStyle(ev);
+                e.Graphics.FillRectangle(new SolidBrush(ev.BackColor), e.Bounds);
+                e.Graphics.DrawString(GetItemText(item), ev.Font, new SolidBrush(ev.ForeColor), e.Bounds);
+            }
         }
         public class ComboBoxItem : OptionItem
         {
@@ -331,8 +402,12 @@ namespace Telemedicine.Forms
 
             public ComboBoxItem(string text) : base(text)
             {
+                TextOnly = true;
             }
-
+            public ComboBoxItem(string text, object value) : base(text, text, value)
+            {
+                TextOnly = true;
+            }
             public ComboBoxItem(object item, Delegate textResolver, Delegate valueResolver) : base(item, textResolver, valueResolver)
             {
             }
@@ -340,6 +415,13 @@ namespace Telemedicine.Forms
             public ComboBoxItem(object item, string text, object value) : base(item, text, value)
             {
             }
+
+            public Color? BackColor { get; set; }
+            public Color? ForeColor { get; set; }
+            public Color? SelectedBackColor { get; set; }
+            public Color? SelectedForeColor { get; set; }
+            public Font Font { get; set; }
+            public bool TextOnly { get; private set; }
         }
 
         public delegate void DrawItemStyleEventHandler(object sender, DrawItemStyleEventArgs e);

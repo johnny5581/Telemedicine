@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
 	<PropertyGroup>
-		<TargetFrameworks>net5.0;net452;netstandard1.6;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net452;netstandard1.6;netstandard2.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<Import Project="..\firely-net-common.props" />
@@ -13,6 +13,7 @@
 		<Description>Interfaces and classes to work with FHIR data without using POCOs, in concert with the Hl7.Fhir.Serialization assembly.</Description>
 		<PackageTags>HL7;FHIR;Elements;Firely;SDK</PackageTags>
 		<AssemblyName>Hl7.Fhir.ElementModel</AssemblyName>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	</PropertyGroup>
 	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' or '$(TargetFramework)' == 'netstandard1.6'">

@@ -127,14 +127,17 @@
     <Compile Include="Forms\CgTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\CgThemeManager.cs" />
     <Compile Include="Forms\CgUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\Commons.cs" />
+    <Compile Include="Forms\ControlGroup.cs" />
     <Compile Include="Forms\Design\FormControlDesign.cs" />
     <Compile Include="Forms\Dialogs.cs" />
     <Compile Include="Forms\DynamicLibrary.cs" />
     <Compile Include="Forms\FontHelper.cs" />
+    <Compile Include="Forms\ICgComponent.cs" />
     <Compile Include="Forms\Icons\Design\IconDesign.cs" />
     <Compile Include="Forms\Icons\FontAwesomeIconPack.cs" />
     <Compile Include="Forms\Icons\IconPack.cs" />
@@ -143,6 +146,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\SortableBindingList.cs" />
+    <Compile Include="Forms\Styles\Colors.cs" />
     <Compile Include="Forms\WinMonitor.cs" />
     <Compile Include="Observations\ObservationEKGControl.cs">
       <SubType>UserControl</SubType>
@@ -451,6 +455,5 @@
     <EmbeddedResource Include="Forms\EmbeddedResources\favicon.ico" />
     <EmbeddedResource Include="Forms\EmbeddedResources\splash.jpg" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

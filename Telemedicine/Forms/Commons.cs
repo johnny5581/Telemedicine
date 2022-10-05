@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows.Forms;
 
@@ -372,7 +374,7 @@ namespace Telemedicine.Forms
             [DllImport("shell32.dll")]
             public static extern int SHGetStockIconInfo(uint siid, uint uFlags, ref SHSTOCKICONINFO psii);
             [DllImport("Shell32.dll")]
-            public static extern IntPtr SHGetFileInfo(string pszPath,uint dwFileAttributes,ref SHFILEINFO psfi,uint cbFileInfo,uint uFlags);
+            public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
         }
 
         public class User32
@@ -483,9 +485,23 @@ namespace Telemedicine.Forms
             = new ConcurrentDictionary<FontFamily, FontCache>();
         #endregion
 
-
-
         #region Helper
+        public static void Boostrap(Control control)
+        {
+            if (control != null)
+            {
+                var c = control as ICgComponent;
+                if (c != null)
+                    c.RuntimeBootstrap();
+
+                var p = control as Panel;
+                if (p != null)
+                {
+                    foreach (Control ch in p.Controls)
+                        Boostrap(ch);
+                }
+            }
+        }
         public static bool IsRuntime()
         {
             return LicenseManager.UsageMode == LicenseUsageMode.Runtime;
@@ -545,27 +561,159 @@ namespace Telemedicine.Forms
             return Color.Empty;
         }
 
+        public class StringFormatCollection : Dictionary<ContentAlignment, StringFormat>, IDisposable
+        {
+            private bool _disposed;
+            public StringFormatCollection(StringFormat baseFormat)
+            {
+                foreach (ContentAlignment ca in Enum.GetValues(typeof(ContentAlignment)))
+                {
+                    var sf = new StringFormat(baseFormat);
+                    try
+                    {
+                        SetupContentAlignment(sf, ca);
+                        Add(ca, sf);
+                    }
+                    catch { }
+                }
+            }
+
+            public StringFormat TopLeft
+            {
+                get { return this[ContentAlignment.TopLeft]; }
+            }
+            public StringFormat TopCenter
+            {
+                get { return this[ContentAlignment.TopCenter]; }
+            }
+            public StringFormat TopRight
+            {
+                get { return this[ContentAlignment.TopRight]; }
+            }
+            public StringFormat MiddleLeft
+            {
+                get { return this[ContentAlignment.MiddleLeft]; }
+            }
+            public StringFormat MiddleCenter
+            {
+                get { return this[ContentAlignment.MiddleCenter]; }
+            }
+            public StringFormat MiddleRight
+            {
+                get { return this[ContentAlignment.MiddleRight]; }
+            }
+            public StringFormat BottomLeft
+            {
+                get { return this[ContentAlignment.BottomLeft]; }
+            }
+            public StringFormat BottomCenter
+            {
+                get { return this[ContentAlignment.BottomCenter]; }
+            }
+            public StringFormat BottomRight
+            {
+                get { return this[ContentAlignment.BottomRight]; }
+            }
+
+            ~StringFormatCollection()
+            {
+                Dispose(false);
+            }
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }            
+            protected void _Dispose(bool disposing)
+            {
+                if(!_disposed)
+                {
+                    Dispose(disposing);
+                    _disposed = true;
+                }
+            }
+            protected virtual void Dispose(bool disposing)
+            {
+                var keys = Keys.ToArray();
+                foreach (var key in keys)
+                    this[key].Dispose();
+                Clear();
+            }
+        }
+
+        public static void Execute(Action action, Action<Exception> unexceptHandler)
+        {
+            try
+            {
+                action();
+            }
+            catch(Exception ex)
+            {
+                unexceptHandler(ex);
+            }
+        }
+        public static void Execute<TException>(Action action, Action<TException> exceptHandler, Action<Exception> unexceptHandler)
+            where TException: Exception
+        {
+            try
+            {
+                action();
+            }          
+            catch (TException ex)
+            {
+                exceptHandler(ex);
+            }
+            catch (Exception ex)
+            {
+                unexceptHandler(ex);
+            }
+        }
+        public static T Execute<T>(Func<T> action, Action<Exception> unexceptHandler, T defaultValue = default(T))
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception ex)
+            {
+                unexceptHandler(ex);
+            }
+            return defaultValue;
+        }
+        public static T Execute<TException, T>(Func<T> action,  Action<TException> exceptHandler, Action<Exception> unexceptHandler, T defaultValue = default(T))
+            where TException : Exception
+        {
+            try
+            {
+                return action();
+            }
+            catch(TException ex)
+            {
+                exceptHandler(ex);
+            }
+            catch (Exception ex)
+            {
+                unexceptHandler(ex);
+            }
+            return defaultValue;
+        }
+
         #region 繪圖 Drawing
-
-
-
-
-
         /// <summary>
         /// 建立圓角圖形路徑
         /// </summary>
         /// <param name="rect">圖形大小</param>
         /// <param name="radius">圓角弧度</param>
         /// <returns></returns>
-        public static GraphicsPath CreateRoundGraphicsPath(Rectangle rect, int radius)
+        public static GraphicsPath CreateRoundGraphicsPath(RectangleF rect, float radius)
         {
             return CreateRoundGraphicsPath(rect, radius, radius, radius, radius);
         }
         /// <summary>
         /// 建立圓角圖形路徑
         /// </summary>
-        public static GraphicsPath CreateRoundGraphicsPath(Rectangle rect,
-            int radiusLeftTop, int radiusRightTop, int radiusRightBottom, int radiusLeftBottom)
+        public static GraphicsPath CreateRoundGraphicsPath(RectangleF rect,
+            float radiusLeftTop, float radiusRightTop, float radiusRightBottom, float radiusLeftBottom)
         {
             return CreateRoundGraphicsPath(rect,
                 radiusLeftTop, radiusLeftTop,
@@ -576,14 +724,14 @@ namespace Telemedicine.Forms
         /// <summary>
         /// 建立圓角圖形路徑
         /// </summary>
-        public static GraphicsPath CreateRoundGraphicsPath(Rectangle rect,
-            int radiusLeftTopWidth, int radiusLeftTopHeight,
-            int radiusRightTopWidth, int radiusRightTopHeight,
-            int radiusRightBottomWidth, int radiusRightBottomHeight,
-            int radiusLeftBottomWidth, int radiusLeftBottomHeight)
+        public static GraphicsPath CreateRoundGraphicsPath(RectangleF rect,
+            float radiusLeftTopWidth, float radiusLeftTopHeight,
+            float radiusRightTopWidth, float radiusRightTopHeight,
+            float radiusRightBottomWidth, float radiusRightBottomHeight,
+            float radiusLeftBottomWidth, float radiusLeftBottomHeight)
         {
             GraphicsPath roundedRect = new GraphicsPath();
-            Point p = rect.Location;
+            var p = rect.Location;
             var left = rect.Height - radiusLeftTopHeight - radiusLeftBottomHeight;
             var top = rect.Width - radiusLeftTopWidth - radiusRightTopWidth;
             var right = rect.Height - radiusRightTopHeight - radiusRightBottomHeight;
@@ -591,33 +739,33 @@ namespace Telemedicine.Forms
             if (radiusLeftTopWidth != 0 && radiusLeftTopHeight != 0)
             {
                 roundedRect.AddArc(p.X, p.Y, radiusLeftTopWidth, radiusLeftTopHeight, 180, 90);
-                p.Offset(radiusLeftTopWidth, 0);
+                p = p.GetOffset(radiusLeftTopWidth, 0);
             }
 
             roundedRect.AddLine(p.X, p.Y, p.X + top, rect.Y);
-            p.Offset(top, 0);
+            p = p.GetOffset(top, 0);
 
             if (radiusRightTopHeight != 0 && radiusRightTopWidth != 0)
             {
                 roundedRect.AddArc(p.X, p.Y, radiusRightTopWidth, radiusRightTopHeight, 270, 90);
-                p.Offset(radiusRightTopWidth, radiusRightTopHeight);
+                p = p.GetOffset(radiusRightTopWidth, radiusRightTopHeight);
             }
 
             roundedRect.AddLine(p.X, p.Y, p.X, p.Y + right);
-            p.Offset(0, right);
+            p = p.GetOffset(0, right);
             if (radiusRightBottomHeight != 0 && radiusRightBottomWidth != 0)
             {
                 roundedRect.AddArc(p.X - radiusRightBottomWidth, p.Y, radiusRightBottomWidth, radiusRightBottomHeight, 0, 90);
-                p.Offset(-radiusRightBottomWidth, radiusRightBottomHeight);
+                p = p.GetOffset(-radiusRightBottomWidth, radiusRightBottomHeight);
             }
 
             roundedRect.AddLine(p.X, p.Y, p.X - bottom, p.Y);
-            p.Offset(-bottom, 0);
+            p = p.GetOffset(-bottom, 0);
 
             if (radiusLeftBottomWidth != 0 && radiusLeftBottomHeight != 0)
             {
                 roundedRect.AddArc(p.X - radiusLeftBottomWidth, p.Y - radiusLeftBottomHeight, radiusLeftBottomWidth, radiusLeftBottomHeight, 90, 90);
-                p.Offset(-radiusLeftBottomWidth, -radiusLeftBottomHeight);
+                p = p.GetOffset(-radiusLeftBottomWidth, -radiusLeftBottomHeight);
             }
             roundedRect.AddLine(p.X, p.Y, p.X, p.Y - left);
             roundedRect.CloseFigure();
@@ -636,9 +784,24 @@ namespace Telemedicine.Forms
         {
             if (color2 != default(Color))
                 return new SolidBrush(color1);
-            return new LinearGradientBrush(rect, color1, color2, angle);
+            return new LinearGradientBrush(rect, color1, color2, angle);            
+        }
+        /// <summary>
+        /// 取得單色或是雙色筆刷
+        /// </summary>
+        /// <param name="color1">顏色1</param>
+        /// <param name="color2">顏色2</param>
+        /// <param name="rect">區塊，雙色用</param>
+        /// <param name="angle">角度，雙色用</param>
+        /// <returns></returns>
+        public static Brush GetSingleOrDoubleBrush(Color color1, Color color2, Rectangle rect, LinearGradientMode mode)
+        {
+            if (color2 != default(Color))
+                return new SolidBrush(color1);
+            return new LinearGradientBrush(rect, color1, color2, mode);
         }
         #endregion
+
 
         internal static string Quote(object value, string quote = "\"", string escape = "\"\"")
         {
@@ -772,6 +935,23 @@ namespace Telemedicine.Forms
                 rect.Height - paddingTop - paddingBottom
             );
         }
+        /// <summary>
+        /// 取得位移後的新矩形
+        /// </summary>        
+        public static RectangleF GetOffset(this RectangleF rect, float x, float y)
+        {
+            var p = rect.Location;
+            var newP = p.GetOffset(x, y);
+            rect.Location = newP;
+            return rect;
+        }
+        /// <summary>
+        /// 取得位移後的新矩形
+        /// </summary>    
+        public static RectangleF GetOffset(this RectangleF rect, PointF p)
+        {
+            return GetOffset(rect, p.X, p.Y);
+        }
         #endregion Rectangle
 
         #region 大小 Size
@@ -791,7 +971,7 @@ namespace Telemedicine.Forms
         }
 
         /// <summary>
-        /// 計算加上<see cref="Padding"/>後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="padding">要計算的<see cref="Padding"/></param>
@@ -801,7 +981,7 @@ namespace Telemedicine.Forms
             return ApplyPadding(size, padding.Left, padding.Top, padding.Right, padding.Bottom);
         }
         /// <summary>
-        /// 計算邊框距離後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="padding">邊框距離</param>
@@ -812,7 +992,7 @@ namespace Telemedicine.Forms
             return ApplyPadding(size, padding, padding, padding, padding);
         }
         /// <summary>
-        /// 計算邊框距離後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="paddingHorizon">水平邊框距離</param>
@@ -825,7 +1005,7 @@ namespace Telemedicine.Forms
             return ApplyPadding(size, horizon, vertical, horizon, vertical);
         }
         /// <summary>
-        /// 計算邊框距離後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="paddingLeft">左側邊框距離</param>
@@ -841,7 +1021,7 @@ namespace Telemedicine.Forms
             );
         }
         /// <summary>
-        /// 計算加上<see cref="Padding"/>後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小 
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="padding">要計算的<see cref="Padding"/></param>
@@ -851,7 +1031,7 @@ namespace Telemedicine.Forms
             return ApplyPadding(size, padding.Left, padding.Top, padding.Right, padding.Bottom);
         }
         /// <summary>
-        /// 計算邊框距離後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="padding">邊框距離</param>
@@ -862,7 +1042,7 @@ namespace Telemedicine.Forms
             return ApplyPadding(size, padding, padding, padding, padding);
         }
         /// <summary>
-        /// 計算邊框距離後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="paddingHorizon">水平邊框距離</param>
@@ -875,7 +1055,7 @@ namespace Telemedicine.Forms
             return ApplyPadding(size, horizon, vertical, horizon, vertical);
         }
         /// <summary>
-        /// 計算邊框距離後的大小
+        /// 計算扣掉<see cref="Padding"/>後的大小
         /// </summary>
         /// <param name="size">大小</param>
         /// <param name="paddingLeft">左側邊框距離</param>
@@ -888,6 +1068,107 @@ namespace Telemedicine.Forms
             return new SizeF(
                 size.Width - paddingLeft - paddingRight,
                 size.Height - paddingTop - paddingBottom
+            );
+        }
+
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="margin">要計算的<see cref="Padding"/></param>
+        /// <returns>加上<see cref="Padding"/>後的大小</returns>
+        public static Size ApplyMargin(this Size size, Padding margin)
+        {
+            return ApplyMargin(size, margin.Left, margin.Top, margin.Right, margin.Bottom);
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="margin">邊框距離</param>
+        /// <returns>計算邊框距離後的大小</returns>
+        public static Size ApplyMargin(this Size size, int margin)
+        {
+            if (margin == 0) return size;
+            return ApplyMargin(size, margin, margin, margin, margin);
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="marginHorizonal">水平邊框距離</param>
+        /// <param name="marginVertical">垂直邊框距離</param>
+        /// <returns>計算邊框距離後的大小</returns>
+        public static Size ApplyMargin(this Size size, int marginHorizonal, int marginVertical)
+        {
+            var horizon = marginHorizonal / 2;
+            var vertical = marginVertical / 2;
+            return ApplyMargin(size, horizon, vertical, horizon, vertical);
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="marginLeft">左側邊框距離</param>
+        /// <param name="marginTop">上方邊框距離</param>
+        /// <param name="marginRight">右側邊框距離</param>
+        /// <param name="marginBottom">下方邊框距離</param>
+        /// <returns>計算邊框距離後的大小</returns>
+        public static Size ApplyMargin(this Size size, int marginLeft, int marginTop, int marginRight, int marginBottom)
+        {
+            return new Size(
+                size.Width + marginLeft + marginRight,
+                size.Height + marginTop + marginBottom
+            );
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="margin">要計算的<see cref="Padding"/></param>
+        /// <returns>加上<see cref="Padding"/>後的大小</returns>
+        public static SizeF ApplyMargin(this SizeF size, Padding margin)
+        {
+            return ApplyMargin(size, margin.Left, margin.Top, margin.Right, margin.Bottom);
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="margin">邊框距離</param>
+        /// <returns>計算邊框距離後的大小</returns>
+        public static SizeF ApplyMargin(this SizeF size, float margin)
+        {
+            if (margin == 0) return size;
+            return ApplyMargin(size, margin, margin, margin, margin);
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="marginHorizonal">水平邊框距離</param>
+        /// <param name="marginVertical">垂直邊框距離</param>
+        /// <returns>計算邊框距離後的大小</returns>
+        public static SizeF ApplyMargin(this SizeF size, float marginHorizonal, float marginVertical)
+        {
+            var horizon = marginHorizonal / 2;
+            var vertical = marginVertical / 2;
+            return ApplyMargin(size, horizon, vertical, horizon, vertical);
+        }
+        /// <summary>
+        /// 計算加上邊框<see cref="Padding"/>後的大小
+        /// </summary>
+        /// <param name="size">大小</param>
+        /// <param name="marginLeft">左側邊框距離</param>
+        /// <param name="marginTop">上方邊框距離</param>
+        /// <param name="marginRight">右側邊框距離</param>
+        /// <param name="marginBottom">下方邊框距離</param>
+        /// <returns>計算邊框距離後的大小</returns>
+        public static SizeF ApplyMargin(this SizeF size, float marginLeft, float marginTop, float marginRight, float marginBottom)
+        {
+            return new SizeF(
+                size.Width + marginLeft + marginRight,
+                size.Height + marginTop + marginBottom
             );
         }
 
@@ -1029,6 +1310,15 @@ namespace Telemedicine.Forms
             var p = GetPoint((RectangleF)rect, align);
             return Point.Round(p);
         }
+        /// <summary>
+        /// 平移座標
+        /// </summary>        
+        public static PointF GetOffset(this PointF point, float x, float y)
+        {
+            return new PointF(point.X + x, point.Y + y);
+        }
+
+
         #endregion
 
         #region 繪圖 Drawing
@@ -1105,35 +1395,298 @@ namespace Telemedicine.Forms
         /// <summary>
         /// 繪製適合大小的文字
         /// </summary>        
-        public static void DrawScaleString(this Graphics g, string text, Font baseFont, Color foreColor, Rectangle rect, TextFormatFlags textFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter, IFitFontSizeProvider fontSizeProvider = null)
+        public static void DrawScaleString(this Graphics g, string text, Font baseFont, Color foreColor, Rectangle rect, TextFormatFlags textFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter, int padding = 0, IFitFontSizeProvider fontSizeProvider = null, float minimize = 0f, float maximize = 0f)
         {
             var provider = fontSizeProvider ?? BfprtFontEngine.Default;
             var cache = _fontCaches.GetOrAdd(baseFont.FontFamily, fontFamily => new FontCache(fontFamily));
-            var fitSize = provider.GetFitSize(0f, 0f, size =>
+            var fitSize = provider.GetFitSize(minimize, maximize, size =>
             {
                 var f = cache.GetFont(size);
-                //var s = g.MeasureString(text, f);
                 var s = TextRenderer.MeasureText(g, text, f);
                 return rect.Size.Contains(s);
             });
             var font = cache.GetFont(fitSize);
+            if (padding != 0)
+                rect = rect.ApplyPadding(padding);
             TextRenderer.DrawText(g, text, font, rect, foreColor, textFlags);
         }
         /// <summary>
         /// 繪製適合大小的文字
         /// </summary>     
-        public static void DrawScaleString(this Graphics g, string text, Font baseFont, Brush brush, RectangleF rect, StringFormat sf, IFitFontSizeProvider fontSizeProvider = null)
+        public static void DrawScaleString(this Graphics g, string text, Font baseFont, Brush brush, RectangleF rect, StringFormat sf, float padding = 0f, IFitFontSizeProvider fontSizeProvider = null, float minimize = 0f, float maximize = 0f)
         {
             var provider = fontSizeProvider ?? BfprtFontEngine.Default;
             var cache = _fontCaches.GetOrAdd(baseFont.FontFamily, fontFamily => new FontCache(fontFamily));
-            var fitSize = provider.GetFitSize(0f, 0f, size =>
+            var fitSize = provider.GetFitSize(minimize, maximize, size =>
             {
                 var f = cache.GetFont(size);
                 var s = g.MeasureString(text, f);
                 return rect.Size.Contains(s);
             });
             var font = cache.GetFont(fitSize);
+            if (padding != 0)
+                rect = rect.ApplyPadding(padding);
             g.DrawString(text, font, brush, rect, sf);
+        }
+
+        public static void SetupContentAlignment(StringFormat sf, ContentAlignment ca)
+        {
+            StringAlignment sa, lsa;
+            switch (ca)
+            {
+                case ContentAlignment.TopLeft:
+                    sa = StringAlignment.Near;
+                    lsa = StringAlignment.Near;
+                    break;
+                case ContentAlignment.TopCenter:
+                    sa = StringAlignment.Center;
+                    lsa = StringAlignment.Near;
+                    break;
+                case ContentAlignment.TopRight:
+                    sa = StringAlignment.Far;
+                    lsa = StringAlignment.Near;
+                    break;
+                case ContentAlignment.MiddleLeft:
+                    sa = StringAlignment.Near;
+                    lsa = StringAlignment.Center;
+                    break;
+                case ContentAlignment.MiddleCenter:
+                    sa = StringAlignment.Center;
+                    lsa = StringAlignment.Center;
+                    break;
+                case ContentAlignment.MiddleRight:
+                    sa = StringAlignment.Far;
+                    lsa = StringAlignment.Center;
+                    break;
+                case ContentAlignment.BottomLeft:
+                    sa = StringAlignment.Near;
+                    lsa = StringAlignment.Far;
+                    break;
+                case ContentAlignment.BottomCenter:
+                    sa = StringAlignment.Center;
+                    lsa = StringAlignment.Far;
+                    break;
+                case ContentAlignment.BottomRight:
+                    sa = StringAlignment.Far;
+                    lsa = StringAlignment.Far;
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+            sf.Alignment = sa;
+            sf.LineAlignment = lsa;
+        }
+        public static ContentAlignment GetContentAlignment(StringAlignment alignment, StringAlignment lineAlignment)
+        {
+            int offset = 0, value = 0;
+            switch (lineAlignment)
+            {
+                case StringAlignment.Near:
+                    offset = 0;
+                    break;
+                case StringAlignment.Center:
+                    offset = 4;
+                    break;
+                case StringAlignment.Far:
+                    offset = 8;
+                    break;
+            }
+            switch (alignment)
+            {
+                case StringAlignment.Near:
+                    value = 1;
+                    break;
+                case StringAlignment.Center:
+                    value = 2;
+                    break;
+                case StringAlignment.Far:
+                    value = 4;
+                    break;
+            }
+            return (ContentAlignment)(value << offset);
+        }
+        #endregion
+
+        #region 區塊 TableRectangle
+        public static ColumnStyle[] CreateColumnStyles(int amount)
+        {
+            var width = 100f / amount;
+            return Enumerable.Range(0, amount).Select(r => new ColumnStyle(SizeType.Percent, width)).ToArray();
+        }
+        public static RowStyle[] CreateRowStyles(int amount)
+        {
+            var height = 100f / amount;
+            return Enumerable.Range(0, amount).Select(r => new RowStyle(SizeType.Percent, height)).ToArray();
+        }
+        public static RectangleCollection CreateTableRectangle(RectangleF bound, int column = 1, int row = 1)
+        {
+            var columns = Enumerable.Range(0, column).Select(r => 100f / column).ToArray();
+            var rows = Enumerable.Range(0, row).Select(r => 100f / row).ToArray();
+            return CreateTableRectangle(bound, columns, rows);
+        }
+
+        public static RectangleCollection CreateTableRectangle(RectangleF bound, float[] columns = null, float[] rows = null)
+        {
+            var styleCol = (columns ?? new float[] { 100f }).Select(r => new ColumnStyle(SizeType.Percent, r)).ToArray();
+            var styleRow = (rows ?? new float[] { 100f }).Select(r => new RowStyle(SizeType.Percent, r)).ToArray();
+            return CreateTableRectangle(bound, styleCol, styleRow);
+        }
+
+        public static RectangleCollection CreateTableRectangle(RectangleF bound, ColumnStyle[] columns = null, RowStyle[] rows = null)
+        {
+            var valCols = (columns ?? new ColumnStyle[] { new ColumnStyle(SizeType.Percent, 100f) }).Select((r, i) => new RowColumnValue(r.SizeType, r.Width, i)).ToArray();
+            var valRows = (rows ?? new RowStyle[] { new RowStyle(SizeType.Percent, 100f) }).Select((r, i) => new RowColumnValue(r.SizeType, r.Height, i)).ToArray();
+            return CreateTableRectangle(bound, valCols, valRows);
+        }
+
+        public static RectangleCollection CreateTableRectangle(RectangleF bound, RowColumnValue[] columns, RowColumnValue[] rows)
+        {
+            var rects = new RectangleF[columns.Length * rows.Length];
+            var width = bound.Width;
+            var height = bound.Height;
+
+            var widLens = Split(width, columns);
+            var heiLens = Split(height, rows);
+
+            float x, y = bound.Y;
+
+            for (var r = 0; r < heiLens.Length; r++)
+            {
+                x = bound.X;
+                for (var c = 0; c < widLens.Length; c++)
+                {
+                    var index = r * widLens.Length + c;
+                    rects[index] = new RectangleF(x, y, Math.Max(widLens[c], 0), Math.Max(heiLens[r], 0));
+                    x += widLens[c];
+                }
+                y += heiLens[r];
+            }
+            return new RectangleCollection(columns.Length, rows.Length, rects);
+        }
+        public static RectangleF GetRectangle(RectangleF parent, int index, int splitAmount)
+        {
+            var w = parent.Width / splitAmount;
+            return new RectangleF(parent.X + w * index, parent.Y, w, parent.Height);
+        }
+
+        public static float[] Split(float len, RowColumnValue[] values)
+        {
+            var lens = new float[values.Length];
+            var group = values.Aggregate(new Dictionary<SizeType, List<RowColumnValue>>(), (seed, r) =>
+            {
+                if (!seed.ContainsKey(r.SizeType))
+                    seed.Add(r.SizeType, new List<RowColumnValue>());
+                seed[r.SizeType].Add(r);
+                return seed;
+            });
+            if (group.ContainsKey(SizeType.Absolute))
+            {
+                foreach (var value in group[SizeType.Absolute])
+                {
+                    lens[value.Index] = value.Value;
+                    len -= value.Value;
+                }
+            }
+            if (group.ContainsKey(SizeType.Percent))
+            {
+                var totalPercent = group[SizeType.Percent].Sum(r => r.Value);
+                foreach (var value in group[SizeType.Percent])
+                {
+                    var percent = value.Value / totalPercent;
+                    lens[value.Index] = len * percent;
+                }
+            }
+            if (group.ContainsKey(SizeType.AutoSize))
+                throw new NotSupportedException("unsupported autosize");
+            return lens;
+        }
+
+        public class RowColumnValue
+        {
+            public SizeType SizeType { get; set; }
+            public float Value { get; set; }
+            public int Index { get; set; }
+
+            public RowColumnValue(SizeType sizeType, float value, int index)
+            {
+                SizeType = sizeType;
+                Value = value;
+                Index = index;
+            }
+        }
+
+        public class RectangleCollection : IEnumerable<RectangleF>
+        {
+            private readonly RectangleF[] _rects;
+            private readonly int _columnCount;
+            private readonly int _rowCount;
+
+            public RectangleCollection(int column, int row)
+            {
+                _rects = new RectangleF[column * row];
+                _columnCount = column;
+                _rowCount = row;
+            }
+            public RectangleCollection(int column, int row, RectangleF[] rects)
+                : this(column, row)
+            {
+                _rects = rects;
+                _columnCount = column;
+                _rowCount = row;
+            }
+
+            public RectangleF this[int index]
+            {
+                get { return _rects[index]; }
+            }
+            public RectangleF this[int row, int column]
+            {
+                get { return GetRectangle(column, row); }
+            }
+            public int Length
+            {
+                get { return _rects.Length; }
+            }
+            public int ColumnCount
+            {
+                get { return _columnCount; }
+            }
+
+            public int RowCount
+            {
+                get { return _rowCount; }
+            }
+
+            public RectangleF GetLastRow(int column)
+            {
+                return GetRectangle(column, _rowCount - 1);
+            }
+            public RectangleF GetFirstRow(int column)
+            {
+                return GetRectangle(column, 0);
+            }
+            public RectangleF GetLastColumn(int row)
+            {
+                return GetRectangle(_columnCount - 1, row);
+            }
+            public RectangleF GetFirstColumn(int row)
+            {
+                return GetRectangle(0, row);
+            }
+            public RectangleF GetRectangle(int column, int row)
+            {
+                return _rects[row * _columnCount + column];
+            }
+
+            IEnumerator<RectangleF> IEnumerable<RectangleF>.GetEnumerator()
+            {
+                return ((IEnumerable<RectangleF>)_rects).GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return _rects.GetEnumerator();
+            }
         }
         #endregion
 
@@ -1152,7 +1705,7 @@ namespace Telemedicine.Forms
         }
         #endregion System.ComponentModel
 
-        #endregion        
+        #endregion
     }
 
     public static class FmResManager

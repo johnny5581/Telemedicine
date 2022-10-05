@@ -325,14 +325,12 @@ namespace Telemedicine.Forms
             textMessage.Margin = new Padding(3);
             textMessage.TextAlign = ContentAlignment.MiddleLeft;
             textMessage.TabStop = false;
-            textMessage.Visible = false;
 
             textMessage2.Dock = DockStyle.Bottom;
             textMessage2.Size = new Size(0, 24);
             textMessage2.Margin = new Padding(3);
             textMessage2.TextAlign = ContentAlignment.MiddleLeft;
             textMessage2.TabStop = false;
-            textMessage2.Visible = false;
 
             imageIcon.Size = new Size(58, 58);
             imageIcon.Dock = DockStyle.Left;

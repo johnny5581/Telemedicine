@@ -21,6 +21,29 @@ namespace Telemedicine.Forms
             base.AppendText(text);
             return this;
         }
+        /// <summary>
+        /// 將有顏色的文字附加至文字方塊的目前文字中。
+        /// </summary>
+        /// <param name="text">要附加於文字方塊目前的內容中的文字。</param>
+        /// <returns>文字方塊</returns>
+        public CgRichTextBox AppendText(string text, Color color)
+        {
+            if (text != null)
+            {
+                var lastSelectionStart = SelectionStart;
+                var lastSelectionLen = SelectionLength;
+                var textLen = text.Length;
+                var lastIndex = TextLength;
+                base.AppendText(text);
+                SelectionStart = lastIndex;
+                SelectionLength = textLen;
+                ForeColor = color;
+                SelectionStart = lastSelectionStart;
+                SelectionLength = lastSelectionLen;
+            }
+            return this;
+        }
+
         #region Imports and structs
         // It makes no difference if we use PARAFORMAT or
         // PARAFORMAT2 here, so I have opted for PARAFORMAT2.

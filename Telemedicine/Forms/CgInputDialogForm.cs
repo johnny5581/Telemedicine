@@ -52,12 +52,20 @@ namespace Telemedicine.Forms
 
         private void Keyboard_KeyboardInput(object sender, KeyboardInputEventArgs e)
         {
-            if (e.IsCommand)
-                textInput.Text = e.Invoke(textInput.Text);
-            else 
+            if (e.Mode == KeyboardInputEventArgs.ModeCommand)
+                textInput.Text = e.Invoke(textInput.Text, textInput.SelectionStart, textInput.SelectionLength);
+            else if (e.Mode == KeyboardInputEventArgs.ModeDirect)
+                textInput.SelectedText = e.Code;
+            else if(e.Mode == KeyboardInputEventArgs.ModeKeyCode)
             {
+                /**
+                 * Windows 11: 基於UAC安全理由，需再App.Config加入以下設定
+                 * <appSettings>
+                 *   <add key="SendKeys" value="SendInput"/>
+                 * </appSettings>
+                 */
                 textInput.Focus();
-                SendKeys.Send(e.KeyCode);                
+                SendKeys.Send(e.Code);
             }
         }
 

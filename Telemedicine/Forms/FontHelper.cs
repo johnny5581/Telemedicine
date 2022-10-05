@@ -16,11 +16,11 @@ namespace Telemedicine.Forms
     public static class FontHelper
     {
         /// <summary>
-        /// 取得新大小的字型
+        /// 取得新的字型
         /// </summary>        
-        public static Font NewFont(this Font baseFont, float newSize)
+        public static Font NewFont(this Font baseFont, float? newSize = null, FontStyle? newStyle = null)
         {
-            return new Font(baseFont.FontFamily, newSize, baseFont.Style, baseFont.Unit, baseFont.GdiCharSet);
+            return new Font(baseFont.FontFamily, newSize ?? baseFont.Size, newStyle ?? baseFont.Style, baseFont.Unit, baseFont.GdiCharSet);
         }
         /// <summary>
         /// 取得調整大小的字型
@@ -30,6 +30,53 @@ namespace Telemedicine.Forms
             var newSize = baseFont.Size + sizeOffset;
             return NewFont(baseFont, newSize);
         }
+        /// <summary>
+        /// 字型轉換
+        /// </summary>        
+        public static Font ConvertToFont(string fontText, ref FontConverter converter)
+        {
+            if (converter == null)
+                converter = new FontConverter();
+            return (Font)converter.ConvertFromString(fontText);
+        }
+        /// <summary>
+        /// 字型轉換
+        /// </summary>
+        public static Font ConvertToFont(string fontText, FontConverter converter = null)
+        {
+            return ConvertToFont(fontText, ref converter);
+        }
+        /// <summary>
+        /// 字型轉換
+        /// </summary>
+        public static bool TryConvertToFont(string fontText, FontConverter converter, out Font font)
+        {
+            try
+            {
+                font = ConvertToFont(fontText, converter);                
+            }
+            catch
+            {
+                font = null;                
+            }
+            return font != null;
+        }
+        /// <summary>
+        /// 字型轉換
+        /// </summary>
+        public static bool TryConvertToFont(string fontText, out Font font)
+        {
+            try
+            {
+                font = ConvertToFont(fontText);
+            }
+            catch
+            {
+                font = null;
+            }
+            return font != null;
+        }
+
     }
     public class FontCache : ConcurrentDictionary<float, Font>
     {
@@ -59,6 +106,7 @@ namespace Telemedicine.Forms
     public interface IFitFontSizeProvider
     {
         float GetFitSize(float min, float max, Func<float, bool> validator);
+        float GetFitSize(float min, float max, Func<float, object[], bool> validator, object[] args);
     }
 
     public abstract class FontSizeEngineBase : IFitFontSizeProvider
@@ -70,8 +118,23 @@ namespace Telemedicine.Forms
                 max = MaximumFontSize;
             return CalcFitSize(min, max, validator);
         }
+        public float GetFitSize(float min, float max, Func<float, object[], bool> validator, object[] args)
+        {
+            if (max == 0f)
+                max = MaximumFontSize;
+            return CalcFitSize(min, max, validator, args);
+        }
 
-        protected abstract float CalcFitSize(float min, float max, Func<float, bool> validator);
+        protected virtual float CalcFitSize(float min, float max, Func<float, bool> validator)
+        {
+            return CalcSize(min, max, validator, null);
+        }
+        protected virtual float CalcFitSize(float min, float max, Func<float, object[], bool> validator, object[] args)
+        {
+            return CalcSize(min, max, validator, args);
+        }
+
+        protected abstract float CalcSize(float min, float max, Delegate validator, object[] args);
     }
 
 
@@ -93,10 +156,8 @@ namespace Telemedicine.Forms
         {
             return (current + reference) / 2;
         }
-
-        protected override float CalcFitSize(float min, float max, Func<float, bool> validator)
+        protected override float CalcSize(float min, float max, Delegate validator, object[] args)
         {
-
             var latest = max;
             float value;
             while (true)
@@ -104,7 +165,8 @@ namespace Telemedicine.Forms
                 value = Mean(max, min);
                 if (Math.Abs(value - latest) <= _accuarcy)
                     break;
-                if (validator(value))
+                var isFit = (bool)(args == null ? validator.DynamicInvoke(value) : validator.DynamicInvoke(value, args));
+                if (isFit)
                     min = value;
                 else
                     max = value;
@@ -127,12 +189,13 @@ namespace Telemedicine.Forms
         public LinearFontEngine() : this(1)
         {
         }
-        protected override float CalcFitSize(float min, float max, Func<float, bool> validator)
+        protected override float CalcSize(float min, float max, Delegate validator, object[] args)
         {
             var value = max;
             while (value > min)
             {
-                if (validator(value))
+                var isFit = (bool)(args == null ? validator.DynamicInvoke(value) : validator.DynamicInvoke(value, args));
+                if (isFit)
                     return value;
                 value -= _step;
             }

@@ -36,7 +36,7 @@ namespace Telemedicine.Forms.Keyboards
             if (handler != null)
             {
                 var number = (sender as Control).Tag as string;
-                var args = new KeyboardInputEventArgs(number);
+                var args = new KeyboardInputEventArgs(number, KeyboardInputEventArgs.ModeDirect);
                 handler(this, args);
             }
         }
@@ -46,7 +46,7 @@ namespace Telemedicine.Forms.Keyboards
             var handler = KeyboardInput;
             if (handler != null)
             {
-                var args = new KeyboardInputEventArgs("{BS}");
+                var args = new KeyboardInputEventArgs("{BS}", KeyboardInputEventArgs.ModeKeyCode);
                 handler(this, args);
             }
         }

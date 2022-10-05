@@ -13,7 +13,7 @@ namespace Telemedicine.Forms
         private object _icon;
         private Color _colorFore;
         private Color _colorBack;
-        private int _iconSize;
+        private float _iconSize;
         private int _iconMargin;
 
         public CgIconButton()
@@ -60,7 +60,7 @@ namespace Telemedicine.Forms
         }
         [Category(Commons.CategoryIcon)]
         [DefaultValue(0f)]
-        public int IconSize
+        public float IconSize
         {
             get { return _iconSize; }
             set
@@ -150,6 +150,16 @@ namespace Telemedicine.Forms
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
+            OnIconChanged();
+        }
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            OnIconChanged();
+        }
+        protected override void OnParentFontChanged(EventArgs e)
+        {
+            base.OnParentFontChanged(e);
             OnIconChanged();
         }
     }

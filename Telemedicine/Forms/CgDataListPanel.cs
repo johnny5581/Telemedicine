@@ -22,6 +22,10 @@ namespace Telemedicine.Forms
         {
             get { return listView.Items; }
         }
+        public ListView ListView
+        {
+            get { return listView; }
+        }
         protected override Control GetDataComponent()
         {
             //return base.GetDataComponent();
@@ -100,13 +104,13 @@ namespace Telemedicine.Forms
             ForEachItem(item =>
             {
                 var obj = (T)item.Tag;
-                if(selector(obj))
+                if (selector(obj))
                 {
                     if (firstOnly && flag)
                         return;
                     item.Checked = true;
                     flag = true;
-                }                
+                }
             });
             return flag;
         }
@@ -118,6 +122,19 @@ namespace Telemedicine.Forms
             for (var index = 0; index < listView.CheckedItems.Count; index++)
                 items[index] = listView.CheckedItems[index].Tag;
             return items;
+        }
+        public T[] GetSelectedItems<T>()
+        {
+            return GetSelectedItems().OfType<T>().ToArray();
+        }
+
+        public DataListItem GetListItem(int index)
+        {
+            return listView.Items[index] as DataListItem;
+        }
+        public T GetItem<T>(int index)
+        {
+            return (T)GetListItem(index).Tag;
         }
         public override void ClearSource()
         {
@@ -205,7 +222,7 @@ namespace Telemedicine.Forms
                 action((DataListItem)listView.Items[i]);
         }
 
-        protected class DataListItem : ListViewItem
+        public class DataListItem : ListViewItem
         {
             public DataListItem()
             {
@@ -218,7 +235,7 @@ namespace Telemedicine.Forms
             public int OriginIndex { get; set; }
         }
 
-        protected class DataColumnHeader : ColumnHeader
+        public class DataColumnHeader : ColumnHeader
         {
             public string PropertyName { get; set; }
             private PropertyInfo _property;
