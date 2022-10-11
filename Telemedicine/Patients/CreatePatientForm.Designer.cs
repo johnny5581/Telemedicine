@@ -40,6 +40,9 @@ namespace Telemedicine.Patients
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this.comboMeta = new Telemedicine.Forms.CgComboBox();
@@ -85,14 +88,12 @@ namespace Telemedicine.Patients
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxContactTelecom = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
-            this.label15 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
+            this.tableLayoutPanel20.SuspendLayout();
             this.tableLayoutPanel19.SuspendLayout();
             this.tableLayoutPanel18.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
@@ -111,7 +112,6 @@ namespace Telemedicine.Patients
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
-            this.tableLayoutPanel20.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel10
@@ -123,19 +123,19 @@ namespace Telemedicine.Patients
             this.tableLayoutPanel10.Controls.Add(this.label10, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.textBoxContactRelationship, 1, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 96);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 97);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(382, 87);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(382, 88);
             this.tableLayoutPanel10.TabIndex = 9;
             // 
             // label10
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 37);
+            this.label10.Location = new System.Drawing.Point(3, 38);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(185, 12);
             this.label10.TabIndex = 0;
@@ -145,7 +145,7 @@ namespace Telemedicine.Patients
             // textBoxContactRelationship
             // 
             this.textBoxContactRelationship.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxContactRelationship.Location = new System.Drawing.Point(194, 32);
+            this.textBoxContactRelationship.Location = new System.Drawing.Point(194, 33);
             this.textBoxContactRelationship.MaxLength = 100;
             this.textBoxContactRelationship.Name = "textBoxContactRelationship";
             this.textBoxContactRelationship.Size = new System.Drawing.Size(185, 22);
@@ -166,14 +166,14 @@ namespace Telemedicine.Patients
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(382, 87);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(382, 88);
             this.tableLayoutPanel8.TabIndex = 5;
             // 
             // label8
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 37);
+            this.label8.Location = new System.Drawing.Point(3, 38);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(185, 12);
             this.label8.TabIndex = 0;
@@ -183,7 +183,7 @@ namespace Telemedicine.Patients
             // textBoxContactName
             // 
             this.textBoxContactName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxContactName.Location = new System.Drawing.Point(194, 32);
+            this.textBoxContactName.Location = new System.Drawing.Point(194, 33);
             this.textBoxContactName.MaxLength = 100;
             this.textBoxContactName.Name = "textBoxContactName";
             this.textBoxContactName.Size = new System.Drawing.Size(185, 22);
@@ -195,9 +195,9 @@ namespace Telemedicine.Patients
             this.buttonAdd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.buttonAdd.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.buttonAdd.Location = new System.Drawing.Point(3, 375);
+            this.buttonAdd.Location = new System.Drawing.Point(3, 379);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(382, 87);
+            this.buttonAdd.Size = new System.Drawing.Size(382, 88);
             this.buttonAdd.TabIndex = 10;
             this.buttonAdd.Text = "存檔";
             this.buttonAdd.UseVisualStyleBackColor = true;
@@ -208,9 +208,9 @@ namespace Telemedicine.Patients
             this.buttonClose.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.buttonClose.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.buttonClose.Location = new System.Drawing.Point(3, 468);
+            this.buttonClose.Location = new System.Drawing.Point(3, 473);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(382, 93);
+            this.buttonClose.Size = new System.Drawing.Size(382, 88);
             this.buttonClose.TabIndex = 11;
             this.buttonClose.Text = "關閉";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -276,6 +276,43 @@ namespace Telemedicine.Patients
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(393, 585);
             this.tableLayoutPanel7.TabIndex = 14;
+            // 
+            // tableLayoutPanel20
+            // 
+            this.tableLayoutPanel20.ColumnCount = 2;
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel20.Controls.Add(this.label15, 0, 0);
+            this.tableLayoutPanel20.Controls.Add(this.checkBox1, 1, 0);
+            this.tableLayoutPanel20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 390);
+            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
+            this.tableLayoutPanel20.RowCount = 1;
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(387, 32);
+            this.tableLayoutPanel20.TabIndex = 13;
+            // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(3, 10);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(187, 12);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "死亡";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(196, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(54, 16);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Active";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel19
             // 
@@ -422,7 +459,6 @@ namespace Telemedicine.Patients
             this.comboOrg.DisplayMember = "Text";
             this.comboOrg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboOrg.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.comboOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboOrg.FormattingEnabled = true;
             this.comboOrg.Location = new System.Drawing.Point(196, 3);
             this.comboOrg.Name = "comboOrg";
@@ -839,18 +875,18 @@ namespace Telemedicine.Patients
             this.tableLayoutPanel9.Controls.Add(this.textBoxContactTelecom, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.label9, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 189);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 191);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(382, 87);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(382, 88);
             this.tableLayoutPanel9.TabIndex = 8;
             // 
             // textBoxContactTelecom
             // 
             this.textBoxContactTelecom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxContactTelecom.Location = new System.Drawing.Point(194, 32);
+            this.textBoxContactTelecom.Location = new System.Drawing.Point(194, 33);
             this.textBoxContactTelecom.MaxLength = 100;
             this.textBoxContactTelecom.Name = "textBoxContactTelecom";
             this.textBoxContactTelecom.Size = new System.Drawing.Size(185, 22);
@@ -861,49 +897,12 @@ namespace Telemedicine.Patients
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 37);
+            this.label9.Location = new System.Drawing.Point(3, 38);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(185, 12);
             this.label9.TabIndex = 1;
             this.label9.Text = "聯絡電話";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // tableLayoutPanel20
-            // 
-            this.tableLayoutPanel20.ColumnCount = 2;
-            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel20.Controls.Add(this.label15, 0, 0);
-            this.tableLayoutPanel20.Controls.Add(this.checkBox1, 1, 0);
-            this.tableLayoutPanel20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 390);
-            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
-            this.tableLayoutPanel20.RowCount = 1;
-            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(387, 32);
-            this.tableLayoutPanel20.TabIndex = 13;
-            // 
-            // label15
-            // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(3, 10);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(187, 12);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "死亡";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(196, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(54, 16);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Active";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // CreatePatientForm
             // 
@@ -919,6 +918,8 @@ namespace Telemedicine.Patients
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel20.ResumeLayout(false);
+            this.tableLayoutPanel20.PerformLayout();
             this.tableLayoutPanel19.ResumeLayout(false);
             this.tableLayoutPanel19.PerformLayout();
             this.tableLayoutPanel18.ResumeLayout(false);
@@ -950,8 +951,6 @@ namespace Telemedicine.Patients
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
-            this.tableLayoutPanel20.ResumeLayout(false);
-            this.tableLayoutPanel20.PerformLayout();
             this.ResumeLayout(false);
 
         }

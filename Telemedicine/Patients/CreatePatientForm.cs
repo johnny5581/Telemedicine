@@ -177,6 +177,7 @@ namespace Telemedicine.Patients
             comboBoxCountry.SelectedIndex = 0;
             comboBoxPostalCode.SelectedIndex = 0;
 
+            comboOrg.AddTextItem("");
             comboOrg.AddTextItem("Organization/MITW.ForIdentifier");
             comboOrg.AddTextItem("Organization/MITW.ForContact");
             comboOrg.AddTextItem("Organization/MITW.ForPHR");
