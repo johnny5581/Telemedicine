@@ -129,7 +129,10 @@ namespace Telemedicine
         {
             Execute(() => FindView<Bundles.BundleListForm>());
         }
-
+        private void 建立ToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Bundles.BundleCreateForm>());
+        }
         private void 建立ToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             Execute(() => FindView<Orgs.OrgCreateForm>());
@@ -138,6 +141,16 @@ namespace Telemedicine
         private void 查詢ToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             Execute(() => FindView<Orgs.OrgListForm>());
+        }
+
+        private void 建立ToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Practitioners.PracCreateForm>());
+        }
+
+        private void 查詢ToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Practitioners.PracListForm>());
         }
     }
 }

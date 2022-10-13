@@ -64,7 +64,6 @@ namespace Telemedicine.Observations
             this.buttonSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonSearch.Icon = "FontAwesome.Search";
             this.buttonSearch.IconMargin = 3;
-            this.buttonSearch.IconSize = 0;
             this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
             this.buttonSearch.Location = new System.Drawing.Point(689, 21);
             this.buttonSearch.Name = "buttonSearch";
@@ -159,7 +158,6 @@ namespace Telemedicine.Observations
             this.textId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textId.Location = new System.Drawing.Point(3, 3);
             this.textId.Name = "textId";
-            this.textId.Padding = new System.Windows.Forms.Padding(1);
             this.textId.Size = new System.Drawing.Size(189, 30);
             this.textId.TabIndex = 0;
             // 
@@ -170,7 +168,6 @@ namespace Telemedicine.Observations
             this.comboVitalSign.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.comboVitalSign.Location = new System.Drawing.Point(3, 39);
             this.comboVitalSign.Name = "comboVitalSign";
-            this.comboVitalSign.Padding = new System.Windows.Forms.Padding(1);
             this.comboVitalSign.Size = new System.Drawing.Size(189, 31);
             this.comboVitalSign.TabIndex = 2;
             // 
@@ -180,7 +177,6 @@ namespace Telemedicine.Observations
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textSubject.Location = new System.Drawing.Point(3, 73);
             this.textSubject.Name = "textSubject";
-            this.textSubject.Padding = new System.Windows.Forms.Padding(1);
             this.textSubject.Size = new System.Drawing.Size(189, 30);
             this.textSubject.TabIndex = 3;
             // 
@@ -190,7 +186,6 @@ namespace Telemedicine.Observations
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatIdentifier.Location = new System.Drawing.Point(198, 3);
             this.textPatIdentifier.Name = "textPatIdentifier";
-            this.textPatIdentifier.Padding = new System.Windows.Forms.Padding(1);
             this.textPatIdentifier.Size = new System.Drawing.Size(194, 30);
             this.textPatIdentifier.TabIndex = 4;
             // 
@@ -200,7 +195,6 @@ namespace Telemedicine.Observations
             this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatName.Location = new System.Drawing.Point(198, 39);
             this.textPatName.Name = "textPatName";
-            this.textPatName.Padding = new System.Windows.Forms.Padding(1);
             this.textPatName.Size = new System.Drawing.Size(194, 30);
             this.textPatName.TabIndex = 5;
             // 
@@ -211,7 +205,6 @@ namespace Telemedicine.Observations
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.comboPatOrg.Location = new System.Drawing.Point(198, 75);
             this.comboPatOrg.Name = "comboPatOrg";
-            this.comboPatOrg.Padding = new System.Windows.Forms.Padding(1);
             this.comboPatOrg.Size = new System.Drawing.Size(194, 31);
             this.comboPatOrg.TabIndex = 6;
             // 
@@ -222,7 +215,6 @@ namespace Telemedicine.Observations
             this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textMedReq.Location = new System.Drawing.Point(398, 3);
             this.textMedReq.Name = "textMedReq";
-            this.textMedReq.Padding = new System.Windows.Forms.Padding(1);
             this.textMedReq.Size = new System.Drawing.Size(194, 31);
             this.textMedReq.TabIndex = 7;
             // 
@@ -232,7 +224,6 @@ namespace Telemedicine.Observations
             this.buttonClear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonClear.Icon = "FontAwesome.File";
             this.buttonClear.IconMargin = 3;
-            this.buttonClear.IconSize = 0;
             this.buttonClear.Image = ((System.Drawing.Image)(resources.GetObject("buttonClear.Image")));
             this.buttonClear.Location = new System.Drawing.Point(689, 91);
             this.buttonClear.Name = "buttonClear";
@@ -250,7 +241,6 @@ namespace Telemedicine.Observations
             this.labelDateRange.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.labelDateRange.Location = new System.Drawing.Point(7, 154);
             this.labelDateRange.Name = "labelDateRange";
-            this.labelDateRange.Padding = new System.Windows.Forms.Padding(1);
             this.labelDateRange.Size = new System.Drawing.Size(459, 34);
             this.labelDateRange.TabIndex = 5;
             // 

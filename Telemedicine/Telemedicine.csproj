@@ -184,6 +184,18 @@
     <Compile Include="Orgs\OrgListForm.Designer.cs">
       <DependentUpon>OrgListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Practitioners\PracCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Practitioners\PracCreateForm.Designer.cs">
+      <DependentUpon>PracCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Practitioners\PracListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Practitioners\PracListForm.Designer.cs">
+      <DependentUpon>PracListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vaccs\VaccControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -366,6 +378,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Orgs\OrgListForm.resx">
       <DependentUpon>OrgListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Practitioners\PracCreateForm.resx">
+      <DependentUpon>PracCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Practitioners\PracListForm.resx">
+      <DependentUpon>PracListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vaccs\VaccControl.resx">
       <DependentUpon>VaccControl.cs</DependentUpon>

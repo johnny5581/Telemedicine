@@ -254,7 +254,8 @@ namespace Telemedicine
         {
             //base.Show(mainForm);
 
-            ShowDialog();
+            //ShowDialog();
+            Show();
         }
     }
 

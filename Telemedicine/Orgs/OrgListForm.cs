@@ -62,5 +62,14 @@ namespace Telemedicine.Orgs
                 ActionSearch();
             });
         }
+
+        private void dgvData_DataSelected(object sender, CgDataGridPanel.DataSelectedEventArgs e)
+        {
+            if (MdiParent == null)
+            {
+                Selected = e.Data as Organization;
+                DialogResult = DialogResult.OK;
+            }
+        }
     }
 }

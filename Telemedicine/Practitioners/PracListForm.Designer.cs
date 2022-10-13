@@ -1,6 +1,6 @@
-﻿namespace Telemedicine.Orgs
+﻿namespace Telemedicine.Practitioners
 {
-    partial class OrgListForm
+    partial class PracListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrgListForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PracListForm));
             this.buttonSearch = new Telemedicine.Forms.CgIconButton();
             this.dgvData = new Telemedicine.Forms.CgDataGridPanel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.groupSearch = new System.Windows.Forms.GroupBox();
-            this.textOrgName = new Telemedicine.Forms.CgLabelTextBox();
-            this.textOrgId = new Telemedicine.Forms.CgLabelTextBox();
+            this.textUserName = new Telemedicine.Forms.CgLabelTextBox();
+            this.textUserNo = new Telemedicine.Forms.CgLabelTextBox();
             this.textId = new Telemedicine.Forms.CgLabelTextBox();
             this.buttonClear = new Telemedicine.Forms.CgIconButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -55,7 +55,7 @@
             this.buttonSearch.Icon = "FontAwesome.Search";
             this.buttonSearch.IconMargin = 3;
             this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
-            this.buttonSearch.Location = new System.Drawing.Point(480, 12);
+            this.buttonSearch.Location = new System.Drawing.Point(473, 12);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(75, 46);
             this.buttonSearch.TabIndex = 5;
@@ -72,7 +72,7 @@
             this.dgvData.InfoBoxTextFormat = "{0} rows";
             this.dgvData.Location = new System.Drawing.Point(0, 0);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(642, 282);
+            this.dgvData.Size = new System.Drawing.Size(635, 285);
             this.dgvData.TabIndex = 4;
             this.dgvData.DataSelected += new Telemedicine.Forms.CgDataGridPanel.DataSelectedEventHandler(this.dgvData_DataSelected);
             // 
@@ -88,41 +88,40 @@
             this.menuDelete.Name = "menuDelete";
             this.menuDelete.Size = new System.Drawing.Size(98, 22);
             this.menuDelete.Text = "刪除";
-            this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
             // groupSearch
             // 
-            this.groupSearch.Controls.Add(this.textOrgName);
-            this.groupSearch.Controls.Add(this.textOrgId);
+            this.groupSearch.Controls.Add(this.textUserName);
+            this.groupSearch.Controls.Add(this.textUserNo);
             this.groupSearch.Controls.Add(this.textId);
             this.groupSearch.Controls.Add(this.buttonClear);
             this.groupSearch.Controls.Add(this.buttonSearch);
             this.groupSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupSearch.Location = new System.Drawing.Point(0, 0);
             this.groupSearch.Name = "groupSearch";
-            this.groupSearch.Size = new System.Drawing.Size(642, 97);
+            this.groupSearch.Size = new System.Drawing.Size(635, 97);
             this.groupSearch.TabIndex = 6;
             this.groupSearch.TabStop = false;
             this.groupSearch.Text = "查詢條件";
             // 
-            // textOrgName
+            // textUserName
             // 
-            this.textOrgName.Header = "組織名稱";
-            this.textOrgName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textOrgName.Location = new System.Drawing.Point(242, 57);
-            this.textOrgName.Name = "textOrgName";
-            this.textOrgName.Size = new System.Drawing.Size(224, 30);
-            this.textOrgName.TabIndex = 8;
+            this.textUserName.Header = "員工名稱";
+            this.textUserName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textUserName.Location = new System.Drawing.Point(242, 57);
+            this.textUserName.Name = "textUserName";
+            this.textUserName.Size = new System.Drawing.Size(224, 30);
+            this.textUserName.TabIndex = 8;
             // 
-            // textOrgId
+            // textUserNo
             // 
-            this.textOrgId.Header = "組織識別碼";
-            this.textOrgId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textOrgId.Location = new System.Drawing.Point(242, 21);
-            this.textOrgId.Name = "textOrgId";
-            this.textOrgId.Size = new System.Drawing.Size(224, 30);
-            this.textOrgId.TabIndex = 3;
-            this.textOrgId.Text = "1132070011";
+            this.textUserNo.Header = "員工證號";
+            this.textUserNo.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textUserNo.Location = new System.Drawing.Point(242, 21);
+            this.textUserNo.Name = "textUserNo";
+            this.textUserNo.Size = new System.Drawing.Size(224, 30);
+            this.textUserNo.TabIndex = 3;
+            this.textUserNo.Text = "XYZ";
             // 
             // textId
             // 
@@ -140,13 +139,14 @@
             this.buttonClear.Icon = "FontAwesome.File";
             this.buttonClear.IconMargin = 3;
             this.buttonClear.Image = ((System.Drawing.Image)(resources.GetObject("buttonClear.Image")));
-            this.buttonClear.Location = new System.Drawing.Point(561, 12);
+            this.buttonClear.Location = new System.Drawing.Point(554, 12);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(75, 46);
             this.buttonClear.TabIndex = 7;
             this.buttonClear.Text = "清除";
             this.buttonClear.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // splitContainer1
             // 
@@ -162,18 +162,18 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvData);
-            this.splitContainer1.Size = new System.Drawing.Size(642, 383);
+            this.splitContainer1.Size = new System.Drawing.Size(635, 386);
             this.splitContainer1.SplitterDistance = 97;
-            this.splitContainer1.TabIndex = 9;
+            this.splitContainer1.TabIndex = 10;
             // 
-            // OrgListForm
+            // PracListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 383);
+            this.ClientSize = new System.Drawing.Size(635, 386);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "OrgListForm";
-            this.Text = "OrgListForm";
+            this.Name = "PracListForm";
+            this.Text = "PracListForm";
             this.contextMenuStrip.ResumeLayout(false);
             this.groupSearch.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -191,10 +191,10 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem menuDelete;
         private System.Windows.Forms.GroupBox groupSearch;
+        private Forms.CgLabelTextBox textUserName;
+        private Forms.CgLabelTextBox textUserNo;
         private Forms.CgLabelTextBox textId;
-        private Forms.CgLabelTextBox textOrgId;
         private Forms.CgIconButton buttonClear;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private Forms.CgLabelTextBox textOrgName;
     }
 }

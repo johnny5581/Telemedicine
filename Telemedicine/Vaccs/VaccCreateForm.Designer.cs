@@ -47,10 +47,14 @@ namespace Telemedicine.Vaccs
             this.textOrgName = new Telemedicine.Forms.CgLabelTextBox();
             this.buttonOrg = new Telemedicine.Forms.CgIconButton();
             this.textOrgId = new Telemedicine.Forms.CgLabelControl();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buttonUserPicker = new Telemedicine.Forms.CgIconButton();
+            this.textUserId = new Telemedicine.Forms.CgLabelTextBox();
             this.groupBox3.SuspendLayout();
             this.cgFlowLayoutPanel1.SuspendLayout();
             this.groupPat.SuspendLayout();
             this.groupOrg.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox3
@@ -61,7 +65,7 @@ namespace Telemedicine.Vaccs
             this.groupBox3.Controls.Add(this.cgFlowLayoutPanel1);
             this.groupBox3.Location = new System.Drawing.Point(195, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(409, 278);
+            this.groupBox3.Size = new System.Drawing.Size(409, 369);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "注射資料";
@@ -79,7 +83,7 @@ namespace Telemedicine.Vaccs
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(3, 18);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(403, 257);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(403, 348);
             this.cgFlowLayoutPanel1.TabIndex = 5;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 
@@ -88,7 +92,6 @@ namespace Telemedicine.Vaccs
             this.textVacSystem.Header = "檢驗系統";
             this.textVacSystem.Location = new System.Drawing.Point(3, 3);
             this.textVacSystem.Name = "textVacSystem";
-            this.textVacSystem.Padding = new System.Windows.Forms.Padding(1);
             this.textVacSystem.Size = new System.Drawing.Size(231, 30);
             this.textVacSystem.TabIndex = 7;
             this.textVacSystem.Text = "http://loinc.org";
@@ -98,7 +101,6 @@ namespace Telemedicine.Vaccs
             this.textVacId.Header = "檢驗代號";
             this.textVacId.Location = new System.Drawing.Point(3, 39);
             this.textVacId.Name = "textVacId";
-            this.textVacId.Padding = new System.Windows.Forms.Padding(1);
             this.textVacId.Size = new System.Drawing.Size(231, 30);
             this.textVacId.TabIndex = 5;
             this.textVacId.Text = "LP217198-3";
@@ -108,7 +110,6 @@ namespace Telemedicine.Vaccs
             this.textVacName.Header = "檢驗名稱";
             this.textVacName.Location = new System.Drawing.Point(3, 75);
             this.textVacName.Name = "textVacName";
-            this.textVacName.Padding = new System.Windows.Forms.Padding(1);
             this.textVacName.Size = new System.Drawing.Size(231, 30);
             this.textVacName.TabIndex = 6;
             this.textVacName.Text = "Rapid Immunoassay";
@@ -118,7 +119,6 @@ namespace Telemedicine.Vaccs
             this.textRcvdat.Header = "檢驗日期";
             this.textRcvdat.Location = new System.Drawing.Point(3, 111);
             this.textRcvdat.Name = "textRcvdat";
-            this.textRcvdat.Padding = new System.Windows.Forms.Padding(1);
             this.textRcvdat.Size = new System.Drawing.Size(231, 30);
             this.textRcvdat.TabIndex = 11;
             this.textRcvdat.Text = "2021-11-03";
@@ -128,7 +128,6 @@ namespace Telemedicine.Vaccs
             this.textRptdat.Header = "報告日期";
             this.textRptdat.Location = new System.Drawing.Point(3, 147);
             this.textRptdat.Name = "textRptdat";
-            this.textRptdat.Padding = new System.Windows.Forms.Padding(1);
             this.textRptdat.Size = new System.Drawing.Size(231, 30);
             this.textRptdat.TabIndex = 12;
             this.textRptdat.Text = "2021-11-04";
@@ -150,7 +149,6 @@ namespace Telemedicine.Vaccs
             // buttonPat
             // 
             this.buttonPat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonPat.IconSize = 0;
             this.buttonPat.Location = new System.Drawing.Point(96, 20);
             this.buttonPat.Name = "buttonPat";
             this.buttonPat.Size = new System.Drawing.Size(75, 23);
@@ -166,7 +164,6 @@ namespace Telemedicine.Vaccs
             this.textPatId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatId.Location = new System.Drawing.Point(6, 49);
             this.textPatId.Name = "textPatId";
-            this.textPatId.Padding = new System.Windows.Forms.Padding(1);
             this.textPatId.Size = new System.Drawing.Size(165, 14);
             this.textPatId.TabIndex = 6;
             // 
@@ -175,7 +172,6 @@ namespace Telemedicine.Vaccs
             this.textPatSex.Header = "性別";
             this.textPatSex.Location = new System.Drawing.Point(6, 129);
             this.textPatSex.Name = "textPatSex";
-            this.textPatSex.Padding = new System.Windows.Forms.Padding(1);
             this.textPatSex.ReadOnly = true;
             this.textPatSex.Size = new System.Drawing.Size(165, 30);
             this.textPatSex.TabIndex = 5;
@@ -185,7 +181,6 @@ namespace Telemedicine.Vaccs
             this.textPatBrithDate.Header = "生日";
             this.textPatBrithDate.Location = new System.Drawing.Point(6, 99);
             this.textPatBrithDate.Name = "textPatBrithDate";
-            this.textPatBrithDate.Padding = new System.Windows.Forms.Padding(1);
             this.textPatBrithDate.ReadOnly = true;
             this.textPatBrithDate.Size = new System.Drawing.Size(165, 30);
             this.textPatBrithDate.TabIndex = 4;
@@ -195,7 +190,6 @@ namespace Telemedicine.Vaccs
             this.textPatName.Header = "姓名";
             this.textPatName.Location = new System.Drawing.Point(6, 69);
             this.textPatName.Name = "textPatName";
-            this.textPatName.Padding = new System.Windows.Forms.Padding(1);
             this.textPatName.ReadOnly = true;
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
@@ -204,8 +198,7 @@ namespace Telemedicine.Vaccs
             // 
             this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonCreate.IconSize = 0;
-            this.buttonCreate.Location = new System.Drawing.Point(460, 296);
+            this.buttonCreate.Location = new System.Drawing.Point(460, 387);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(144, 53);
             this.buttonCreate.TabIndex = 6;
@@ -231,7 +224,6 @@ namespace Telemedicine.Vaccs
             this.textOrgName.Header = "名稱";
             this.textOrgName.Location = new System.Drawing.Point(6, 68);
             this.textOrgName.Name = "textOrgName";
-            this.textOrgName.Padding = new System.Windows.Forms.Padding(1);
             this.textOrgName.ReadOnly = true;
             this.textOrgName.Size = new System.Drawing.Size(165, 30);
             this.textOrgName.TabIndex = 8;
@@ -240,7 +232,6 @@ namespace Telemedicine.Vaccs
             // buttonOrg
             // 
             this.buttonOrg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonOrg.IconSize = 0;
             this.buttonOrg.Location = new System.Drawing.Point(96, 20);
             this.buttonOrg.Name = "buttonOrg";
             this.buttonOrg.Size = new System.Drawing.Size(75, 23);
@@ -256,14 +247,49 @@ namespace Telemedicine.Vaccs
             this.textOrgId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textOrgId.Location = new System.Drawing.Point(6, 49);
             this.textOrgId.Name = "textOrgId";
-            this.textOrgId.Padding = new System.Windows.Forms.Padding(1);
             this.textOrgId.Size = new System.Drawing.Size(165, 14);
             this.textOrgId.TabIndex = 6;
             this.textOrgId.Text = "11909";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.buttonUserPicker);
+            this.groupBox4.Controls.Add(this.textUserId);
+            this.groupBox4.Location = new System.Drawing.Point(12, 296);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(177, 99);
+            this.groupBox4.TabIndex = 9;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "簽章人員";
+            // 
+            // buttonUserPicker
+            // 
+            this.buttonUserPicker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonUserPicker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonUserPicker.Location = new System.Drawing.Point(96, 20);
+            this.buttonUserPicker.Name = "buttonUserPicker";
+            this.buttonUserPicker.Size = new System.Drawing.Size(75, 23);
+            this.buttonUserPicker.TabIndex = 3;
+            this.buttonUserPicker.Text = "選取";
+            this.buttonUserPicker.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonUserPicker.UseVisualStyleBackColor = true;
+            this.buttonUserPicker.Click += new System.EventHandler(this.buttonUserPicker_Click);
+            // 
+            // textUserId
+            // 
+            this.textUserId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textUserId.Header = "#";
+            this.textUserId.Location = new System.Drawing.Point(6, 49);
+            this.textUserId.Name = "textUserId";
+            this.textUserId.ReadOnly = true;
+            this.textUserId.Size = new System.Drawing.Size(165, 30);
+            this.textUserId.TabIndex = 2;
+            // 
             // VaccCreateForm
             // 
-            this.ClientSize = new System.Drawing.Size(616, 361);
+            this.ClientSize = new System.Drawing.Size(616, 452);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupOrg);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.groupBox3);
@@ -275,6 +301,7 @@ namespace Telemedicine.Vaccs
             this.cgFlowLayoutPanel1.ResumeLayout(false);
             this.groupPat.ResumeLayout(false);
             this.groupOrg.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -299,5 +326,8 @@ namespace Telemedicine.Vaccs
         private Forms.CgLabelTextBox textVacSystem;
         private Forms.CgLabelTextBox textRcvdat;
         private Forms.CgLabelTextBox textRptdat;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private Forms.CgIconButton buttonUserPicker;
+        private Forms.CgLabelTextBox textUserId;
     }
 }

@@ -13,7 +13,7 @@ using Telemedicine.Forms;
 
 namespace Telemedicine.Orgs
 {
-    public partial class OrgCreateForm : FormBase
+    public partial class OrgCreateForm : DialogBase
     {
         private OrganizationController _ctrlOrg;
         public OrgCreateForm()

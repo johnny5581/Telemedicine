@@ -18,6 +18,7 @@ namespace Telemedicine.Vaccs
         private CompositionController _ctrlComposition;
         private ObservationController _ctrlObs;
         private PatientController _ctrlPat;
+        private EncounterController _ctrlEnc;
         public VaccCreateForm()
         {
             InitializeComponent();
@@ -57,20 +58,29 @@ namespace Telemedicine.Vaccs
             Execute(() =>
             {
                 // create obs first
-
-                var observation = new Observation();
-                observation.Status = ObservationStatus.Final;
-                observation.Code = new CodeableConcept(textVacSystem.Text,
+                var obs = new Observation();
+                obs.Status = ObservationStatus.Final;
+                obs.Code = new CodeableConcept(textVacSystem.Text,
                     textVacId.Text, textVacName.Text, textVacName.Text);
-                observation.Effective = new Period(
+                obs.Effective = new Period(
                     new FhirDateTime(textRcvdat.Text), new FhirDateTime(textRptdat.Text));
-                observation.Issued = new FhirDateTime(textRptdat.Text).ToDateTimeOffset(TimeSpan.FromHours(8));
-                observation.Value = new FhirString("Positive");
-                var obsId = _ctrlObs.Create(observation);
-                var org = _ctrlObs.GetClient().Read<Organization>("Organization/" + textOrgId.Text);
-                var obs = _ctrlObs.Read("Observation/" + obsId);
-
+                obs.Issued = new FhirDateTime(textRptdat.Text).ToDateTimeOffset(TimeSpan.FromHours(8));
+                obs.Value = new FhirString("Positive");
+                var obsId = _ctrlObs.Create(obs);
+                obs = _ctrlObs.Read("Observation/" + obsId);
                 MsgBoxHelper.Info("建立Observation完成");
+
+
+                // careat eencounter
+                var enc = new Encounter();
+                enc.Status = Encounter.EncounterStatus.Finished;
+                enc.Class = new Coding("http://terminology.hl7.org/CodeSystem/v3-ActCode", "OBSENC", "observation encounter");
+                var encId = _ctrlEnc.Create(enc);
+                enc = _ctrlEnc.Read("Encounter/" + encId);
+                MsgBoxHelper.Info("建立Encounter完成");
+
+                var prac = textUserId.Tag as Practitioner;
+                var org = _ctrlObs.GetClient().Read<Organization>("Organization/" + textOrgId.Text);
 
                 // create composition
                 var composition = new Composition();
@@ -83,6 +93,8 @@ namespace Telemedicine.Vaccs
                 var section = new Composition.SectionComponent();
                 section.Entry.Add(new ResourceReference("Organization/" + textOrgId.Text));
                 section.Entry.Add(new ResourceReference("Patient/" + textPatId.Text));
+                section.Entry.Add(new ResourceReference("Practitioner/" + textUserId.Text));
+                section.Entry.Add(new ResourceReference("Encounter/" + encId));
                 section.Entry.Add(new ResourceReference("Observation/" + obsId));
                 composition.Section.Add(section);
 
@@ -102,6 +114,8 @@ namespace Telemedicine.Vaccs
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = com, FullUrl = com.ResourceBase + "Composition/" + com.Id });
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = org, FullUrl = org.ResourceBase + "Organization/" + org.Id });
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = pat , FullUrl = pat.ResourceBase + "Patient/" + pat.Id });
+                bundle.Entry.Add(new Bundle.EntryComponent { Resource = prac, FullUrl = pat.ResourceBase + "Practitioner/" + prac.Id });
+                bundle.Entry.Add(new Bundle.EntryComponent { Resource = enc, FullUrl = pat.ResourceBase + "Encounter/" + enc.Id });
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = obs, FullUrl = obs.ResourceBase + "Observation/" + obs.Id });
                 var document = _ctrlObs.GetClient().Create(bundle);
 
@@ -110,8 +124,21 @@ namespace Telemedicine.Vaccs
 
             });
         }
-        
-        
 
+        private void buttonUserPicker_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                using (var d = new Practitioners.PracListForm())
+                {
+                    if (d.ShowDialog() == DialogResult.OK)
+                    {
+                        var prac = d.Selected;
+                        textUserId.Text = prac.Id;
+                        textUserId.Tag = prac;
+                    }
+                }
+            });
+        }
     }
 }
