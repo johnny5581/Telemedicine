@@ -54,6 +54,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppContext.cs" />
+    <Compile Include="Bundles\BundleCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bundles\BundleCreateForm.Designer.cs">
+      <DependentUpon>BundleCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bundles\BundleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bundles\BundleForm.Designer.cs">
+      <DependentUpon>BundleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bundles\BundleListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bundles\BundleListForm.Designer.cs">
+      <DependentUpon>BundleListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBase.cs" />
     <Compile Include="Forms\CgBaseDialogForm.cs">
       <SubType>Form</SubType>
@@ -153,6 +171,18 @@
     </Compile>
     <Compile Include="Observations\ObservationEKGControl.Designer.cs">
       <DependentUpon>ObservationEKGControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Orgs\OrgCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Orgs\OrgCreateForm.Designer.cs">
+      <DependentUpon>OrgCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Orgs\OrgListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Orgs\OrgListForm.Designer.cs">
+      <DependentUpon>OrgListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Vaccs\VaccControl.cs">
       <SubType>UserControl</SubType>
@@ -319,8 +349,23 @@
     <Compile Include="TransactionMonitorDialog.Designer.cs">
       <DependentUpon>TransactionMonitorDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Bundles\BundleCreateForm.resx">
+      <DependentUpon>BundleCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bundles\BundleForm.resx">
+      <DependentUpon>BundleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bundles\BundleListForm.resx">
+      <DependentUpon>BundleListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Observations\ObservationEKGControl.resx">
       <DependentUpon>ObservationEKGControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Orgs\OrgCreateForm.resx">
+      <DependentUpon>OrgCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Orgs\OrgListForm.resx">
+      <DependentUpon>OrgListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vaccs\VaccControl.resx">
       <DependentUpon>VaccControl.cs</DependentUpon>
