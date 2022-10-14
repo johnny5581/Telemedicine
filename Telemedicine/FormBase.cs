@@ -34,7 +34,6 @@ namespace Telemedicine
             comboBox.AddTextItem("Organization/MITW.ForContact");
             comboBox.AddTextItem("Organization/MITW.ForPHR");
             comboBox.AddTextItem("Organization/MITW.ForEMS");
-
             comboBox.SelectedIndex = index == -1 ? comboBox.Items.Count - 1 : index;
         }
 

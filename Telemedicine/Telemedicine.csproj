@@ -518,5 +518,8 @@
     <EmbeddedResource Include="Forms\EmbeddedResources\favicon.ico" />
     <EmbeddedResource Include="Forms\EmbeddedResources\splash.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="avatar.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -181,7 +182,7 @@ namespace Telemedicine.Patients
             comboOrg.AddTextItem("Organization/MITW.ForIdentifier");
             comboOrg.AddTextItem("Organization/MITW.ForContact");
             comboOrg.AddTextItem("Organization/MITW.ForPHR");
-            comboOrg.AddTextItem("Organization/MITW.ForEMS");
+            //comboOrg.AddTextItem("Organization/MITW.ForEMS");
             comboOrg.SelectedIndex = 0;
 
             comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForIdentifier");
@@ -278,115 +279,75 @@ namespace Telemedicine.Patients
 
             Execute(() =>
             {
-                //使用身分證檢核有無重複
-                //有   詢問是否更新
-                //沒有 要新增
-
-                string pGendetr = "Unknown";
-                if (radioButtonMale.Checked)
-                    pGendetr = "male";
-                if (radioButtonFemale.Checked)
-                    pGendetr = "female";
-                //Patient patient = new Patient
-                //{
-                //    identifier = textBoxIdentifier.Text,
-                //    active = true,
-                //    name = textBoxName.Text,
-                //    gender = pGendetr,
-                //    birthdate = textBoxBirthdate.Text,
-                //    telecom = textBoxTelecom.Text,
-                //};
-                var pG = Hl7.Fhir.Model.AdministrativeGender.Unknown;
-                switch (pGendetr)
+                var pat = new Patient();
+                pat.Identifier.Add(new Identifier("https://www.dicom.org.tw/cs/identityCardNumber_tw", textBoxIdentifier.Text));
+                pat.Identifier.Add(new Identifier("https://www.cgmh.org.tw", textBoxIdentifier.Text));
+                pat.Active = true;
+                pat.Gender = radioButtonMale.Checked ? AdministrativeGender.Male : radioButtonFemale.Checked ? AdministrativeGender.Female : AdministrativeGender.Unknown;
+                var name = new HumanName()
                 {
-                    case "male":
-                        pG = Hl7.Fhir.Model.AdministrativeGender.Male;
-                        break;
-                    case "female":
-                        pG = Hl7.Fhir.Model.AdministrativeGender.Female;
-                        break;
-                    default:
-                        break;
-                }
-                Hl7.Fhir.Model.Patient patient1 = new Hl7.Fhir.Model.Patient
-                {
-                    Identifier = new List<Hl7.Fhir.Model.Identifier>
-                    {
-                        new Hl7.Fhir.Model.Identifier("https://www.dicom.org.tw/cs/identityCardNumber_tw", textBoxIdentifier.Text),
-                        new Hl7.Fhir.Model.Identifier("https://www.cgmh.org.tw", textBoxIdentifier.Text),
-                    },
-                    Active = true,
-                    Name = new List<Hl7.Fhir.Model.HumanName> {
-                        new Hl7.Fhir.Model.HumanName
-                        {
-                            Text = textBoxName.Text,
-                            Family = textBoxName.Text.Substring(0, 1),
-                            Given = new List<string>
+                    Text = textBoxName.Text,
+                    Family = textBoxName.Text.Substring(0, 1),
+                    Given = new List<string>
                             {
                                 textBoxName.Text.Substring(1)
                             },
-                        } },
-                    Gender = pG,
-                    BirthDate = textBoxBirthdate.Text,   //1970-01-01
-                    Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
-                        new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax, Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxTelecom.Text) },
-                    Contact = new List<Hl7.Fhir.Model.Patient.ContactComponent>
-                    {
-                        new Hl7.Fhir.Model.Patient.ContactComponent
-                        {
-                            Name = new Hl7.Fhir.Model.HumanName
-                            {
-                                Text = textBoxContactName.Text,
-                                Family = textBoxContactName.Text.Substring(0, 1),
-                                Given = new List<string>
+                    Use = HumanName.NameUse.Official,
+                };
+                pat.Name.Add(name);
+                pat.BirthDate = textBoxBirthdate.Text;
+                pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Fax, ContactPoint.ContactPointUse.Home, textBoxTelecom.Text));
+
+                var contact = new Patient.ContactComponent();
+                contact.Name = new HumanName
+                {
+                    Text = textBoxContactName.Text,
+                    Family = textBoxContactName.Text.Substring(0, 1),
+                    Given = new List<string>
                                 {
                                     textBoxContactName.Text.Substring(1)
                                 },
-                            },
-                            Relationship = new List<Hl7.Fhir.Model.CodeableConcept>
-                            {
-                                //http://terminology.hl7.org/CodeSystem/v2-0131
-                                //"http://hl7.org/fhir/ValueSet/patient-contactrelationship"
-                                new Hl7.Fhir.Model.CodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0131",
-                                                                    "N", "Next-of-Kin", textBoxContactRelationship.Text)
-                            },
-                            Telecom = new List<Hl7.Fhir.Model.ContactPoint> {
-                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Fax
-                                            , Hl7.Fhir.Model.ContactPoint.ContactPointUse.Mobile, textBoxContactTelecom.Text),
-                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Email
-                                            , Hl7.Fhir.Model.ContactPoint.ContactPointUse.Home, textBoxEmail.Text),
-                                new Hl7.Fhir.Model.ContactPoint(Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Url
-                                            , Hl7.Fhir.Model.ContactPoint.ContactPointUse.Temp, textBoxUrl.Text),
-
-                            },
-                        }
-                    },
-                    ManagingOrganization = new Hl7.Fhir.Model.ResourceReference(comboOrg.SelectedValue as string),
-                    Address = new List<Hl7.Fhir.Model.Address>
-                    {
-                        new Hl7.Fhir.Model.Address
-                        {
-                            Text = comboBoxPostalCode.SelectedValue.ToString() + "臺灣" + comboBoxCountry.Text + comboBoxPostalCode.Text + textBoxAddress1.Text,
-                            PostalCode = comboBoxPostalCode.SelectedValue.ToString(),
-                            Country = "臺灣",
-                            District = comboBoxCountry.Text.ToString(),
-                            City = comboBoxPostalCode.Text.ToString(),
-                        }
-                    },
-                    Deceased = new FhirBoolean(checkBox1.Checked),
-                    
+                    Use = HumanName.NameUse.Official
                 };
+                contact.Relationship.Add(new CodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0131", "N", "Next-of-Kin", textBoxContactRelationship.Text));
+                contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Fax, ContactPoint.ContactPointUse.Mobile, textBoxContactTelecom.Text));
+                contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Email, ContactPoint.ContactPointUse.Home, textBoxEmail.Text));
+                contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Url, ContactPoint.ContactPointUse.Temp, textBoxUrl.Text));
+                pat.Contact.Add(contact);
+
+                pat.ManagingOrganization = new ResourceReference(comboOrg.Text);
+                pat.Address.Add(new Address
+                {
+                    Text = comboBoxPostalCode.SelectedValue.ToString() + "臺灣" + comboBoxCountry.Text + comboBoxPostalCode.Text + textBoxAddress1.Text,
+                    PostalCode = comboBoxPostalCode.SelectedValue.ToString(),
+                    Country = "臺灣",
+                    District = comboBoxCountry.Text.ToString(),
+                    City = comboBoxPostalCode.Text.ToString(),
+                });
+                pat.Deceased = new FhirBoolean(checkBox1.Checked);
                 var meta = comboMeta.Text;
                 if (meta.IsNotNullOrEmpty())
                 {
-
-                    patient1.Meta = new Meta
+                    pat.Meta = new Meta
                     {
                         Profile = new List<string> { meta }
                     };
                 }
 
-                ActionSave(patient1);
+
+                // 2022 appends
+                //pat.Communication.Add(new Patient.CommunicationComponent
+                //{
+                //    Language = new CodeableConcept("urn:ietf:bcp:47", "zh")
+                //});
+                //pat.MaritalStatus = new CodeableConcept("http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "M");
+                //var photo = new Attachment();
+                //photo.Url = "https://lh4.ggpht.com/AM_xRUb1FpZrS36OOoHrJ0Nw44HZj00LmQwMl01b52rlAgaouVdk9Vlkztqsvor0Qg=w300";
+                ////photo.Data = FmResManager.GetResourceBytes("Telemedicine.avatar.jpg", relativePath: false);
+                //photo.ContentType = 
+                //pat.Photo.Add(photo);
+
+                ActionSave(pat);
                 MsgBoxHelper.Info("建立成功");
             });
         }
