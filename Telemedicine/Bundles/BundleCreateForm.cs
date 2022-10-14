@@ -17,11 +17,15 @@ namespace Telemedicine.Bundles
     {
         private PractitionerController _ctrlPrac;
         private CompositionController _ctrlComposition;
+        private OrganizationController _ctrlOrgs;
+        private PatientController _ctrlPat;
         public BundleCreateForm()
         {
             InitializeComponent();
             _ctrlPrac = new PractitionerController(this);
             _ctrlComposition = new CompositionController(this);
+            _ctrlPat = new PatientController(this);
+            _ctrlOrgs = new OrganizationController(this);
         }
 
         private void buttonPatPicker_Click(object sender, EventArgs e)
@@ -98,9 +102,14 @@ namespace Telemedicine.Bundles
                 var bundle = new Bundle();
                 bundle.Type = Bundle.BundleType.Document;
                 bundle.Timestamp = DateTimeOffset.Now;
-                var pat = textPatId.Tag as Patient;
-                var org = textOrgId.Tag as Organization;
-                var prac = textUserId.Tag as Practitioner;
+
+                //var pat = textPatId.Tag as Patient;
+                //var org = textOrgId.Tag as Organization;
+                //var prac = textUserId.Tag as Practitioner;
+
+                var pat = _ctrlPat.Read("Patient/" + textPatId.Text);
+                var org = _ctrlOrgs.Read("Organization/" + textOrgId.Text);
+                var prac = _ctrlPrac.Read("Practitioner/" + textUserId.Text);
                 bundle.Identifier = new Identifier(textIdSys.Text, textIdVal.Text);
                 bundle.Identifier.Period = new Period(new FhirDateTime(textPeriodFrom.Text), new FhirDateTime(textPeriodTo.Text));
                 bundle.Timestamp = FhirDateTime.Now().ToDateTimeOffset(TimeSpan.FromHours(8));
