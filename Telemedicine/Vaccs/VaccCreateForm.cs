@@ -26,6 +26,7 @@ namespace Telemedicine.Vaccs
             _ctrlPat = new PatientController(this);
             _ctrlObs = new ObservationController(this);
             _ctrlComposition = new CompositionController(this);
+            _ctrlEnc=new EncounterController(this);
         }
 
         
