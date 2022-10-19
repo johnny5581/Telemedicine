@@ -181,7 +181,10 @@ namespace Telemedicine.Observations
                     Value = quantity?.Value.ToString(false);
                     Unit = quantity?.Unit;
                 }
-                Effecitve = (data.Effective as FhirDateTime).ToDateTime().ToString("yyyy-MM-dd HH:mm:ss");
+                var x = data.Effective;
+                Effecitve = x.NamedChildren.Any() ? x.NamedChildren.First().ElementName : "";
+                //org data.Effective maybe not as FhirDateTime got null
+                //Effecitve = (data.Effective as FhirDateTime).ToDateTime().ToString("yyyy-MM-dd HH:mm:ss");
             }
             [DisplayName("#")]
             public string Id { get; set; }
