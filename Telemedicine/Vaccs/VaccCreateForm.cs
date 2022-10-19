@@ -51,7 +51,15 @@ namespace Telemedicine.Vaccs
         }
         private void buttonOrg_Click(object sender, EventArgs e)
         {
-            
+            using (var d = new Orgs.OrgListForm())
+            {
+                if (d.ShowDialog() == DialogResult.OK)
+                {
+                    var org = d.Selected;
+                    textOrgId.Text = org.Id;
+                    textOrgName.Text = org.Name;
+                }
+            }
         }
 
         private void buttonCreate_Click(object sender, EventArgs e)
