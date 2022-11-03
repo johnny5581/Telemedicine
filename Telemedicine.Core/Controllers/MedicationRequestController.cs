@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Telemedicine.Controllers
 {
-    public class MedicationRequestController : ControllerBase<MedicationRequest>
+    public class MedicationRequestController : Controller<MedicationRequest>
     {
         public MedicationRequestController()
         {

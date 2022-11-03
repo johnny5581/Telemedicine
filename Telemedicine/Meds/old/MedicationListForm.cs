@@ -24,7 +24,8 @@ namespace Telemedicine.Meds
 
 
             _ctrlMed = new MedicationController(this);
-            var meds = _ctrlMed.SearchByActive();
+            //var meds = _ctrlMed.SearchByActive();
+            var meds = _ctrlMed.SearchAll();
             var dataList = meds.Select(r => new MedicationData(r)).ToList();
             dgvData.SetSource(dataList);
         }

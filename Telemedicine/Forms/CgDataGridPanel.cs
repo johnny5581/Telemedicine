@@ -21,8 +21,7 @@ namespace Telemedicine.Forms
             = new Dictionary<DataGridViewColumn, List<FormattingCellEventItem>>();
         private bool _merged;
         private DataGridView dataGridView;
-        private bool _editable;
-        private bool _editing;
+        private bool _editable;        
         private object _cellRawValue;
 
         public CgDataGridPanel()
@@ -107,9 +106,9 @@ namespace Telemedicine.Forms
             dataGridView.DataSource = table;
         }
 
-        public override void SetSource<T>(IEnumerable<T> list)
+        public override void SetSource(IEnumerable list, Type type)
         {
-            SetBindingListSource(list, typeof(T));
+            SetBindingListSource(list, type);
         }
         public int[] SelectRow(Func<DataGridViewRow, bool> selector, bool firstOnly = true)
         {
@@ -255,6 +254,7 @@ namespace Telemedicine.Forms
                 dataGridView.Paint -= DataGridView_Paint;
                 dataGridView.CellPainting -= DataGridView_CellPainting;
                 dataGridView.ColumnWidthChanged -= DataGridView_ColumnWidthChanged;
+                dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             }
         }
 
@@ -348,7 +348,12 @@ namespace Telemedicine.Forms
         {
             dataGridView.AutoResizeColumnHeadersHeight();
             if (dataGridView.Columns.OfType<IMergedDataGridViewColumn>().Count() > 0)
+            {
+                // 如果是自動高度先解除
+                if(dataGridView.ColumnHeadersHeightSizeMode == DataGridViewColumnHeadersHeightSizeMode.AutoSize)
+                    dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
                 dataGridView.ColumnHeadersHeight *= 2;
+            }
         }
 
         private void FitColumnsWidth()

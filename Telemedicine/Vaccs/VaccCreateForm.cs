@@ -39,7 +39,7 @@ namespace Telemedicine.Vaccs
                 {
                     if (d.ShowDialog() == DialogResult.OK)
                     {
-                        var pat = d.SelectedPatient;
+                        var pat = d.Selected;
                         textPatId.Text = pat.Id;
                         textPatName.Text = PatientController.GetName(pat);
                         textPatSex.Text = pat.Gender.ToString(false);
@@ -56,8 +56,8 @@ namespace Telemedicine.Vaccs
                 if (d.ShowDialog() == DialogResult.OK)
                 {
                     var org = d.Selected;
-                    textOrgId.Text = org.Id;
-                    textOrgName.Text = org.Name;
+                    //textOrgId.Text = org.Id;
+                    //textOrgName.Text = org.Name;
                 }
             }
         }
@@ -143,8 +143,8 @@ namespace Telemedicine.Vaccs
                     if (d.ShowDialog() == DialogResult.OK)
                     {
                         var prac = d.Selected;
-                        textUserId.Text = prac.Id;
-                        textUserId.Tag = prac;
+                        //textUserId.Text = prac.Id;
+                        //textUserId.Tag = prac;
                     }
                 }
             });

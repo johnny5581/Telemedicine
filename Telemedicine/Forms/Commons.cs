@@ -623,10 +623,10 @@ namespace Telemedicine.Forms
             {
                 Dispose(true);
                 GC.SuppressFinalize(this);
-            }            
+            }
             protected void _Dispose(bool disposing)
             {
-                if(!_disposed)
+                if (!_disposed)
                 {
                     Dispose(disposing);
                     _disposed = true;
@@ -647,18 +647,18 @@ namespace Telemedicine.Forms
             {
                 action();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 unexceptHandler(ex);
             }
         }
         public static void Execute<TException>(Action action, Action<TException> exceptHandler, Action<Exception> unexceptHandler)
-            where TException: Exception
+            where TException : Exception
         {
             try
             {
                 action();
-            }          
+            }
             catch (TException ex)
             {
                 exceptHandler(ex);
@@ -680,14 +680,14 @@ namespace Telemedicine.Forms
             }
             return defaultValue;
         }
-        public static T Execute<TException, T>(Func<T> action,  Action<TException> exceptHandler, Action<Exception> unexceptHandler, T defaultValue = default(T))
+        public static T Execute<TException, T>(Func<T> action, Action<TException> exceptHandler, Action<Exception> unexceptHandler, T defaultValue = default(T))
             where TException : Exception
         {
             try
             {
                 return action();
             }
-            catch(TException ex)
+            catch (TException ex)
             {
                 exceptHandler(ex);
             }
@@ -784,7 +784,7 @@ namespace Telemedicine.Forms
         {
             if (color2 != default(Color))
                 return new SolidBrush(color1);
-            return new LinearGradientBrush(rect, color1, color2, angle);            
+            return new LinearGradientBrush(rect, color1, color2, angle);
         }
         /// <summary>
         /// 取得單色或是雙色筆刷
@@ -1401,11 +1401,29 @@ namespace Telemedicine.Forms
             var cache = _fontCaches.GetOrAdd(baseFont.FontFamily, fontFamily => new FontCache(fontFamily));
             var fitSize = provider.GetFitSize(minimize, maximize, size =>
             {
-                var f = cache.GetFont(size);
+                var f = cache.GetFont(size, baseFont.Style);
                 var s = TextRenderer.MeasureText(g, text, f);
                 return rect.Size.Contains(s);
             });
-            var font = cache.GetFont(fitSize);
+            var font = cache.GetFont(fitSize, baseFont.Style);
+            if (padding != 0)
+                rect = rect.ApplyPadding(padding);
+            TextRenderer.DrawText(g, text, font, rect, foreColor, textFlags);
+        }
+        /// <summary>
+        /// 繪製適合大小的文字
+        /// </summary>        
+        public static void DrawScaleString(this Graphics g, string text, Font baseFont, out Font font, Color foreColor, Rectangle rect, TextFormatFlags textFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter, int padding = 0, IFitFontSizeProvider fontSizeProvider = null, float minimize = 0f, float maximize = 0f)
+        {
+            var provider = fontSizeProvider ?? BfprtFontEngine.Default;
+            var cache = _fontCaches.GetOrAdd(baseFont.FontFamily, fontFamily => new FontCache(fontFamily));
+            var fitSize = provider.GetFitSize(minimize, maximize, size =>
+            {
+                var f = cache.GetFont(size, baseFont.Style);
+                var s = TextRenderer.MeasureText(g, text, f);
+                return rect.Size.Contains(s);
+            });
+            font = cache.GetFont(fitSize, baseFont.Style);
             if (padding != 0)
                 rect = rect.ApplyPadding(padding);
             TextRenderer.DrawText(g, text, font, rect, foreColor, textFlags);
@@ -1419,11 +1437,28 @@ namespace Telemedicine.Forms
             var cache = _fontCaches.GetOrAdd(baseFont.FontFamily, fontFamily => new FontCache(fontFamily));
             var fitSize = provider.GetFitSize(minimize, maximize, size =>
             {
-                var f = cache.GetFont(size);
+                var f = cache.GetFont(size, baseFont.Style);
                 var s = g.MeasureString(text, f);
                 return rect.Size.Contains(s);
             });
-            var font = cache.GetFont(fitSize);
+            var font = cache.GetFont(fitSize, baseFont.Style);
+            if (padding != 0)
+                rect = rect.ApplyPadding(padding);
+            g.DrawString(text, font, brush, rect, sf);
+        }/// <summary>
+         /// 繪製適合大小的文字
+         /// </summary>     
+        public static void DrawScaleString(this Graphics g, string text, Font baseFont, out Font font, Brush brush, RectangleF rect, StringFormat sf, float padding = 0f, IFitFontSizeProvider fontSizeProvider = null, float minimize = 0f, float maximize = 0f)
+        {
+            var provider = fontSizeProvider ?? BfprtFontEngine.Default;
+            var cache = _fontCaches.GetOrAdd(baseFont.FontFamily, fontFamily => new FontCache(fontFamily));
+            var fitSize = provider.GetFitSize(minimize, maximize, size =>
+            {
+                var f = cache.GetFont(size, baseFont.Style);
+                var s = g.MeasureString(text, f);
+                return rect.Size.Contains(s);
+            });
+            font = cache.GetFont(fitSize, baseFont.Style);
             if (padding != 0)
                 rect = rect.ApplyPadding(padding);
             g.DrawString(text, font, brush, rect, sf);
@@ -1708,49 +1743,80 @@ namespace Telemedicine.Forms
         #endregion
     }
 
-    public static class FmResManager
+    public class FmResManager
     {
-        private static readonly string _baseNs;
+        public static readonly FmResManager Default
+            = new FmResManager(null, "EmbeddedResources");
 
-        static FmResManager()
+        private readonly string _baseNs;
+        private readonly Assembly _assembly;
+        
+        public FmResManager(Assembly assembly, string postFix)
         {
-            _baseNs = typeof(FmResManager).Namespace + ".EmbeddedResources";
+            _assembly = assembly ?? typeof(FmResManager).Assembly;
+            _baseNs = typeof(FmResManager).Namespace + "." + postFix;
         }
 
-        public static string GetResourceName(string name)
+        public string GetResName(string name)
         {
             return _baseNs + "." + name;
         }
+        public Stream GetResStream(string name, bool relativePath = true)
+        {
+            var n = relativePath ? GetResName(name) : name;
+            return ResManager.GetResourceStream(_assembly, n);
+        }
+        public string GetResString(string name, bool throwOnError = true, bool relativePath = true)
+        {
+            var n = relativePath ? GetResName(name) : name;
+            return ResManager.GetResourceString(_assembly, n, throwOnError);
+        }
+        public byte[] GetResBytes(string name, bool throwOnError = true, bool relativePath = true)
+        {
+            var n = relativePath ? GetResName(name) : name;
+            return ResManager.GetResourceBytes(_assembly, n, throwOnError);
+        }
+
+        public T GetRes<T>(string name, Func<Stream, T> streamResolver, bool relativePath = true)
+        {
+            var n = relativePath ? GetResName(name) : name;
+            return ResManager.GetResource(_assembly, n, streamResolver);
+        }
+        public Icon GetResIcon(string name, bool throwOnError = false, bool relativePath = true)
+        {
+            var n = relativePath ? GetResName(name) : name;
+            return ResManager.GetResource(_assembly, n, s => s == null ? null : new Icon(s), throwOnError);
+        }
+        public Image GetResImage(string name, bool throwOnError = false, bool relativePath = true) 
+        {
+            var n = relativePath ? GetResName(name) : name;
+            return ResManager.GetResource(_assembly, n, s => s == null ? null : Image.FromStream(s), throwOnError);
+        }
+
         public static Stream GetResourceStream(string name, bool relativePath = true)
         {
-            var n = relativePath ? GetResourceName(name) : name;
-            return ResManager.GetResourceStream(typeof(FmResManager).Assembly, n);
+            return Default.GetResStream(name, relativePath);
         }
         public static string GetResourceString(string name, bool throwOnError = true, bool relativePath = true)
         {
-            var n = relativePath ? GetResourceName(name) : name;
-            return ResManager.GetResourceString(typeof(FmResManager).Assembly, n, throwOnError);
+            return Default.GetResString(name, throwOnError, relativePath);
         }
         public static byte[] GetResourceBytes(string name, bool throwOnError = true, bool relativePath = true)
         {
-            var n = relativePath ? GetResourceName(name) : name;
-            return ResManager.GetResourceBytes(typeof(FmResManager).Assembly, n, throwOnError);
+            return Default.GetResBytes(name, throwOnError, relativePath);
         }
 
         public static T GetResource<T>(string name, Func<Stream, T> streamResolver, bool relativePath = true)
         {
-            var n = relativePath ? GetResourceName(name) : name;
-            return ResManager.GetResource(typeof(FmResManager).Assembly, n, streamResolver);
+            return Default.GetRes(name, streamResolver, relativePath);
         }
         public static Icon GetResourceIcon(string name, bool throwOnError = false, bool relativePath = true)
         {
-            var n = relativePath ? GetResourceName(name) : name;
-            return ResManager.GetResource(typeof(FmResManager).Assembly, n, s => s == null ? null : new Icon(s), throwOnError);
+            return Default.GetResIcon(name, throwOnError, relativePath);
         }
         public static Image GetResourceImage(string name, bool throwOnError = false, bool relativePath = true)
         {
-            var n = relativePath ? GetResourceName(name) : name;
-            return ResManager.GetResource(typeof(FmResManager).Assembly, n, s => s == null ? null : Image.FromStream(s), throwOnError);
+            return Default.GetResImage(name, throwOnError, relativePath);
         }
 
 

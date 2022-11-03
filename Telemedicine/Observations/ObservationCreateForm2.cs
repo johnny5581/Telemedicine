@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Telemedicine.Patients
+namespace Telemedicine.Observations
 {
-    public partial class PatientListContorl : UserControl
+    public partial class ObservationCreateForm2 : FormBase
     {
-        public PatientListContorl()
+        public ObservationCreateForm2()
         {
             InitializeComponent();
         }

@@ -52,6 +52,7 @@ namespace Telemedicine.Bundles
             labelDateRange.LayoutPanel.AddControlToPosition(new Label { Text = "~", TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, 0);
             labelDateRange.LayoutPanel.AddControlToPosition(dateEndDate, 3, 0);
             labelDateRange.LayoutPanel.AddControlToPosition(dateEndTime, 4, 0);
+
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -63,20 +64,17 @@ namespace Telemedicine.Bundles
         {
             dgvData.ClearSource();
 
-            var id = textId.Text;
-            var patId = textSubject.Text;
+            var id = textId.Text;            
             var patIdentifier = textPatIdentifier.Text;
             var patOrg = comboPatOrg.SelectedValue as string;
 
             dgvData.ClearSource();
 
             var criteria = new List<string>();
-            if (patId.IsNotNullOrEmpty())
-                criteria.Add("patient=" + patId);
             if (patIdentifier.IsNotNullOrEmpty())
-                criteria.Add("patient.identifier=" + patIdentifier);
+                criteria.Add("composition.patient.identifier=" + patIdentifier);
             if (patOrg.IsNotNullOrEmpty())
-                criteria.Add("organization.identifier=" + patOrg);
+                criteria.Add("composition.organization.identifier=" + patOrg);
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
             if (checkDateRange.Checked)
@@ -85,21 +83,37 @@ namespace Telemedicine.Bundles
                 var end = dateEndDate.Value.Date + dateEndTime.Value.TimeOfDay;
                 var datBegin = begin.ToString("yyyy-MM-dd");
                 var datEnd = end.ToString("yyyy-MM-dd");
-                criteria.Add("date=gt" + datBegin);
-                criteria.Add("date=lt" + datEnd);
+                criteria.Add("composition.date=gt" + datBegin);
+                criteria.Add("composition.date=lt" + datEnd);
             }
             var list = _ctrlBundle.Search(criteria);
-            var dataList = list.Select(r => new DataModel(r)).ToList();
+            var ctrl = ControllerBase.Create<Composition>(this);
+            var dataList = list.Select(r => new DataModel(r, ctrl)).ToList();
             dgvData.SetSource(dataList);
         }
         private class DataModel : DataModelBase<Bundle>
         {
-            public DataModel(Bundle data) : base(data)
-            {
+            public DataModel(Bundle data, Controller<Composition> controller) : base(data)
+            {                
+                var composition = controller.Read(data.Entry[0].FullUrl);
+                var resOfPat = composition.Section[0].Entry.Find(resRef => resRef.TypeName == "Patient");
+                var pat = data.FindEntry(resOfPat) as Patient;
+                PatientId = pat.Identifier.Find(id => id.System == "https://www.cgmh.org.tw")?.Value;
+                PatientName = pat.Name[0].Text;
+                var resOfOrg = composition.Section[0].Entry.Find(resRef => resRef.TypeName == "Organization");
+                var org = data.FindEntry(resOfOrg) as Organization;
+                OrgName = org.Name;
             }
 
             [DisplayName("#")]
             public string Id { get; set; }
+
+            [DisplayName("病歷號")]
+            public string PatientId { get; set; }
+            [DisplayName("病患姓名")]
+            public string PatientName { get; set; }
+            [DisplayName("組織")]
+            public string OrgName { get; set; }
         }
     }
 }

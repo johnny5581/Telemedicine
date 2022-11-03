@@ -16,9 +16,10 @@ namespace Telemedicine.Forms
         private Label labelHeader;
         private HorizontalAlignment _headerAlign;
         private Control _control;
-        private bool _grouping;        
+        private bool _grouping;
         private Label labelColon;
         private string _symbolColon;
+        private int _componentHeight;
 
         public CgLabelControlBase()
         {
@@ -130,7 +131,12 @@ namespace Telemedicine.Forms
         [DefaultValue(0)]
         public int ComponentHeight
         {
-            get; set;
+            get { return _componentHeight; }
+            set
+            {
+                _componentHeight = value;
+                PerformAutoSize();
+            }
         }
         [DefaultValue(typeof(Padding), "1,1,1,1")]
         public new Padding Padding
@@ -146,7 +152,7 @@ namespace Telemedicine.Forms
             Refresh();
         }
         protected void ResetHeaderColon()
-        {            
+        {
             labelColon.Text = _symbolColon == null || _symbolColon.Length == 0 ? ":" : _symbolColon;
             SyncOthersHeaderWidth();
         }

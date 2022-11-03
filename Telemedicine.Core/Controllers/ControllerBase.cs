@@ -2,6 +2,7 @@
 using Hl7.Fhir.Rest;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -18,6 +19,8 @@ namespace Telemedicine.Controllers
             get { return _gInteractive; }
             set { _gInteractive = value; }
         }
+        private static readonly Dictionary<Type, ControllerBase> _controllers
+            = new Dictionary<Type, ControllerBase>();
         public ControllerBase()
         {
         }
@@ -108,15 +111,27 @@ namespace Telemedicine.Controllers
         {
             return ExecuteClient(client => client.Create(bundle));
         }
+
+
+        public static Controller<T> Create<T>(IInteractive interactive = null)
+            where T : Resource, new()
+        {            
+            return new Controller<T>(interactive);
+        }
+        public static Controller<T> Get<T>() where T : Resource, new()
+        {
+            return (Controller<T>)_controllers.GetOrCreate(typeof(T), type => Create<T>());
+        }
     }
-    public abstract class ControllerBase<T> : ControllerBase
+    public class Controller<T> : ControllerBase
         where T : Resource, new()
     {
-
-        public ControllerBase() : base()
+        private static readonly Dictionary<Type, string> Domains
+            = new Dictionary<Type, string>();
+        public Controller() : base()
         {
         }
-        public ControllerBase(IInteractive interactive) : base(interactive)
+        public Controller(IInteractive interactive) : base(interactive)
         {
 
         }
@@ -128,13 +143,13 @@ namespace Telemedicine.Controllers
             });
         }
 
-        public T SearchById(string id)
+        public T Get(string id)
         {
             return ExecuteClient(client =>
             {
                 var bundle = client.SearchById<T>(id);
-                if (bundle.Entry.Count > 0)                
-                    return bundle.Entry[0].Resource as T;                
+                if (bundle.Entry.Count > 0)
+                    return bundle.Entry[0].Resource as T;
                 return null;
             });
         }
@@ -173,6 +188,7 @@ namespace Telemedicine.Controllers
             return TryExecuteClient(client => client.Delete(model), out exception);
         }
 
+
         public IList<T> Search(params KeyValuePair<string, string>[] searchParams)
         {
             var criteria = searchParams.Select(r => string.Format("{0}={1}", r.Key, r.Value)).ToArray();
@@ -193,8 +209,8 @@ namespace Telemedicine.Controllers
         }
         public IList<T> Search(bool throwOnNoCriteria, params string[] criteria)
         {
-            if (criteria.Length == 0 && throwOnNoCriteria)
-                throw new InvalidOperationException("no search criteria");
+            //if (criteria.Length == 0 && throwOnNoCriteria)
+            //    throw new InvalidOperationException("no search criteria");
             //criteria = criteria.Concat(new string[] { "_count=100" }).ToArray();
             var bundle = ExecuteClient(client => client.Search<T>(criteria, pageSize: 100));
             var list = new List<T>();

@@ -88,7 +88,6 @@ namespace Telemedicine.Meds
             // 
             this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemEdit.IconSize = 0;
             this.buttonItemEdit.Location = new System.Drawing.Point(244, 9);
             this.buttonItemEdit.Name = "buttonItemEdit";
             this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
@@ -102,7 +101,6 @@ namespace Telemedicine.Meds
             // 
             this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemDelete.IconSize = 0;
             this.buttonItemDelete.Location = new System.Drawing.Point(325, 9);
             this.buttonItemDelete.Name = "buttonItemDelete";
             this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
@@ -116,7 +114,6 @@ namespace Telemedicine.Meds
             // 
             this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAdd.IconSize = 0;
             this.buttonItemAdd.Location = new System.Drawing.Point(163, 9);
             this.buttonItemAdd.Name = "buttonItemAdd";
             this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
@@ -167,7 +164,6 @@ namespace Telemedicine.Meds
             // buttonPat
             // 
             this.buttonPat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonPat.IconSize = 0;
             this.buttonPat.Location = new System.Drawing.Point(96, 20);
             this.buttonPat.Name = "buttonPat";
             this.buttonPat.Size = new System.Drawing.Size(75, 23);
@@ -183,7 +179,6 @@ namespace Telemedicine.Meds
             this.textPatId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatId.Location = new System.Drawing.Point(6, 49);
             this.textPatId.Name = "textPatId";
-            this.textPatId.Padding = new System.Windows.Forms.Padding(1);
             this.textPatId.Size = new System.Drawing.Size(165, 14);
             this.textPatId.TabIndex = 6;
             // 
@@ -192,7 +187,6 @@ namespace Telemedicine.Meds
             this.textPatSex.Header = "性別";
             this.textPatSex.Location = new System.Drawing.Point(6, 129);
             this.textPatSex.Name = "textPatSex";
-            this.textPatSex.Padding = new System.Windows.Forms.Padding(1);
             this.textPatSex.ReadOnly = true;
             this.textPatSex.Size = new System.Drawing.Size(165, 30);
             this.textPatSex.TabIndex = 5;
@@ -202,7 +196,6 @@ namespace Telemedicine.Meds
             this.textPatBrithDate.Header = "生日";
             this.textPatBrithDate.Location = new System.Drawing.Point(6, 99);
             this.textPatBrithDate.Name = "textPatBrithDate";
-            this.textPatBrithDate.Padding = new System.Windows.Forms.Padding(1);
             this.textPatBrithDate.ReadOnly = true;
             this.textPatBrithDate.Size = new System.Drawing.Size(165, 30);
             this.textPatBrithDate.TabIndex = 4;
@@ -212,7 +205,6 @@ namespace Telemedicine.Meds
             this.textPatName.Header = "姓名";
             this.textPatName.Location = new System.Drawing.Point(6, 69);
             this.textPatName.Name = "textPatName";
-            this.textPatName.Padding = new System.Windows.Forms.Padding(1);
             this.textPatName.ReadOnly = true;
             this.textPatName.Size = new System.Drawing.Size(165, 30);
             this.textPatName.TabIndex = 3;
@@ -221,7 +213,6 @@ namespace Telemedicine.Meds
             // 
             this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonCreate.IconSize = 0;
             this.buttonCreate.Location = new System.Drawing.Point(460, 240);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(144, 53);

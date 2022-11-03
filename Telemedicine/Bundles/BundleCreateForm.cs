@@ -36,7 +36,7 @@ namespace Telemedicine.Bundles
                 {
                     if (d.ShowDialog() == DialogResult.OK)
                     {
-                        var pat = d.SelectedPatient;
+                        var pat = d.Selected;
                         textPatId.Text = pat.Id;
                         textPatId.Tag = pat;
                     }
@@ -53,8 +53,8 @@ namespace Telemedicine.Bundles
                     if (d.ShowDialog() == DialogResult.OK)
                     {
                         var org = d.Selected;
-                        textOrgId.Text = org.Id;
-                        textOrgId.Tag = org;
+                        //textOrgId.Text = org.Id;
+                        //textOrgId.Tag = org;
                     }
                 }
             });
@@ -68,8 +68,8 @@ namespace Telemedicine.Bundles
                     if (d.ShowDialog() == DialogResult.OK)
                     {
                         var user = d.Selected;
-                        textUserId.Text = user.Id;
-                        textUserId.Tag = user;
+                        //textUserId.Text = user.Id;
+                        //textUserId.Tag = user;
                     }
                 }
             });

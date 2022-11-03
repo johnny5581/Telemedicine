@@ -12,15 +12,14 @@ using Telemedicine.Controllers;
 using Telemedicine.Forms;
 
 namespace Telemedicine.Orgs
-{
+{    
     public partial class OrgCreateForm : DialogBase
-    {
-        private OrganizationController _ctrlOrg;
+    {        
         public OrgCreateForm()
         {
             InitializeComponent();
-            _ctrlOrg = new OrganizationController(this);
         }
+        public Controller<Organization> Controller { get; set; }
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
@@ -32,7 +31,8 @@ namespace Telemedicine.Orgs
                 org.Name = textName.Text;
                 org.AliasElement.Add(new FhirString(textAlias.Text));
                 org.Address.Add(new Address { Country = textCountry.Text });
-                _ctrlOrg.Create(org);
+
+                Controller.Create(org);
                 MsgBoxHelper.Info("建立成功");
             });
         }

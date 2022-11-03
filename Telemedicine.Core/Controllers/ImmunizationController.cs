@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Telemedicine.Controllers
 {
-    public class ImmunizationController : ControllerBase<Immunization>
+    public class ImmunizationController : Controller<Immunization>
     {
         public ImmunizationController()
         {

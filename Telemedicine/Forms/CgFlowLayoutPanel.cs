@@ -64,7 +64,7 @@ namespace Telemedicine.Forms
         public void ResizeAllChilds()
         {
             ResizeChilds();
-        }
+        }        
         protected virtual void ResizeChilds(Control control = null)
         {
             var args = new ResizingChildEventArgs();
@@ -119,7 +119,7 @@ namespace Telemedicine.Forms
         {
             base.OnSizeChanged(e);
             AutoResizeChildControls();
-        }
+        }        
         public delegate void ResizingChildEventHandler(object sender, ResizingChildEventArgs e);
         public class ResizingChildEventArgs : EventArgs
         {

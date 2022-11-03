@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Telemedicine.Controllers
 {
-    public class EncounterController : ControllerBase<Encounter>
+    public class EncounterController : Controller<Encounter>
     {
         public EncounterController()
         {

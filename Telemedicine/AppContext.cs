@@ -171,21 +171,28 @@ namespace Telemedicine
             collection.Append(new SplashDialog.SplashActionItem("Init", "初始化系統", (dialog, cache) => { System.Threading.Thread.Sleep(2000); }));
             collection.Append(new SplashDialog.SplashActionItem("SetupMonitor", "設定監控視窗", (dialog, cache) =>
             {
-                var d = GetData("Monitor") as TransactionMonitorDialog;
+                var d = AppDomain.CurrentDomain.GetData("Monitor") as TransactionMonitorDialog;
                 if (d == null)
                 {
                     d = new TransactionMonitorDialog();
-                    SetData("Monitor", d);
+                    AppDomain.CurrentDomain.SetData("Monitor", d);
                 }
                 HttpClientRequester.Transacted += (req, reqBody, resp, respBody) =>
                 {
                     Application.DoEvents();
-                    d.Clear();
-                    Application.DoEvents();
-                    d.SetRequest(req, reqBody);
-                    Application.DoEvents();
-                    if (resp != null)
-                        d.SetResponse(resp, respBody);
+                    var trans = new TransactionMonitorDialog.HttpTransaction();
+                    trans.Request = req;
+                    trans.RequestBody = reqBody;
+                    trans.Response = resp;
+                    trans.ResponseBody = respBody;
+
+                    //d.Clear();
+                    //Application.DoEvents();
+                    //d.SetRequest(req, reqBody);
+                    //Application.DoEvents();
+                    //if (resp != null)
+                    //    d.SetResponse(resp, respBody);
+                    d.AppendTransaction(trans);
                     Application.DoEvents();
                 };
             }));

@@ -39,14 +39,14 @@ namespace Telemedicine.Observations
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textMedId = new Telemedicine.Forms.CgTextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonPat = new Telemedicine.Forms.CgIconButton();
-            this.textPatId = new Telemedicine.Forms.CgLabelControl();
-            this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
-            this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
-            this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
             this.textSrvId = new Telemedicine.Forms.CgTextBox();
+            this.textMedId = new Telemedicine.Forms.CgTextBox();
+            this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
+            this.textPatBrithDate = new Telemedicine.Forms.CgLabelTextBox();
+            this.textPatSex = new Telemedicine.Forms.CgLabelTextBox();
+            this.textPatId = new Telemedicine.Forms.CgLabelControl();
+            this.buttonPat = new Telemedicine.Forms.CgIconButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -57,7 +57,6 @@ namespace Telemedicine.Observations
             // 
             this.buttonUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUpload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonUpload.IconSize = 0;
             this.buttonUpload.Location = new System.Drawing.Point(472, 277);
             this.buttonUpload.Name = "buttonUpload";
             this.buttonUpload.Size = new System.Drawing.Size(162, 51);
@@ -108,7 +107,6 @@ namespace Telemedicine.Observations
             // 
             this.cgIconButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cgIconButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cgIconButton2.IconSize = 0;
             this.cgIconButton2.Location = new System.Drawing.Point(273, 34);
             this.cgIconButton2.Name = "cgIconButton2";
             this.cgIconButton2.Size = new System.Drawing.Size(75, 23);
@@ -122,7 +120,6 @@ namespace Telemedicine.Observations
             // 
             this.cgIconButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cgIconButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cgIconButton1.IconSize = 0;
             this.cgIconButton1.Location = new System.Drawing.Point(192, 9);
             this.cgIconButton1.Name = "cgIconButton1";
             this.cgIconButton1.Size = new System.Drawing.Size(75, 23);
@@ -136,7 +133,6 @@ namespace Telemedicine.Observations
             // 
             this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemEdit.IconSize = 0;
             this.buttonItemEdit.Location = new System.Drawing.Point(354, 9);
             this.buttonItemEdit.Name = "buttonItemEdit";
             this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
@@ -150,7 +146,6 @@ namespace Telemedicine.Observations
             // 
             this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemDelete.IconSize = 0;
             this.buttonItemDelete.Location = new System.Drawing.Point(354, 34);
             this.buttonItemDelete.Name = "buttonItemDelete";
             this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
@@ -164,7 +159,6 @@ namespace Telemedicine.Observations
             // 
             this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAdd.IconSize = 0;
             this.buttonItemAdd.Location = new System.Drawing.Point(273, 9);
             this.buttonItemAdd.Name = "buttonItemAdd";
             this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
@@ -185,6 +179,14 @@ namespace Telemedicine.Observations
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "關聯";
             // 
+            // textSrvId
+            // 
+            this.textSrvId.Location = new System.Drawing.Point(6, 49);
+            this.textSrvId.Name = "textSrvId";
+            this.textSrvId.Size = new System.Drawing.Size(165, 22);
+            this.textSrvId.TabIndex = 9;
+            this.textSrvId.WatermarkText = "輸入ServiceReqID";
+            // 
             // textMedId
             // 
             this.textMedId.Location = new System.Drawing.Point(6, 21);
@@ -192,6 +194,54 @@ namespace Telemedicine.Observations
             this.textMedId.Size = new System.Drawing.Size(165, 22);
             this.textMedId.TabIndex = 8;
             this.textMedId.WatermarkText = "輸入MedReqID";
+            // 
+            // textPatName
+            // 
+            this.textPatName.Header = "姓名";
+            this.textPatName.Location = new System.Drawing.Point(6, 69);
+            this.textPatName.Name = "textPatName";
+            this.textPatName.ReadOnly = true;
+            this.textPatName.Size = new System.Drawing.Size(165, 30);
+            this.textPatName.TabIndex = 3;
+            // 
+            // textPatBrithDate
+            // 
+            this.textPatBrithDate.Header = "生日";
+            this.textPatBrithDate.Location = new System.Drawing.Point(6, 99);
+            this.textPatBrithDate.Name = "textPatBrithDate";
+            this.textPatBrithDate.ReadOnly = true;
+            this.textPatBrithDate.Size = new System.Drawing.Size(165, 30);
+            this.textPatBrithDate.TabIndex = 4;
+            // 
+            // textPatSex
+            // 
+            this.textPatSex.Header = "性別";
+            this.textPatSex.Location = new System.Drawing.Point(6, 129);
+            this.textPatSex.Name = "textPatSex";
+            this.textPatSex.ReadOnly = true;
+            this.textPatSex.Size = new System.Drawing.Size(165, 30);
+            this.textPatSex.TabIndex = 5;
+            // 
+            // textPatId
+            // 
+            this.textPatId.Header = "#";
+            this.textPatId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textPatId.Location = new System.Drawing.Point(6, 49);
+            this.textPatId.Name = "textPatId";
+            this.textPatId.Size = new System.Drawing.Size(165, 14);
+            this.textPatId.TabIndex = 6;
+            // 
+            // buttonPat
+            // 
+            this.buttonPat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonPat.Location = new System.Drawing.Point(96, 20);
+            this.buttonPat.Name = "buttonPat";
+            this.buttonPat.Size = new System.Drawing.Size(75, 23);
+            this.buttonPat.TabIndex = 7;
+            this.buttonPat.Text = "選擇病人";
+            this.buttonPat.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonPat.UseVisualStyleBackColor = true;
+            this.buttonPat.Click += new System.EventHandler(this.buttonPat_Click);
             // 
             // groupBox1
             // 
@@ -206,67 +256,6 @@ namespace Telemedicine.Observations
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "病患資料";
-            // 
-            // buttonPat
-            // 
-            this.buttonPat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonPat.IconSize = 0;
-            this.buttonPat.Location = new System.Drawing.Point(96, 20);
-            this.buttonPat.Name = "buttonPat";
-            this.buttonPat.Size = new System.Drawing.Size(75, 23);
-            this.buttonPat.TabIndex = 7;
-            this.buttonPat.Text = "選擇病人";
-            this.buttonPat.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.buttonPat.UseVisualStyleBackColor = true;
-            this.buttonPat.Click += new System.EventHandler(this.buttonPat_Click);
-            // 
-            // textPatId
-            // 
-            this.textPatId.Header = "#";
-            this.textPatId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatId.Location = new System.Drawing.Point(6, 49);
-            this.textPatId.Name = "textPatId";
-            this.textPatId.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatId.Size = new System.Drawing.Size(165, 14);
-            this.textPatId.TabIndex = 6;
-            // 
-            // textPatSex
-            // 
-            this.textPatSex.Header = "性別";
-            this.textPatSex.Location = new System.Drawing.Point(6, 129);
-            this.textPatSex.Name = "textPatSex";
-            this.textPatSex.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatSex.ReadOnly = true;
-            this.textPatSex.Size = new System.Drawing.Size(165, 30);
-            this.textPatSex.TabIndex = 5;
-            // 
-            // textPatBrithDate
-            // 
-            this.textPatBrithDate.Header = "生日";
-            this.textPatBrithDate.Location = new System.Drawing.Point(6, 99);
-            this.textPatBrithDate.Name = "textPatBrithDate";
-            this.textPatBrithDate.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatBrithDate.ReadOnly = true;
-            this.textPatBrithDate.Size = new System.Drawing.Size(165, 30);
-            this.textPatBrithDate.TabIndex = 4;
-            // 
-            // textPatName
-            // 
-            this.textPatName.Header = "姓名";
-            this.textPatName.Location = new System.Drawing.Point(6, 69);
-            this.textPatName.Name = "textPatName";
-            this.textPatName.Padding = new System.Windows.Forms.Padding(1);
-            this.textPatName.ReadOnly = true;
-            this.textPatName.Size = new System.Drawing.Size(165, 30);
-            this.textPatName.TabIndex = 3;
-            // 
-            // textSrvId
-            // 
-            this.textSrvId.Location = new System.Drawing.Point(6, 49);
-            this.textSrvId.Name = "textSrvId";
-            this.textSrvId.Size = new System.Drawing.Size(165, 22);
-            this.textSrvId.TabIndex = 9;
-            this.textSrvId.WatermarkText = "輸入ServiceReqID";
             // 
             // ObservationCreateForm
             // 
@@ -287,12 +276,6 @@ namespace Telemedicine.Observations
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox groupBox1;
-        private Forms.CgLabelControl textPatId;
-        private Forms.CgLabelTextBox textPatSex;
-        private Forms.CgLabelTextBox textPatBrithDate;
-        private Forms.CgLabelTextBox textPatName;
         private System.Windows.Forms.GroupBox groupBox2;
         private Forms.CgTextBox textMedId;
         private Forms.CgDataGridPanel dgvData;
@@ -302,9 +285,14 @@ namespace Telemedicine.Observations
         private Forms.CgIconButton buttonItemDelete;
         private Forms.CgIconButton buttonUpload;
         private Forms.CgIconButton buttonItemEdit;
-        private Forms.CgIconButton buttonPat;
         private Forms.CgIconButton cgIconButton1;
         private Forms.CgIconButton cgIconButton2;
         private Forms.CgTextBox textSrvId;
+        private Forms.CgLabelTextBox textPatName;
+        private Forms.CgLabelTextBox textPatBrithDate;
+        private Forms.CgLabelTextBox textPatSex;
+        private Forms.CgLabelControl textPatId;
+        private Forms.CgIconButton buttonPat;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

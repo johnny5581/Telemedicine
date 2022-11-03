@@ -197,6 +197,11 @@ namespace Telemedicine.Forms
         }
         public virtual void SetSource<T>(IEnumerable<T> list)
         {
+            SetSource(list, typeof(T));
+        }
+        public virtual void SetSource(IEnumerable list, Type type)
+        {
+
         }
         public virtual void ClearSource()
         {

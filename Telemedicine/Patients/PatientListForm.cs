@@ -42,7 +42,7 @@ namespace Telemedicine.Patients
             }
         }
 
-        public Patient SelectedPatient { get; private set; }
+        public Patient Selected { get; private set; }
 
         private void NameFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
@@ -120,7 +120,7 @@ namespace Telemedicine.Patients
         {
             if(MdiParent == null)
             {
-                SelectedPatient = e.Data as Patient;
+                Selected = e.Data as Patient;
                 DialogResult = DialogResult.OK;
             }
         }

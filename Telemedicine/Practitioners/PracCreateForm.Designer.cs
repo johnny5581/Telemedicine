@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.textId = new Telemedicine.Forms.CgLabelTextBox();
-            this.textName = new Telemedicine.Forms.CgLabelTextBox();
             this.textIdVal = new Telemedicine.Forms.CgLabelTextBox();
             this.textIdSys = new Telemedicine.Forms.CgLabelTextBox();
             this.buttonCreate = new Telemedicine.Forms.CgIconButton();
+            this.textName = new Telemedicine.CgLabelHumanName();
             this.SuspendLayout();
             // 
             // textId
@@ -45,17 +45,6 @@
             this.textId.Name = "textId";
             this.textId.Size = new System.Drawing.Size(265, 30);
             this.textId.TabIndex = 12;
-            // 
-            // textName
-            // 
-            this.textName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textName.Header = "姓名";
-            this.textName.Location = new System.Drawing.Point(12, 122);
-            this.textName.Name = "textName";
-            this.textName.Size = new System.Drawing.Size(265, 30);
-            this.textName.TabIndex = 11;
-            this.textName.Text = "王曉明";
             // 
             // textIdVal
             // 
@@ -92,18 +81,26 @@
             this.buttonCreate.UseVisualStyleBackColor = true;
             this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
+            // textName
+            // 
+            this.textName.Header = "姓名";
+            this.textName.Location = new System.Drawing.Point(12, 122);
+            this.textName.Name = "textName";
+            this.textName.Size = new System.Drawing.Size(265, 23);
+            this.textName.TabIndex = 14;
+            // 
             // PracCreateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(289, 233);
+            this.Controls.Add(this.textName);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.textId);
-            this.Controls.Add(this.textName);
             this.Controls.Add(this.textIdVal);
             this.Controls.Add(this.textIdSys);
             this.Name = "PracCreateForm";
-            this.Text = "PracCreateForm";
+            this.Text = "建立醫事人員";
             this.ResumeLayout(false);
 
         }
@@ -111,9 +108,9 @@
         #endregion
 
         private Forms.CgLabelTextBox textId;
-        private Forms.CgLabelTextBox textName;
         private Forms.CgLabelTextBox textIdVal;
         private Forms.CgLabelTextBox textIdSys;
         private Forms.CgIconButton buttonCreate;
+        private CgLabelHumanName textName;
     }
 }

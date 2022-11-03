@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Telemedicine.Controllers
 {
-    public class BundleController : ControllerBase<Bundle>
+    public class BundleController : Controller<Bundle>
     {
         public BundleController()
         {

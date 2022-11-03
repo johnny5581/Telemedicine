@@ -19,7 +19,6 @@ namespace Telemedicine
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-
             try
             {
                 var appContext = AppContext.GetContext(args);

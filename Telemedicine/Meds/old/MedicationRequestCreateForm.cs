@@ -61,7 +61,7 @@ namespace Telemedicine.Meds
                 {
                     if (d.ShowDialog() == DialogResult.OK)
                     {
-                        var pat = d.SelectedPatient;
+                        var pat = d.Selected;
                         textPatId.Text = pat.Id;
                         textPatName.Text = PatientController.GetName(pat);
                         textPatSex.Text = pat.Gender.ToString(false);

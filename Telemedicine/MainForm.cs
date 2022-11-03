@@ -56,27 +56,27 @@ namespace Telemedicine
 
         private void menuObservationSearch_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Observations.ObservationListForm>());
+            Execute(() => FindView<Observations.ObservationListForm2>());
         }
 
         private void menuPatientFind_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Patients.PatientListForm>());
+            Execute(() => FindView<Patients.PatientListForm2>());
         }
         private void menuPatientCreate_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Patients.CreatePatientForm>());
+            Execute(() => FindView<Patients.CreatePatientForm2>());
         }
 
         private void 傳輸監控ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Execute(() =>
             {
-                var d = AppRuntime.Current.GetData("Monitor") as TransactionMonitorDialog;
+                var d = AppDomain.CurrentDomain.GetData("Monitor") as TransactionMonitorDialog;
                 if (d == null)
                 {
                     d = new TransactionMonitorDialog();
-                    AppRuntime.Current.SetData("Monitor", d);
+                    AppDomain.CurrentDomain.SetData("Monitor", d);
                 }
                 d.Show(this);
             });
@@ -85,24 +85,24 @@ namespace Telemedicine
 
         private void menuMedReqCreate_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Meds.MedicationRequestCreateForm>());
+            Execute(() => FindView<Meds.MedRequestCreateForm>());
 
         }
 
         private void menuMedReqSearch_Click(object sender, EventArgs e)
         {
 
-            Execute(() => FindView<Meds.MedicationRequestListForm>());
+            Execute(() => FindView<Meds.MedRequestListForm>());
         }
 
         private void menuMedAdmCreate_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Meds.MedicationAdminCreateForm>());
+            Execute(() => FindView<Meds.MedAdminCreateForm>());
         }
 
         private void menuMedAdmSearch_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Meds.MedicationAdminListForm>());
+            Execute(() => FindView<Meds.MedAdminListForm>());
         }
 
         private void 建立ToolStripMenuItem_Click(object sender, EventArgs e)

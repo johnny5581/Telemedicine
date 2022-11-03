@@ -94,9 +94,9 @@ namespace Telemedicine.Forms
         {
             get { return _font.FontFamily; }
         }
-        public Font GetFont(float size)
+        public Font GetFont(float size, FontStyle? fontStyle = null)
         {
-            return GetOrAdd(size, r => _font.NewFont(size));
+            return GetOrAdd(size, r => _font.NewFont(r, fontStyle));
         }
     }
 

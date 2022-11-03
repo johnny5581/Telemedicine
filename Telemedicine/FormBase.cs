@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telemedicine.Forms;
+using Telemedicine.Orgs;
 
 namespace Telemedicine
 {
@@ -23,6 +24,17 @@ namespace Telemedicine
             comboBox.SelectedIndex = index == -1 ? VitalSign.VitalSigns.Length - 1 : index;
         }
 
+        public static void Bind<T>(this ICgComboBox comboBox, string notSpecifyText = null)
+            where T : struct
+        {
+            comboBox.Items.Clear();
+            int index = -1;
+            if (notSpecifyText != null)
+                index = comboBox.AddTextItem(notSpecifyText, null);
+            var names = Enum.GetNames(typeof(MedicationRequest.medicationrequestStatus));
+            comboBox.AddItemRange(names, r => r, r => Enum.Parse(typeof(T), r));
+            comboBox.SelectedIndex = index;
+        }
         public static void BindOrganizations(this ICgComboBox comboBox, string notSpecifyText = null)
         {
             comboBox.Items.Clear();
@@ -30,10 +42,7 @@ namespace Telemedicine
             if (notSpecifyText != null)
                 index = comboBox.AddTextItem(notSpecifyText, null);
 
-            comboBox.AddTextItem("Organization/MITW.ForIdentifier");
-            comboBox.AddTextItem("Organization/MITW.ForContact");
-            comboBox.AddTextItem("Organization/MITW.ForPHR");
-            comboBox.AddTextItem("Organization/MITW.ForEMS");
+            comboBox.AddItemRange(OrgControl.Organizations, r => r, r => "Organization/" + r);
             comboBox.SelectedIndex = index == -1 ? comboBox.Items.Count - 1 : index;
         }
 
@@ -41,7 +50,7 @@ namespace Telemedicine
         {
             comboBox.AddTextItem("Tablet", new Coding("http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm", "TAB", "Tablet"));
             comboBox.AddTextItem("Swab", new Coding("http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm", "SWAB", "Swab"));
-            
+
         }
 
 
@@ -105,6 +114,10 @@ namespace Telemedicine
     }
     public class FormBase : CgForm, IInteractive
     {
+        public FormBase()
+        {
+            DomainControl.Setup(this);
+        }
         protected void ClearControls(params Control[] controls)
         {
             FormHelper.ClearControls(controls);
@@ -120,7 +133,12 @@ namespace Telemedicine
 
         protected T GetSelectedItem<T>(CgDataGridPanel panel, bool throwOnError = true)
         {
-            var item = (T)panel.GetSelectedItem();
+            return (T)GetSelectedItem(panel, throwOnError);
+        }
+
+        protected object GetSelectedItem(CgDataGridPanel panel, bool throwOnError = true)
+        {
+            var item = panel.GetSelectedItem();
             if (item == null && throwOnError)
                 throw new Exception("沒有選擇任何資料");
             return item;

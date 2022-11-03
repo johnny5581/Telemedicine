@@ -15,29 +15,27 @@ using Telemedicine.Forms;
 
 namespace Telemedicine.Practitioners
 {
+    [DomainControl(typeof(Practitioner))]
     public partial class PracCreateForm : DialogBase
     {
-        private PractitionerController _ctrlPrac;
+        
         public PracCreateForm()
         {
             InitializeComponent();
-            _ctrlPrac = new PractitionerController(this);
+            DomainControl.Setup(this);
         }
+
+        public Controller<Practitioner> Controller { get; set; }
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             Execute(() =>
             {
                 var prac = new Practitioner();
-                prac.Id = textId.Text.ToNull();
-                prac.Identifier.Add(new Identifier(textIdSys.Text, textIdVal.Text));
-                prac.Name.Add(new HumanName
-                {
-                    Text = textName.Text,
-                    Family = textName.Text.Substring(0, 1),
-                    Given = new List<string> { textName.Text.Substring(1) }
-                });
-                _ctrlPrac.Create(prac);
+                prac.Id = textId.Text.ToNull();                
+                prac.Identifier.Add(new Identifier(textIdSys.Text, textIdVal.Text));                
+                prac.Name.Add(textName.GetHumanName());
+                Controller.Create(prac);
                 MsgBoxHelper.Info("建立成功");
             });
         }
