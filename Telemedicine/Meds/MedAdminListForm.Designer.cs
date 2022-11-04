@@ -48,10 +48,6 @@
             this.dgvData.Size = new System.Drawing.Size(529, 450);
             this.dgvData.TopPanelVisible = true;
             // 
-            // buttonSearch
-            // 
-            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
-            // 
             // panelExtra
             // 
             this.panelExtra.Controls.Add(this.cgFlowLayoutPanel1);

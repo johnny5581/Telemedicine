@@ -289,6 +289,20 @@ namespace Telemedicine
                 return resource.Id;
             return null;
         }
+        public static string GetPeriod(DataType dataRes)
+        {
+            if(dataRes is Period)
+            {
+                var period = dataRes as Period;
+                return $"{period.Start} ~ {period.End}";
+            }
+            else if(dataRes is CodeableConcept)
+            {
+                var codeableConcept = dataRes as CodeableConcept;
+                return codeableConcept?.Coding?.FirstOrDefault()?.Code;
+            }
+            return null;
+        }
     }
     public class DomainControlAttribute : Attribute
     {

@@ -97,7 +97,19 @@ namespace Telemedicine
             });
         }
 
-        protected void StringsFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        public static void PeriodFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        {
+            var dataType = e.Value as DataType;
+            if (dataType != null)
+                e.Value = DomainControl.GetPeriod(dataType);
+        }
+        public static void ResourceReferenceFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        {
+            var resRef = e.Value as ResourceReference;
+            if (resRef != null)
+                e.Value = resRef.Reference;
+        }
+        public static void StringsFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var strings = e.Value as IEnumerable<string>;
             if (strings != null)
@@ -105,7 +117,7 @@ namespace Telemedicine
                 e.Value = strings.ToString(",");
             }
         }
-        protected void HumanNamesFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        public static void HumanNamesFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var names = e.Value as IEnumerable<HumanName>;
             if (names != null)
@@ -114,7 +126,7 @@ namespace Telemedicine
                 e.Value = name?.Text;
             }
         }
-        protected void IdentifierFormatter(CgDataGridPanel.FormattingCellEventArgs e, string system)
+        public static void IdentifierFormatter(CgDataGridPanel.FormattingCellEventArgs e, string system)
         {
             var identifiers = e.Value as List<Identifier>;
             if (identifiers != null)

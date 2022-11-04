@@ -136,13 +136,7 @@ namespace Telemedicine.Meds
 
             public void ResetEffective()
             {
-                if (Data.Effective is Period)
-                {
-                    var period = Data.Effective as Period;
-                    Effective = $"{new FhirDateTime(period.Start).ToDateTime().ToString("yyyy-MM-dd")} - {new FhirDateTime(period.End).ToDateTime().ToString("yyyy-MM-dd")}";
-                }
-                else if (Data.Effective is FhirDateTime)
-                    Effective = $"{(Data.Effective as FhirDateTime).ToDateTime().ToString("yyyy-MM-dd")}";
+                Effective = DomainControl.GetPeriod(Data.Effective);                
             }
             public string Id { get; set; }
             public string MedId { get; set; }
