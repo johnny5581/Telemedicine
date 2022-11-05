@@ -21,7 +21,7 @@ namespace Telemedicine
             if (notSpecifyText != null)
                 index = comboBox.AddTextItem(notSpecifyText, null);
             comboBox.AddItemRange(VitalSign.VitalSigns, r => r.ToString(false), r => r.Code);
-            comboBox.SelectedIndex = index == -1 ? VitalSign.VitalSigns.Length - 1 : index;
+            comboBox.SelectedIndex = index == -1 ? 0 : index;
         }
 
         public static void Bind<T>(this ICgComboBox comboBox, string notSpecifyText = null)

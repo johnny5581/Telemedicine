@@ -1,6 +1,6 @@
-﻿namespace Telemedicine.Observations
+﻿namespace Telemedicine.Services
 {
-    partial class ObservationControl
+    partial class ServiceRequestControl
     {
         /// <summary> 
         /// 設計工具所需的變數。

@@ -34,7 +34,7 @@ namespace Telemedicine.Observations
         }
         private void ActionSearchPatient()
         {
-            
+
             var text = textSearch.Text;
             ActionClearScreen();
             if (text.IsNotNullOrEmpty())
@@ -69,12 +69,12 @@ namespace Telemedicine.Observations
 
 
             //valueQuantity.Code = vs.Code;
-            if (vs.BodySite!=null)
+            if (vs.BodySite != null)
             {
                 obs.BodySite = new CodeableConcept { };
                 foreach (var item in vs.BodySite)
-                {
-                    obs.BodySite.Coding.Add(new Coding(item.CodeSystem,item.Code,item.CodeDisplay));
+                {                    
+                    obs.BodySite.Coding.Add(item.GetCode());
                 }
             }
             //

@@ -41,21 +41,24 @@
             // textName
             // 
             this.textName.Header = "姓名";
-            this.textName.Location = new System.Drawing.Point(3, 3);
+            this.textName.Location = new System.Drawing.Point(0, 0);
+            this.textName.Margin = new System.Windows.Forms.Padding(0);
             this.textName.Name = "textName";
             this.textName.ReadOnly = true;
-            this.textName.Size = new System.Drawing.Size(104, 30);
+            this.textName.Size = new System.Drawing.Size(110, 30);
             this.textName.TabIndex = 2;
             // 
             // cgFlowLayoutPanel1
             // 
+            this.cgFlowLayoutPanel1.AutoMargin = true;
             this.cgFlowLayoutPanel1.AutoMarginSize = new System.Windows.Forms.Padding(0);
+            this.cgFlowLayoutPanel1.AutoResizeChild = true;
             this.cgFlowLayoutPanel1.Controls.Add(this.textName);
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(144, 129);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(144, 84);
             this.cgFlowLayoutPanel1.TabIndex = 0;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 

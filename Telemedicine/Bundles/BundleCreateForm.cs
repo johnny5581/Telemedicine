@@ -15,65 +15,14 @@ namespace Telemedicine.Bundles
 {
     public partial class BundleCreateForm : FormBase
     {
-        private PractitionerController _ctrlPrac;
-        private CompositionController _ctrlComposition;
-        private OrganizationController _ctrlOrgs;
-        private PatientController _ctrlPat;
+        
         public BundleCreateForm()
         {
-            InitializeComponent();
-            _ctrlPrac = new PractitionerController(this);
-            _ctrlComposition = new CompositionController(this);
-            _ctrlPat = new PatientController(this);
-            _ctrlOrgs = new OrganizationController(this);
+            InitializeComponent();            
         }
 
-        private void buttonPatPicker_Click(object sender, EventArgs e)
-        {
-            Execute(() =>
-            {
-                using (var d = new Patients.PatientListForm())
-                {
-                    if (d.ShowDialog() == DialogResult.OK)
-                    {
-                        var pat = d.Selected;
-                        textPatId.Text = pat.Id;
-                        textPatId.Tag = pat;
-                    }
-                }
-            });
-        }
-
-        private void buttonOrgPicker_Click(object sender, EventArgs e)
-        {
-            Execute(() =>
-            {
-                using (var d = new Orgs.OrgListForm())
-                {
-                    if (d.ShowDialog() == DialogResult.OK)
-                    {
-                        var org = d.Selected;
-                        //textOrgId.Text = org.Id;
-                        //textOrgId.Tag = org;
-                    }
-                }
-            });
-        }
-        private void buttonUserPicker_Click(object sender, EventArgs e)
-        {
-            Execute(() =>
-            {
-                using (var d = new Practitioners.PracListForm())
-                {
-                    if (d.ShowDialog() == DialogResult.OK)
-                    {
-                        var user = d.Selected;
-                        //textUserId.Text = user.Id;
-                        //textUserId.Tag = user;
-                    }
-                }
-            });
-        }
+        public Controller<Bundle> Controller { get; set; }
+        public Controller<Composition> CompositionController { get; set; }
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
@@ -83,18 +32,18 @@ namespace Telemedicine.Bundles
                 var composition = new Composition();
                 composition.Status = CompositionStatus.Final;
                 composition.Type = new CodeableConcept("http://loinc.org", "82593-5", "Immunization summary report", null);
-                composition.Subject = new ResourceReference("Patient/" + textPatId.Text);
+                composition.Subject = patientControl1.GetResourceReference();
                 composition.Date = FhirDateTime.Now().Value;
-                composition.Author.Add(new ResourceReference("Practitioner/" + textUserId.Text));
+                composition.Author.Add(pracControl1.GetResourceReference());
                 composition.Title = "COVID-19 Vaccine";                
                 var section = new Composition.SectionComponent();
-                section.Entry.Add(new ResourceReference("Organization/" + textOrgId.Text));
-                section.Entry.Add(new ResourceReference("Patient/" + textPatId.Text));
-                section.Entry.Add(new ResourceReference("Practitioner/" + textUserId.Text));
+                section.Entry.Add(orgControl1.GetResourceReference());
+                section.Entry.Add(patientControl1.GetResourceReference());
+                section.Entry.Add(pracControl1.GetResourceReference());
                 composition.Section.Add(section);
 
-                var comId = _ctrlComposition.Create(composition);
-                var com = _ctrlComposition.Read("Composition/" + comId);
+                var comId = CompositionController.Create(composition);
+                var com = CompositionController.Get(comId);
 
                 MsgBoxHelper.Info("建立composition完成");
 
@@ -103,13 +52,10 @@ namespace Telemedicine.Bundles
                 bundle.Type = Bundle.BundleType.Document;
                 bundle.Timestamp = DateTimeOffset.Now;
 
-                //var pat = textPatId.Tag as Patient;
-                //var org = textOrgId.Tag as Organization;
-                //var prac = textUserId.Tag as Practitioner;
+                var pat = patientControl1.GetModel();
+                var org = orgControl1.GetModel();
+                var prac = pracControl1.GetModel();
 
-                var pat = _ctrlPat.Read("Patient/" + textPatId.Text);
-                var org = _ctrlOrgs.Read("Organization/" + textOrgId.Text);
-                var prac = _ctrlPrac.Read("Practitioner/" + textUserId.Text);
                 bundle.Identifier = new Identifier(textIdSys.Text, textIdVal.Text);
                 bundle.Identifier.Period = new Period(new FhirDateTime(textPeriodFrom.Text), new FhirDateTime(textPeriodTo.Text));
                 bundle.Timestamp = FhirDateTime.Now().ToDateTimeOffset(TimeSpan.FromHours(8));
@@ -117,7 +63,7 @@ namespace Telemedicine.Bundles
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = org, FullUrl = org.ResourceBase + "Organization/" + org.Id });
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = pat, FullUrl = pat.ResourceBase + "Patient/" + pat.Id });
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = prac, FullUrl = prac.ResourceBase + "Practitioner/" + prac.Id });
-                var document = _ctrlComposition.GetClient().Create(bundle);
+                var document = Controller.Create(bundle);
 
 
                 MsgBoxHelper.Info("建立完成");
@@ -127,6 +73,11 @@ namespace Telemedicine.Bundles
         private void cgIconButton1_Click(object sender, EventArgs e)
         {
             textIdVal.Text = Guid.NewGuid().ToString();
+        }
+
+        private void orgControl1_ItemPicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

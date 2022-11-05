@@ -39,6 +39,7 @@
             this.textId = new Telemedicine.Forms.CgLabelTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.panelExtraCriteria = new Telemedicine.Forms.CgFlowLayoutPanel();
             this.contextMenuStrip.SuspendLayout();
             this.groupSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -95,6 +96,7 @@
             // groupSearch
             // 
             this.groupSearch.Controls.Add(this.panelExtra);
+            this.groupSearch.Controls.Add(this.panelExtraCriteria);
             this.groupSearch.Controls.Add(this.textId);
             this.groupSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupSearch.Location = new System.Drawing.Point(0, 0);
@@ -107,9 +109,9 @@
             // panelExtra
             // 
             this.panelExtra.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelExtra.Location = new System.Drawing.Point(3, 48);
+            this.panelExtra.Location = new System.Drawing.Point(3, 110);
             this.panelExtra.Name = "panelExtra";
-            this.panelExtra.Size = new System.Drawing.Size(261, 353);
+            this.panelExtra.Size = new System.Drawing.Size(261, 291);
             this.panelExtra.TabIndex = 1;
             // 
             // textId
@@ -155,6 +157,17 @@
             this.splitContainer2.SplitterDistance = 183;
             this.splitContainer2.TabIndex = 5;
             // 
+            // panelExtraCriteria
+            // 
+            this.panelExtraCriteria.AutoMarginSize = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.panelExtraCriteria.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelExtraCriteria.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.panelExtraCriteria.Location = new System.Drawing.Point(3, 48);
+            this.panelExtraCriteria.Name = "panelExtraCriteria";
+            this.panelExtraCriteria.Size = new System.Drawing.Size(261, 62);
+            this.panelExtraCriteria.TabIndex = 2;
+            this.panelExtraCriteria.WrapContents = false;
+            // 
             // ListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -185,5 +198,6 @@
         private System.Windows.Forms.GroupBox groupSearch;
         private System.Windows.Forms.SplitContainer splitContainer1;
         protected System.Windows.Forms.SplitContainer splitContainer2;
+        private Forms.CgFlowLayoutPanel panelExtraCriteria;
     }
 }

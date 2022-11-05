@@ -29,8 +29,8 @@ namespace Telemedicine.Patients
         {
             base.SetupDataGridPanel(dgvData);
             dgvData.AddTextColumn<Patient>(r => r.Name, "姓名", formatter: HumanNamesFormatter);
-            dgvData.AddTextColumn<Patient>(r => r.Identifier, "身分證", formatter: (s, e) => IdentifierFormatter(e, PatientControl.SystemIdNo));
-            dgvData.AddTextColumn<Patient>(r => r.Identifier, "病歷號", formatter: (s, e) => IdentifierFormatter(e, PatientControl.SystemChtNo));
+            dgvData.AddTextColumn<Patient>(r => r.Identifier, "身分證", formatter: IdentifierFormatter, arguments: new string[] { PatientControl.SystemIdNo });
+            dgvData.AddTextColumn<Patient>(r => r.Identifier, "病歷號", formatter: IdentifierFormatter, arguments: new string[] { PatientControl.SystemChtNo });
             dgvData.AddTextColumn<Patient>(r => r.Gender, "性別");
             dgvData.AddTextColumn<Patient>(r => r.BirthDate, "生日");
         }

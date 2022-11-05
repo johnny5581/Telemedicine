@@ -55,9 +55,9 @@ namespace Telemedicine.Vaccs
             {
                 if (d.ShowDialog() == DialogResult.OK)
                 {
-                    var org = d.Selected;
-                    //textOrgId.Text = org.Id;
-                    //textOrgName.Text = org.Name;
+                    var org = d.Selected as Organization;
+                    textOrgId.Text = org.Id ;
+                    textOrgName.Text = org.Name;
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace Telemedicine.Vaccs
                 bundle.Type = Bundle.BundleType.Document;
                 var pat = textPatId.Tag as Patient;
                 pat.Meta = null;
-                bundle.Identifier = new Identifier("http://www.cgmh.org.tw", $"TW.{textOrgId.Text}.2021110109012300.0001");
+                bundle.Identifier = new Identifier("https://www.cgmh.org.tw", $"TW.{textOrgId.Text}.2021110109012300.0001");
                 bundle.Identifier.Period = new Period(new FhirDateTime("2021-11-01"), new FhirDateTime("2099-12-31"));
                 bundle.Timestamp = FhirDateTime.Now().ToDateTimeOffset(TimeSpan.FromHours(8));
                 bundle.Entry.Add(new Bundle.EntryComponent { Resource = com, FullUrl = com.ResourceBase + "Composition/" + com.Id });

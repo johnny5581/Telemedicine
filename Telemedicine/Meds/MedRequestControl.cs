@@ -21,10 +21,6 @@ namespace Telemedicine.Meds
             InitializeComponent();
         }
         public override Type ListFormType => typeof(MedRequestListForm);
-        public Patient Subject
-        {
-            get { return textPatName.Tag as Patient; }
-        }
         protected override void ActionItemPicked(object item)
         {
             base.ActionItemPicked(item);

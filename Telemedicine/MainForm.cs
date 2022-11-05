@@ -51,7 +51,7 @@ namespace Telemedicine
 
         private void menuObservationPersonal_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Observations.ObservationCreateForm>());
+            Execute(() => FindView<Observations.ObservationCreateForm2>());
         }
 
         private void menuObservationSearch_Click(object sender, EventArgs e)
@@ -127,7 +127,7 @@ namespace Telemedicine
 
         private void 查詢ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Bundles.BundleListForm>());
+            Execute(() => FindView<Bundles.BundleListForm2>());
         }
         private void 建立ToolStripMenuItem2_Click(object sender, EventArgs e)
         {

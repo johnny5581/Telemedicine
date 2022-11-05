@@ -1,6 +1,6 @@
-﻿namespace Telemedicine.Observations
+﻿namespace Telemedicine.Services
 {
-    partial class ObservationListForm2
+    partial class ServiceRequestListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.cgFlowLayoutPanel1 = new Telemedicine.Forms.CgFlowLayoutPanel();
-            this.comboVitalSign = new Telemedicine.Forms.CgLabelComboBox();
             this.textSubject = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatName = new Telemedicine.Forms.CgLabelTextBox();
@@ -61,7 +60,6 @@
             this.cgFlowLayoutPanel1.AutoMargin = true;
             this.cgFlowLayoutPanel1.AutoMarginSize = new System.Windows.Forms.Padding(0);
             this.cgFlowLayoutPanel1.AutoResizeChild = true;
-            this.cgFlowLayoutPanel1.Controls.Add(this.comboVitalSign);
             this.cgFlowLayoutPanel1.Controls.Add(this.textSubject);
             this.cgFlowLayoutPanel1.Controls.Add(this.textPatIdentifier);
             this.cgFlowLayoutPanel1.Controls.Add(this.textPatName);
@@ -72,24 +70,14 @@
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
             this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(261, 353);
-            this.cgFlowLayoutPanel1.TabIndex = 0;
+            this.cgFlowLayoutPanel1.TabIndex = 1;
             this.cgFlowLayoutPanel1.WrapContents = false;
-            // 
-            // comboVitalSign
-            // 
-            this.comboVitalSign.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboVitalSign.Header = "類別";
-            this.comboVitalSign.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboVitalSign.Location = new System.Drawing.Point(3, 3);
-            this.comboVitalSign.Name = "comboVitalSign";
-            this.comboVitalSign.Size = new System.Drawing.Size(221, 31);
-            this.comboVitalSign.TabIndex = 8;
             // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 37);
+            this.textSubject.Location = new System.Drawing.Point(3, 3);
             this.textSubject.Name = "textSubject";
             this.textSubject.Size = new System.Drawing.Size(221, 30);
             this.textSubject.TabIndex = 9;
@@ -98,7 +86,7 @@
             // 
             this.textPatIdentifier.Header = "病患身分證";
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatIdentifier.Location = new System.Drawing.Point(3, 73);
+            this.textPatIdentifier.Location = new System.Drawing.Point(3, 39);
             this.textPatIdentifier.Name = "textPatIdentifier";
             this.textPatIdentifier.Size = new System.Drawing.Size(221, 30);
             this.textPatIdentifier.TabIndex = 10;
@@ -107,7 +95,7 @@
             // 
             this.textPatName.Header = "病患姓名";
             this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatName.Location = new System.Drawing.Point(3, 109);
+            this.textPatName.Location = new System.Drawing.Point(3, 75);
             this.textPatName.Name = "textPatName";
             this.textPatName.Size = new System.Drawing.Size(221, 30);
             this.textPatName.TabIndex = 11;
@@ -117,7 +105,7 @@
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(3, 145);
+            this.comboPatOrg.Location = new System.Drawing.Point(3, 111);
             this.comboPatOrg.Name = "comboPatOrg";
             this.comboPatOrg.Size = new System.Drawing.Size(221, 31);
             this.comboPatOrg.TabIndex = 12;
@@ -126,19 +114,19 @@
             // 
             this.cgLabelDateTimeRange1.ComponentHeight = 50;
             this.cgLabelDateTimeRange1.IsGrouping = false;
-            this.cgLabelDateTimeRange1.Location = new System.Drawing.Point(3, 179);
+            this.cgLabelDateTimeRange1.Location = new System.Drawing.Point(3, 148);
             this.cgLabelDateTimeRange1.Name = "cgLabelDateTimeRange1";
             this.cgLabelDateTimeRange1.Size = new System.Drawing.Size(221, 58);
             this.cgLabelDateTimeRange1.TabIndex = 14;
             this.cgLabelDateTimeRange1.Text = "cgLabelDateTimeRange1";
             // 
-            // ObservationListForm2
+            // ServiceRequestListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "ObservationListForm2";
-            this.Text = "生理數值查詢";
+            this.Name = "ServiceRequestListForm";
+            this.Text = "ServiceRequestListForm";
             this.panelExtra.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -151,7 +139,6 @@
         #endregion
 
         private Forms.CgFlowLayoutPanel cgFlowLayoutPanel1;
-        private Forms.CgLabelComboBox comboVitalSign;
         private Forms.CgLabelTextBox textSubject;
         private Forms.CgLabelTextBox textPatIdentifier;
         private Forms.CgLabelTextBox textPatName;

@@ -10,19 +10,19 @@ namespace Telemedicine.Observations
 {
     public class ObservationDialog : CgBaseDialogForm
     {
-        private ObservationControl control;
+        private ObservationControl2 control;
         public ObservationDialog()
         {
             // 縮小一點
             Width = 320;
         }
-        public new ObservationControl MainComponent
+        public new ObservationControl2 MainComponent
         {
-            get { return (ObservationControl)base.MainComponent; }
+            get { return (ObservationControl2)base.MainComponent; }
         }
         protected override Control GetMainComponent()
         {
-            control = new ObservationControl();
+            control = new ObservationControl2();
             return control;
         }
 

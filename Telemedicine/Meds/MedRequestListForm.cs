@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telemedicine.Controllers;
 using Telemedicine.Forms;
+using Telemedicine.Patients;
 
 namespace Telemedicine.Meds
 {
@@ -34,7 +35,7 @@ namespace Telemedicine.Meds
             dgvData.AddTextColumn<MedicationRequest>(r => r.Status);
             dgvData.AddTextColumn<MedicationRequest>(r => r.Intent);
             dgvData.AddTextColumn<MedicationRequest>(r => r.Medication, formatter: MedFormatter);
-            dgvData.AddTextColumn<MedicationRequest>(r => r.Subject, formatter: MedPatFormatter);
+            dgvData.AddTextColumn<MedicationRequest>(r => r.Subject, formatter: PatientControl.PatFormatter);
             dgvData.AddTextColumn<MedicationRequest>(r => r.AuthoredOn);
             dgvData.AddTextColumn<MedicationRequest>(r => r.DosageInstruction, formatter: MedDosageFormatter);
             dgvData.AddTextColumn<MedicationRequest>(r => r.DispenseRequest, formatter: MedDispenseFormatter);            
@@ -67,15 +68,7 @@ namespace Telemedicine.Meds
             return $"{timing}, {routes}";
         }
 
-        public static void MedPatFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
-        {
-            var resRef = e.Value as ResourceReference;
-            if(resRef != null)
-            {
-                var pat = ControllerBase.Get<Patient>().Read(resRef.Reference);
-                e.Value = pat.Name?.FirstOrDefault()?.Text;
-            }
-        }
+
 
         public static void MedFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {

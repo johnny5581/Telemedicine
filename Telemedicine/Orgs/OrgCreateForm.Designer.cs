@@ -46,7 +46,7 @@
             this.textIdSys.Name = "textIdSys";
             this.textIdSys.Size = new System.Drawing.Size(333, 30);
             this.textIdSys.TabIndex = 0;
-            this.textIdSys.Text = "https://ma.mohw.gov.tw";
+            this.textIdSys.Text = "https://twcore.mohw.gov.tw/fhir/CodeSystem";
             // 
             // textIdVal
             // 
@@ -96,7 +96,7 @@
             // 
             this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonCreate.Location = new System.Drawing.Point(201, 237);
+            this.buttonCreate.Location = new System.Drawing.Point(201, 226);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(144, 53);
             this.buttonCreate.TabIndex = 7;
@@ -120,7 +120,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(357, 302);
+            this.ClientSize = new System.Drawing.Size(357, 291);
             this.Controls.Add(this.textId);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.textCountry);

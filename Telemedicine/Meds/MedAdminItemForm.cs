@@ -36,11 +36,7 @@ namespace Telemedicine.Meds
         {
             get
             {
-                var from = new FhirDateTime(dateRange.From.ToString("yyyy-MM-dd"));
-                if (dateRange.EndTimeAvaliable)
-                    return new Period(from, new FhirDateTime(dateRange.To.ToString("yyyy-MM-dd")));
-                else
-                    return from;
+                return dateRange.GetEffective();                
             }
             set
             {

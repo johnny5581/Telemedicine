@@ -27,11 +27,12 @@ namespace Telemedicine.Orgs
             {
                 var org = new Organization();
                 org.Id = textId.Text.ToNull();
-                org.Identifier.Add(new Identifier(textIdSys.Text, textIdVal.Text));
+                var identifier = new Identifier(textIdSys.Text, textIdVal.Text);
+                identifier.Type.Coding.Add(new Coding("https://twcore.mohw.gov.tw/fhir/CodeSystem/v2-0203", "HOI"));
+                org.Identifier.Add(identifier);
                 org.Name = textName.Text;
                 org.AliasElement.Add(new FhirString(textAlias.Text));
                 org.Address.Add(new Address { Country = textCountry.Text });
-
                 Controller.Create(org);
                 MsgBoxHelper.Info("建立成功");
             });

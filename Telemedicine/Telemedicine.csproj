@@ -60,17 +60,17 @@
     <Compile Include="Bundles\BundleCreateForm.Designer.cs">
       <DependentUpon>BundleCreateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Bundles\BundleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Bundles\BundleForm.Designer.cs">
-      <DependentUpon>BundleForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Bundles\BundleListForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Bundles\BundleListForm.Designer.cs">
       <DependentUpon>BundleListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bundles\BundleListForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bundles\BundleListForm2.Designer.cs">
+      <DependentUpon>BundleListForm2.cs</DependentUpon>
     </Compile>
     <Compile Include="CgLabelExs.cs">
       <SubType>UserControl</SubType>
@@ -173,6 +173,24 @@
     <Compile Include="Forms\SortableBindingList.cs" />
     <Compile Include="Forms\Styles\Colors.cs" />
     <Compile Include="Forms\WinMonitor.cs" />
+    <Compile Include="Observations\ObservationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationControl.Designer.cs">
+      <DependentUpon>ObservationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Laboratories\LabCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Laboratories\LabCreateForm.Designer.cs">
+      <DependentUpon>LabCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Laboratories\LabListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Laboratories\LabListForm.Designer.cs">
+      <DependentUpon>LabListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -245,6 +263,12 @@
     <Compile Include="Observations\ObservationEKGControl.Designer.cs">
       <DependentUpon>ObservationEKGControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Observations\ObservationItemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Observations\ObservationItemForm.Designer.cs">
+      <DependentUpon>ObservationItemForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Observations\ObservationListForm2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +328,18 @@
     </Compile>
     <Compile Include="Practitioners\PracListForm.Designer.cs">
       <DependentUpon>PracListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ServiceRequestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Services\ServiceRequestControl.Designer.cs">
+      <DependentUpon>ServiceRequestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ServiceRequestListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Services\ServiceRequestListForm.Designer.cs">
+      <DependentUpon>ServiceRequestListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Vaccs\VaccControl.cs">
       <SubType>UserControl</SubType>
@@ -408,11 +444,11 @@
     <Compile Include="Observations\CreateSingleForm.Designer.cs">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Observations\ObservationControl.cs">
+    <Compile Include="Observations\ObservationControl2.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Observations\ObservationControl.Designer.cs">
-      <DependentUpon>ObservationControl.cs</DependentUpon>
+    <Compile Include="Observations\ObservationControl2.Designer.cs">
+      <DependentUpon>ObservationControl2.cs</DependentUpon>
     </Compile>
     <Compile Include="Observations\ObservationCreateForm.cs">
       <SubType>Form</SubType>
@@ -464,20 +500,32 @@
     <Compile Include="TransactionMonitorDialog.Designer.cs">
       <DependentUpon>TransactionMonitorDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Vaccs\VaccListForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vaccs\VaccListForm2.Designer.cs">
+      <DependentUpon>VaccListForm2.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Bundles\BundleCreateForm.resx">
       <DependentUpon>BundleCreateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Bundles\BundleForm.resx">
-      <DependentUpon>BundleForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Bundles\BundleListForm.resx">
       <DependentUpon>BundleListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bundles\BundleListForm2.resx">
+      <DependentUpon>BundleListForm2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CgLabelExs.resx">
       <DependentUpon>CgLabelExs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DomainControl.resx">
       <DependentUpon>DomainControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Laboratories\LabCreateForm.resx">
+      <DependentUpon>LabCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Laboratories\LabListForm.resx">
+      <DependentUpon>LabListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListForm.resx">
       <DependentUpon>ListForm.cs</DependentUpon>
@@ -515,6 +563,9 @@
     <EmbeddedResource Include="Observations\ObservationEKGControl.resx">
       <DependentUpon>ObservationEKGControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Observations\ObservationItemForm.resx">
+      <DependentUpon>ObservationItemForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Observations\ObservationListForm2.resx">
       <DependentUpon>ObservationListForm2.cs</DependentUpon>
     </EmbeddedResource>
@@ -544,6 +595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Practitioners\PracListForm.resx">
       <DependentUpon>PracListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Services\ServiceRequestListForm.resx">
+      <DependentUpon>ServiceRequestListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vaccs\VaccControl.resx">
       <DependentUpon>VaccControl.cs</DependentUpon>
@@ -590,8 +644,8 @@
     <EmbeddedResource Include="Observations\CreateSingleForm.resx">
       <DependentUpon>CreateSingleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Observations\ObservationControl.resx">
-      <DependentUpon>ObservationControl.cs</DependentUpon>
+    <EmbeddedResource Include="Observations\ObservationControl2.resx">
+      <DependentUpon>ObservationControl2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Observations\ObservationCreateForm.resx">
       <DependentUpon>ObservationCreateForm.cs</DependentUpon>
@@ -626,6 +680,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EmbeddedResources\fontawesome.ttf" />
     <EmbeddedResource Include="Forms\EmbeddedResources\materialdesignicons.ttf" />
+    <EmbeddedResource Include="Vaccs\VaccListForm2.resx">
+      <DependentUpon>VaccListForm2.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

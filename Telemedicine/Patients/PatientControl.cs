@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telemedicine.Controllers;
+using Telemedicine.Forms;
 using Telemedicine.Practitioners;
 
 namespace Telemedicine.Patients
@@ -15,8 +17,8 @@ namespace Telemedicine.Patients
     [DomainControl(typeof(Patient))]
     public partial class PatientControl : DomainControl
     {
-        public static readonly string SystemIdNo = "https://www.dicom.org.tw/cs/identityCardNumber_tw";
-        public const string SystemChtNo = DomainControl.SystemId;
+        public static readonly string SystemIdNo = "http://www.moi.gov.tw/";
+        public const string SystemChtNo = SystemId;
         public PatientControl()
         {
             InitializeComponent();            
@@ -54,6 +56,15 @@ namespace Telemedicine.Patients
         public static string GetPatientName(Patient pat)
         {
             return pat?.Name?.FirstOrDefault()?.Text;
+        }
+        public static void PatFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        {
+            var resRef = e.Value as ResourceReference;
+            if (resRef != null)
+            {
+                var pat = ControllerBase.Get<Patient>().Read(resRef.Reference);
+                e.Value = GetPatientName(pat);
+            }
         }
     }
 }

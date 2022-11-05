@@ -19,7 +19,6 @@ namespace Telemedicine
             = new Dictionary<Type, Type>();
         protected Forms.CgLabelTextBox textId;
         private GroupBox groupBox1;
-        private Panel panel1;
         protected Forms.CgIconButton buttonPicker;
         protected Panel panelExtra;
         private Panel panel2;
@@ -104,6 +103,8 @@ namespace Telemedicine
         [DefaultValue(null)]
         public virtual Type ListFormType { get; }
         [DefaultValue(null)]
+        public virtual string[] ExtraArguments { get; }
+        [DefaultValue(null)]
         public object Selected { get; set; }
         [DefaultValue(true)]
         public bool PickerVisible
@@ -152,11 +153,11 @@ namespace Telemedicine
             Execute(() => ActionItemPicked(item));
         }
 
-        public object GetModel()
+        public Resource GetModel()
         {
             if (Id.IsNullOrEmpty())
                 throw new InvalidOperationException($"missing {Prefix} id");
-            return _mGet.Invoke(_ctrlInstance, new object[] { Id });
+            return (Resource)_mGet.Invoke(_ctrlInstance, new object[] { Id });
         }
 
         public ResourceReference GetResourceReference()
@@ -168,14 +169,12 @@ namespace Telemedicine
         {
             this.textId = new Telemedicine.Forms.CgLabelTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panelExtra = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.panelExtra2 = new System.Windows.Forms.Panel();
             this.buttonPicker = new Telemedicine.Forms.CgIconButton();
-            this.panelExtra = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textId
@@ -198,32 +197,31 @@ namespace Telemedicine
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
+            // panelExtra
+            // 
+            this.panelExtra.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelExtra.Location = new System.Drawing.Point(3, 76);
+            this.panelExtra.Name = "panelExtra";
+            this.panelExtra.Size = new System.Drawing.Size(144, 71);
+            this.panelExtra.TabIndex = 2;
+            // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.panel1);
+            this.panel2.Controls.Add(this.panelExtra2);
+            this.panel2.Controls.Add(this.textId);
+            this.panel2.Controls.Add(this.buttonPicker);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 18);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(144, 45);
+            this.panel2.Size = new System.Drawing.Size(144, 58);
             this.panel2.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.textId);
-            this.panel1.Controls.Add(this.panelExtra2);
-            this.panel1.Controls.Add(this.buttonPicker);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(144, 42);
-            this.panel1.TabIndex = 1;
             // 
             // panelExtra2
             // 
             this.panelExtra2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelExtra2.Location = new System.Drawing.Point(0, 0);
+            this.panelExtra2.Location = new System.Drawing.Point(0, 30);
             this.panelExtra2.Name = "panelExtra2";
-            this.panelExtra2.Size = new System.Drawing.Size(38, 42);
+            this.panelExtra2.Size = new System.Drawing.Size(38, 28);
             this.panelExtra2.TabIndex = 1;
             // 
             // buttonPicker
@@ -232,20 +230,12 @@ namespace Telemedicine
             this.buttonPicker.Dock = System.Windows.Forms.DockStyle.Right;
             this.buttonPicker.Location = new System.Drawing.Point(38, 0);
             this.buttonPicker.Name = "buttonPicker";
-            this.buttonPicker.Size = new System.Drawing.Size(106, 42);
+            this.buttonPicker.Size = new System.Drawing.Size(106, 58);
             this.buttonPicker.TabIndex = 0;
             this.buttonPicker.Text = "選取";
             this.buttonPicker.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonPicker.UseVisualStyleBackColor = true;
             this.buttonPicker.Click += new System.EventHandler(this.buttonPicker_Click);
-            // 
-            // panelExtra
-            // 
-            this.panelExtra.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelExtra.Location = new System.Drawing.Point(3, 63);
-            this.panelExtra.Name = "panelExtra";
-            this.panelExtra.Size = new System.Drawing.Size(144, 84);
-            this.panelExtra.TabIndex = 2;
             // 
             // DomainControl
             // 
@@ -253,7 +243,6 @@ namespace Telemedicine
             this.Name = "DomainControl";
             this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -263,6 +252,11 @@ namespace Telemedicine
             if (RequireShowPickerDialog() && ListFormType != null)
             {
                 var dialog = Activator.CreateInstance(ListFormType) as ListForm;
+                if (ExtraArguments != null)
+                {
+                    foreach (var extra in ExtraArguments)
+                        dialog.PredefinedCriterias.Add(extra);
+                }
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Execute(() => ActionItemPicked(dialog.Selected));
@@ -271,7 +265,7 @@ namespace Telemedicine
         }
 
         protected virtual void ActionItemPicked(object item)
-        {            
+        {
             Selected = item;
             IdValue = GetResourceId(item);
             if (ItemPicked != null)
@@ -291,17 +285,26 @@ namespace Telemedicine
         }
         public static string GetPeriod(DataType dataRes)
         {
-            if(dataRes is Period)
+            if (dataRes is Period)
             {
                 var period = dataRes as Period;
                 return $"{period.Start} ~ {period.End}";
             }
-            else if(dataRes is CodeableConcept)
+            else if (dataRes is CodeableConcept)
             {
                 var codeableConcept = dataRes as CodeableConcept;
                 return codeableConcept?.Coding?.FirstOrDefault()?.Code;
             }
+            else if (dataRes is FhirDateTime)
+            {
+                var dateTime = dataRes as FhirDateTime;
+                return dateTime.Value;
+            }
             return null;
+        }
+        public static string GetQuantity(Quantity quantity)
+        {
+            return $"{quantity.Value}{quantity.Unit}";
         }
     }
     public class DomainControlAttribute : Attribute

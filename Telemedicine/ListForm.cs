@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.SessionState;
 using System.Windows.Forms;
 using Telemedicine.Controllers;
 using Telemedicine.Forms;
@@ -18,11 +19,22 @@ namespace Telemedicine
     public partial class ListForm : FormBase
     {
         private bool _flgDialog;
+        private readonly BindingList<string> _bindingList;
         public ListForm()
         {
             InitializeComponent();
             SetupDataGridPanel(dgvData);
+            _bindingList= new BindingList<string>();
+            _bindingList.ListChanged += BindingList_ListChanged;
         }
+
+        
+
+        public IList<string> PredefinedCriterias
+        {
+            get { return _bindingList; }
+        }
+
         protected override void OnShownAtRuntime()
         {
             base.OnShownAtRuntime();
@@ -47,6 +59,9 @@ namespace Telemedicine
             if (textId.Text.IsNotNullOrEmpty())
                 criterias.Add("_id=" + textId.Text);
 
+            if (PredefinedCriterias.Count > 0)
+                criterias.AddRange(PredefinedCriterias);
+
             var tupleRes = GetSearchResult(criterias);
             if (tupleRes != null)
                 dgvData.SetSource(tupleRes.Item2, tupleRes.Item1);
@@ -68,7 +83,7 @@ namespace Telemedicine
         }
         protected virtual void ActionDataSelected(object item)
         {
-            
+
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -79,7 +94,7 @@ namespace Telemedicine
         private void menuDelete_Click(object sender, EventArgs e)
         {
             Execute(() =>
-            {                                
+            {
                 if (ActionDelete(GetSelectedItem(dgvData)))
                     MsgBoxHelper.Info("刪除成功");
             });
@@ -103,12 +118,27 @@ namespace Telemedicine
             if (dataType != null)
                 e.Value = DomainControl.GetPeriod(dataType);
         }
+
+        public static void GenericFormatter<T>(CgDataGridPanel.FormattingCellEventArgs e, Func<T, string> selector)
+            where T : class
+        {
+            var item = e.Value as T;
+            if (item != null)
+                e.Value = selector(item);
+            else
+            {
+                var list = e.Value as IEnumerable<T>;
+                if (list != null)
+                    e.Value = list.ToString(", ", r => selector(r));
+            }
+        }
+
+
         public static void ResourceReferenceFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
-            var resRef = e.Value as ResourceReference;
-            if (resRef != null)
-                e.Value = resRef.Reference;
+            GenericFormatter<ResourceReference>(e, r => r.Reference);
         }
+
         public static void StringsFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var strings = e.Value as IEnumerable<string>;
@@ -126,8 +156,10 @@ namespace Telemedicine
                 e.Value = name?.Text;
             }
         }
-        public static void IdentifierFormatter(CgDataGridPanel.FormattingCellEventArgs e, string system)
+
+        public static void IdentifierFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
+            var system = Convert.ToString(e.Arguments.ElementAtOrDefault(0));
             var identifiers = e.Value as List<Identifier>;
             if (identifiers != null)
             {
@@ -136,21 +168,54 @@ namespace Telemedicine
             }
         }
 
-        protected void AddCriteria(List<string> criterias, string name, string value, Func<string, string> valueFactory = null)
+        protected void AddCriteria(List<string> criterias, string name, object value, Func<string, string> valueFactory = null)
         {
-            if (value.IsNotNullOrEmpty())
+            var text = Convert.ToString(value);
+            if (text.IsNotNullOrEmpty())
             {
                 if (valueFactory != null)
-                    value = valueFactory(value);
-                criterias.Add($"{name}={value}");
+                    text = valueFactory(text);
+                criterias.Add($"{name}={text}");
             }
         }
+        protected void AddCriteria(List<string> criterias, string name, CgLabelDateTimeRange range)
+        {
+            if (range.Avaliable)
+            {
+                string from, to;
+                if (range.EnableTime)
+                {
+                    from = range.From.ToString("yyyy-MM-ddTHH:mm:ss");
+                    to = range.To.ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    from = range.From.ToString("yyyy-MM-dd");
+                    to = range.To.ToString("yyyy-MM-dd");
+                }
 
+                if (range.EndTimeAvaliable)
+                {
+                    criterias.Add($"{name}=gt{from}");
+                    criterias.Add($"{name}=lt{to}");
+                }
+                else
+                    criterias.Add($"{name}={from}");
+            }
+        }
         public new DialogResult ShowDialog()
         {
             _flgDialog = true;
             return base.ShowDialog();
         }
-
+        private void BindingList_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            panelExtraCriteria.Controls.Clear();
+            foreach(var criteria in _bindingList)
+            {
+                var label = new Label { AutoSize = false, Text = criteria };
+                panelExtraCriteria.Controls.Add(label);
+            }
+        }
     }
 }

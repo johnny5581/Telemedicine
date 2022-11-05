@@ -66,14 +66,16 @@ namespace Telemedicine
         private DateTimePicker dateToTime;
         private CheckBox checkBoxEnable;
         private CheckBox checkBoxEndDate;
+        private CheckBox checkBoxEnableTime;
         protected override Control GetMainComponent()
         {
             var panel = base.GetMainComponent() as CgLayoutPanel;
             panel.ChangeLayout(new ColumnStyle[] {
-                new ColumnStyle(SizeType.Absolute, 30),
-                new ColumnStyle(SizeType.Absolute, 40),                
+                new ColumnStyle(SizeType.Absolute, 25),
+                new ColumnStyle(SizeType.Absolute, 25),
                 new ColumnStyle(SizeType.Percent, 55f),
                 new ColumnStyle(SizeType.Percent, 45f),
+                new ColumnStyle(SizeType.Absolute, 25),
             }, new RowStyle[] {
                 new RowStyle(SizeType.Percent, 55f),
                 new RowStyle(SizeType.Percent, 45f),
@@ -104,6 +106,7 @@ namespace Telemedicine
             panel.AddControlToPosition(dateToTime, 3, 1);
             checkBoxEnable = new CheckBox { Checked = true };
             checkBoxEndDate = new CheckBox { Checked = true };
+            checkBoxEnableTime = new CheckBox { Checked = true };
 
             //var panelLayout = new CgLayoutPanel { Dock = DockStyle.Fill };
             //panelLayout.ChangeLayout(new ColumnStyle[] { new ColumnStyle(SizeType.Percent, 100f) }, new RowStyle[]
@@ -116,9 +119,16 @@ namespace Telemedicine
 
             panel.AddControlToPosition(checkBoxEnable, 0, 0);
             panel.AddControlToPosition(checkBoxEndDate, 0, 1);
+            panel.AddControlToPosition(checkBoxEnableTime, 4, 0);
             checkBoxEnable.CheckedChanged += CheckBox_CheckedChanged;
             checkBoxEndDate.CheckedChanged += CheckBoxEndDate_CheckedChanged;
+            checkBoxEnableTime.CheckedChanged += CheckBoxEnableTime_CheckedChanged;
             return panel;
+        }
+
+        private void CheckBoxEnableTime_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableTime = (sender as CheckBox).Checked;
         }
 
         private void CheckBoxEndDate_CheckedChanged(object sender, EventArgs e)
@@ -143,10 +153,11 @@ namespace Telemedicine
         [DefaultValue(true)]
         public bool EnableTime
         {
-            get { return dateFromTime.Visible; }
+            get { return checkBoxEnableTime.Checked; }
             set
             {
-                dateFromTime.Visible
+                checkBoxEnableTime.Checked
+                = dateFromTime.Visible
                     = dateToTime.Visible
                     = value;
             }
@@ -166,7 +177,7 @@ namespace Telemedicine
             set { checkBoxEndDate.Checked = value; }
         }
 
-
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DateTime From
         {
             get
@@ -180,6 +191,7 @@ namespace Telemedicine
                     = value;
             }
         }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DateTime To
         {
             get
@@ -192,6 +204,28 @@ namespace Telemedicine
                     = dateToTime.Value
                     = value;
             }
+        }
+
+        public DataType GetEffective()
+        {
+            DateTime f, t;
+            if (EnableTime)
+            {
+                f = From;
+                t = To;
+            }
+            else
+            {
+                f = From.Date;
+                t = To.Date;
+            }
+
+            var from = new FhirDateTime(f);
+            if (EndTimeAvaliable)
+                return new Period(from, new FhirDateTime(t));
+            else
+                return from;
+
         }
     }
 }

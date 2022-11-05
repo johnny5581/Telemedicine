@@ -96,8 +96,12 @@ namespace Telemedicine.Patients
                 {
                     // new 
                     var pat = new Patient();
-                    pat.Identifier.Add(new Identifier(PatientControl.SystemIdNo, textIdNo.Text));
-                    pat.Identifier.Add(new Identifier(PatientControl.SystemChtNo, textChtNo.Text));
+                    var identifierIdNo = new Identifier(PatientControl.SystemIdNo, textIdNo.Text);
+                    identifierIdNo.Type.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/v2-0203", "NI"));
+                    var identifierChtNo = new Identifier(PatientControl.SystemChtNo, textChtNo.Text);
+                    identifierChtNo.Type.Coding.Add(new Coding("http://terminology.hl7.org/CodeSystem/v2-0203", "MR"));
+                    pat.Identifier.Add(identifierIdNo);
+                    pat.Identifier.Add(identifierChtNo);
                     pat.Active = true;
                     pat.Deceased = new FhirBoolean(checkDead.Checked);
                     pat.Gender = (AdministrativeGender)comboSex.SelectedValue;

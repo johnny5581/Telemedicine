@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Telemedicine.Bundles
+namespace Telemedicine.Laboratories
 {
-    public partial class BundleForm : FormBase
+    public partial class LabListForm : ListForm
     {
-        public BundleForm()
+        public LabListForm()
         {
             InitializeComponent();
         }

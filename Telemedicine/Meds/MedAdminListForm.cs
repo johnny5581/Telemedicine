@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telemedicine.Controllers;
 using Telemedicine.Forms;
+using Telemedicine.Patients;
 
 namespace Telemedicine.Meds
 {
@@ -29,7 +30,7 @@ namespace Telemedicine.Meds
         {
             base.SetupDataGridPanel(dgvData);
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Medication, formatter: MedRequestListForm.MedFormatter);
-            dgvData.AddTextColumn<MedicationAdministration>(r => r.Subject, formatter: MedRequestListForm.MedPatFormatter);
+            dgvData.AddTextColumn<MedicationAdministration>(r => r.Subject, formatter: PatientControl.PatFormatter);
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Status);
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Effective, formatter: PeriodFormatter);
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Request, formatter: ResourceReferenceFormatter);
