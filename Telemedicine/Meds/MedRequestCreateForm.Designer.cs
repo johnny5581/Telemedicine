@@ -40,6 +40,7 @@
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
             this.buttonCreate = new Telemedicine.Forms.CgIconButton();
+            this.comboMeta = new Telemedicine.Forms.CgLabelComboBox();
             this.groupBox1.SuspendLayout();
             this.cgFlowLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -48,9 +49,10 @@
             // 
             // patientControl1
             // 
-            this.patientControl1.Location = new System.Drawing.Point(13, 13);
+            this.patientControl1.Location = new System.Drawing.Point(20, 20);
+            this.patientControl1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.patientControl1.Name = "patientControl1";
-            this.patientControl1.Size = new System.Drawing.Size(234, 194);
+            this.patientControl1.Size = new System.Drawing.Size(351, 291);
             this.patientControl1.TabIndex = 0;
             this.patientControl1.Title = "Patient";
             // 
@@ -59,9 +61,11 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.cgFlowLayoutPanel1);
-            this.groupBox1.Location = new System.Drawing.Point(13, 214);
+            this.groupBox1.Location = new System.Drawing.Point(20, 382);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(234, 224);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(351, 275);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "處方資訊";
@@ -69,24 +73,26 @@
             // cgFlowLayoutPanel1
             // 
             this.cgFlowLayoutPanel1.AutoMargin = true;
-            this.cgFlowLayoutPanel1.AutoMarginSize = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.cgFlowLayoutPanel1.AutoMarginSize = new System.Windows.Forms.Padding(0);
             this.cgFlowLayoutPanel1.AutoResizeChild = true;
             this.cgFlowLayoutPanel1.Controls.Add(this.radioSourceOpd);
             this.cgFlowLayoutPanel1.Controls.Add(this.radioSourceIpd);
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(3, 18);
+            this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(4, 26);
+            this.cgFlowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(228, 203);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(343, 245);
             this.cgFlowLayoutPanel1.TabIndex = 0;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 
             // radioSourceOpd
             // 
             this.radioSourceOpd.AutoSize = true;
-            this.radioSourceOpd.Location = new System.Drawing.Point(3, 3);
+            this.radioSourceOpd.Location = new System.Drawing.Point(4, 4);
+            this.radioSourceOpd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioSourceOpd.Name = "radioSourceOpd";
-            this.radioSourceOpd.Size = new System.Drawing.Size(47, 16);
+            this.radioSourceOpd.Size = new System.Drawing.Size(69, 22);
             this.radioSourceOpd.TabIndex = 0;
             this.radioSourceOpd.TabStop = true;
             this.radioSourceOpd.Text = "門診";
@@ -95,9 +101,10 @@
             // radioSourceIpd
             // 
             this.radioSourceIpd.AutoSize = true;
-            this.radioSourceIpd.Location = new System.Drawing.Point(3, 25);
+            this.radioSourceIpd.Location = new System.Drawing.Point(4, 34);
+            this.radioSourceIpd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioSourceIpd.Name = "radioSourceIpd";
-            this.radioSourceIpd.Size = new System.Drawing.Size(47, 16);
+            this.radioSourceIpd.Size = new System.Drawing.Size(69, 22);
             this.radioSourceIpd.TabIndex = 1;
             this.radioSourceIpd.TabStop = true;
             this.radioSourceIpd.Text = "住院";
@@ -110,9 +117,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.dgvData);
             this.groupBox3.Controls.Add(this.panel1);
-            this.groupBox3.Location = new System.Drawing.Point(253, 12);
+            this.groupBox3.Location = new System.Drawing.Point(380, 18);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(535, 367);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Size = new System.Drawing.Size(802, 550);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "給藥";
@@ -121,9 +130,12 @@
             // 
             this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvData.InfoBoxVisible = false;
-            this.dgvData.Location = new System.Drawing.Point(3, 56);
+            this.dgvData.InfoBoxWidth = 224;
+            this.dgvData.Location = new System.Drawing.Point(4, 83);
+            this.dgvData.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(529, 308);
+            this.dgvData.SearchBoxWidth = 224;
+            this.dgvData.Size = new System.Drawing.Size(794, 463);
             this.dgvData.TabIndex = 1;
             this.dgvData.TopPanelVisible = false;
             // 
@@ -133,18 +145,20 @@
             this.panel1.Controls.Add(this.buttonItemDelete);
             this.panel1.Controls.Add(this.buttonItemAdd);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 18);
+            this.panel1.Location = new System.Drawing.Point(4, 26);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(529, 38);
+            this.panel1.Size = new System.Drawing.Size(794, 57);
             this.panel1.TabIndex = 0;
             // 
             // buttonItemEdit
             // 
             this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemEdit.Location = new System.Drawing.Point(370, 9);
+            this.buttonItemEdit.Location = new System.Drawing.Point(555, 14);
+            this.buttonItemEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemEdit.Name = "buttonItemEdit";
-            this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemEdit.Size = new System.Drawing.Size(112, 34);
             this.buttonItemEdit.TabIndex = 2;
             this.buttonItemEdit.Text = "修改";
             this.buttonItemEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -155,9 +169,10 @@
             // 
             this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemDelete.Location = new System.Drawing.Point(451, 9);
+            this.buttonItemDelete.Location = new System.Drawing.Point(676, 14);
+            this.buttonItemDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemDelete.Name = "buttonItemDelete";
-            this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemDelete.Size = new System.Drawing.Size(112, 34);
             this.buttonItemDelete.TabIndex = 1;
             this.buttonItemDelete.Text = "刪除";
             this.buttonItemDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -168,9 +183,10 @@
             // 
             this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAdd.Location = new System.Drawing.Point(289, 9);
+            this.buttonItemAdd.Location = new System.Drawing.Point(434, 14);
+            this.buttonItemAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemAdd.Name = "buttonItemAdd";
-            this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemAdd.Size = new System.Drawing.Size(112, 34);
             this.buttonItemAdd.TabIndex = 0;
             this.buttonItemAdd.Text = "新增";
             this.buttonItemAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -181,24 +197,37 @@
             // 
             this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonCreate.Location = new System.Drawing.Point(644, 385);
+            this.buttonCreate.Location = new System.Drawing.Point(966, 578);
+            this.buttonCreate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonCreate.Name = "buttonCreate";
-            this.buttonCreate.Size = new System.Drawing.Size(144, 53);
+            this.buttonCreate.Size = new System.Drawing.Size(216, 80);
             this.buttonCreate.TabIndex = 7;
             this.buttonCreate.Text = "建立";
             this.buttonCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonCreate.UseVisualStyleBackColor = true;
             this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
+            // comboMeta
+            // 
+            this.comboMeta.Header = "META";
+            this.comboMeta.Location = new System.Drawing.Point(20, 319);
+            this.comboMeta.Margin = new System.Windows.Forms.Padding(2);
+            this.comboMeta.Name = "comboMeta";
+            this.comboMeta.Padding = new System.Windows.Forms.Padding(2);
+            this.comboMeta.Size = new System.Drawing.Size(351, 40);
+            this.comboMeta.TabIndex = 12;
+            // 
             // MedRequestCreateForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 675);
+            this.Controls.Add(this.comboMeta);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.patientControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MedRequestCreateForm";
             this.Text = "開立處方簽";
             this.groupBox1.ResumeLayout(false);
@@ -224,5 +253,6 @@
         private Forms.CgIconButton buttonItemDelete;
         private Forms.CgIconButton buttonItemAdd;
         private Forms.CgIconButton buttonCreate;
+        private Forms.CgLabelComboBox comboMeta;
     }
 }

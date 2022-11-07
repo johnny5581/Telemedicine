@@ -52,7 +52,33 @@ namespace Telemedicine
             comboBox.AddTextItem("Swab", new Coding("http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm", "SWAB", "Swab"));
 
         }
+        public static void BindMeta(this ICgComboBox comboMeta)
+        {
+            // META
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/ig/");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Patient-twcore");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Organization-twcore");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Medication-twcore");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC1");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC2");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC3");
 
+            comboMeta.AddTextItem("https://simplifier.net/MITW.EMS.IG/ObservationForEMSECG/");
+            comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MedicationRequest");
+            comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MITW-MedicationAdministration");
+
+        }
+
+        public static Meta GetMeta(this ICgComboBox comboBox)
+        {
+            return new Meta
+            {
+                Profile = new List<string>
+                {
+                    comboBox.Text,
+                }
+            };
+        }
 
 
         public static void ClearControls(params Control[] controls)

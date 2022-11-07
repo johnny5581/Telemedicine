@@ -38,19 +38,9 @@ namespace Telemedicine.Patients
             comboCity.SelectItem("桃園縣");
             comboDist.SelectItem<ZipMap>(r => r.Zip == 333);
 
-            // META
-            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/ig/");
-            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Patient-twcore");
-            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Organization-twcore");
-            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Medication-twcore");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC1");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC2");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC3");
 
-            comboMeta.AddTextItem("https://simplifier.net/MITW.EMS.IG/ObservationForEMSECG/");
-            comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MedicationRequest");
-            comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MITW-MedicationAdministration");
-        }
+            comboMeta.BindMeta();
+            }
 
         public Controller<Patient> Controller { get; set; }
 
@@ -131,12 +121,7 @@ namespace Telemedicine.Patients
                     contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textContactTelecom.Text));
                     pat.Contact.Add(contact);
 
-                    pat.Meta = new Meta
-                    {
-                        Profile = new string[] {
-                            comboMeta.Text,
-                        }
-                    };
+                    pat.Meta = comboMeta.GetMeta();
                     Controller.Create(pat);
 
                     MsgBoxHelper.Info("建立完成");
@@ -192,12 +177,7 @@ namespace Telemedicine.Patients
                     contact.Relationship.Add(comboContactRelation.SelectedValue as CodeableConcept);
                     contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textContactTelecom.Text));
                     pat.Contact.Add(contact);
-                    pat.Meta = new Meta
-                    {
-                        Profile = new string[] {
-                            comboMeta.Text,
-                        }
-                    };
+                    pat.Meta = comboMeta.GetMeta();
                     Controller.Update(pat);
 
                     MsgBoxHelper.Info("建立完成");

@@ -10,6 +10,7 @@ namespace Telemedicine.Forms
 {
     public interface ICgComboBox
     {
+        string Text { get; }
         int ItemCount { get; }
         CgComboBox.ComboBoxItem SelectedComboItem { get; }
         ComboBox.ObjectCollection Items { get; }
