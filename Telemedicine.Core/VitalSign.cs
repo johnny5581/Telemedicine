@@ -65,7 +65,7 @@ namespace Telemedicine
 
         public CodeableConcept GetCategory()
         {
-            return new CodeableConcept(CategorySystem, Category, CategoryDisplay);
+            return new CodeableConcept(CategorySystem, Category, CategoryDisplay, CategoryDisplay);
         }
 
         public CodeableConcept GetCode()

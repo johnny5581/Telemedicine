@@ -62,8 +62,9 @@ namespace Telemedicine
             comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC1");
             comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC2");
             comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC3");
-
-            comboMeta.AddTextItem("https://simplifier.net/MITW.EMS.IG/ObservationForEMSECG/");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.Common");
+    
+                comboMeta.AddTextItem("https://simplifier.net/MITW.EMS.IG/ObservationForEMSECG/");
             comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MedicationRequest");
             comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MITW-MedicationAdministration");
 
