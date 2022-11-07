@@ -21,6 +21,9 @@ namespace Telemedicine.Observations
         public ObservationListForm2()
         {
             InitializeComponent();
+            comboVitalSign.AddTextItem("", null);
+            comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemDisplay, r.Item));
+        
         }
         public Controller<Observation> Controller { get; set; }
 

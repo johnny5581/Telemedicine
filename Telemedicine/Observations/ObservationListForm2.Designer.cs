@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ObservationListForm2));
             this.cgFlowLayoutPanel1 = new Telemedicine.Forms.CgFlowLayoutPanel();
             this.comboVitalSign = new Telemedicine.Forms.CgLabelComboBox();
             this.textSubject = new Telemedicine.Forms.CgLabelTextBox();
@@ -45,12 +46,22 @@
             // dgvData
             // 
             this.dgvData.InfoBoxVisible = true;
-            this.dgvData.Size = new System.Drawing.Size(529, 450);
+            this.dgvData.Size = new System.Drawing.Size(530, 450);
             this.dgvData.TopPanelVisible = true;
+            // 
+            // textId
+            // 
+            this.textId.Size = new System.Drawing.Size(260, 28);
+            // 
+            // buttonSearch
+            // 
+            this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
+            this.buttonSearch.Size = new System.Drawing.Size(266, 46);
             // 
             // panelExtra
             // 
             this.panelExtra.Controls.Add(this.cgFlowLayoutPanel1);
+            this.panelExtra.Size = new System.Drawing.Size(260, 293);
             // 
             // splitContainer2
             // 
@@ -71,7 +82,7 @@
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(261, 353);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(260, 293);
             this.cgFlowLayoutPanel1.TabIndex = 0;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 
@@ -82,7 +93,7 @@
             this.comboVitalSign.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.comboVitalSign.Location = new System.Drawing.Point(3, 3);
             this.comboVitalSign.Name = "comboVitalSign";
-            this.comboVitalSign.Size = new System.Drawing.Size(221, 31);
+            this.comboVitalSign.Size = new System.Drawing.Size(220, 31);
             this.comboVitalSign.TabIndex = 8;
             // 
             // textSubject
@@ -91,7 +102,7 @@
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textSubject.Location = new System.Drawing.Point(3, 37);
             this.textSubject.Name = "textSubject";
-            this.textSubject.Size = new System.Drawing.Size(221, 30);
+            this.textSubject.Size = new System.Drawing.Size(220, 30);
             this.textSubject.TabIndex = 9;
             // 
             // textPatIdentifier
@@ -100,7 +111,7 @@
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatIdentifier.Location = new System.Drawing.Point(3, 73);
             this.textPatIdentifier.Name = "textPatIdentifier";
-            this.textPatIdentifier.Size = new System.Drawing.Size(221, 30);
+            this.textPatIdentifier.Size = new System.Drawing.Size(220, 30);
             this.textPatIdentifier.TabIndex = 10;
             // 
             // textPatName
@@ -109,7 +120,7 @@
             this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatName.Location = new System.Drawing.Point(3, 109);
             this.textPatName.Name = "textPatName";
-            this.textPatName.Size = new System.Drawing.Size(221, 30);
+            this.textPatName.Size = new System.Drawing.Size(220, 30);
             this.textPatName.TabIndex = 11;
             // 
             // comboPatOrg
@@ -119,7 +130,7 @@
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.comboPatOrg.Location = new System.Drawing.Point(3, 145);
             this.comboPatOrg.Name = "comboPatOrg";
-            this.comboPatOrg.Size = new System.Drawing.Size(221, 31);
+            this.comboPatOrg.Size = new System.Drawing.Size(220, 31);
             this.comboPatOrg.TabIndex = 12;
             // 
             // cgLabelDateTimeRange1
@@ -128,7 +139,7 @@
             this.cgLabelDateTimeRange1.IsGrouping = false;
             this.cgLabelDateTimeRange1.Location = new System.Drawing.Point(3, 179);
             this.cgLabelDateTimeRange1.Name = "cgLabelDateTimeRange1";
-            this.cgLabelDateTimeRange1.Size = new System.Drawing.Size(221, 58);
+            this.cgLabelDateTimeRange1.Size = new System.Drawing.Size(220, 58);
             this.cgLabelDateTimeRange1.TabIndex = 14;
             this.cgLabelDateTimeRange1.Text = "cgLabelDateTimeRange1";
             // 

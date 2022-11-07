@@ -42,6 +42,11 @@ namespace Telemedicine.Forms
         [DefaultValue(false), EditorBrowsable(EditorBrowsableState.Never)]
         public bool SuspendRowChanged { get; set; }
 
+        internal void AddTextColumn<T>(Func<object, object> p, string v, object formattr)
+        {
+            throw new NotImplementedException();
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public HashSet<string> AutoFitEscapedColumns
         {

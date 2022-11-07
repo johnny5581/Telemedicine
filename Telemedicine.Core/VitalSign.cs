@@ -177,7 +177,7 @@ namespace Telemedicine
             }
         }
 
-        public static VitalSign[] VitalSigns = new VitalSign[]
+        public static VitalSign[] VitalSigns { get; private set; }= new VitalSign[]
         {
             BodyHeight,
             BodyWeight,
