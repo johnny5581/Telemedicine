@@ -40,31 +40,35 @@
             this.buttonItemDelete = new Telemedicine.Forms.CgIconButton();
             this.buttonItemAdd = new Telemedicine.Forms.CgIconButton();
             this.buttonUpload = new Telemedicine.Forms.CgIconButton();
+            this.comboMeta = new Telemedicine.Forms.CgLabelComboBox();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // patientControl1
             // 
-            this.patientControl1.Location = new System.Drawing.Point(12, 12);
+            this.patientControl1.Location = new System.Drawing.Point(18, 18);
+            this.patientControl1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.patientControl1.Name = "patientControl1";
-            this.patientControl1.Size = new System.Drawing.Size(236, 176);
+            this.patientControl1.Size = new System.Drawing.Size(354, 264);
             this.patientControl1.TabIndex = 0;
             this.patientControl1.Title = "Patient";
             // 
             // medRequestControl1
             // 
-            this.medRequestControl1.Location = new System.Drawing.Point(12, 194);
+            this.medRequestControl1.Location = new System.Drawing.Point(18, 291);
+            this.medRequestControl1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.medRequestControl1.Name = "medRequestControl1";
-            this.medRequestControl1.Size = new System.Drawing.Size(236, 134);
+            this.medRequestControl1.Size = new System.Drawing.Size(354, 201);
             this.medRequestControl1.TabIndex = 1;
             this.medRequestControl1.Title = "MedicationRequest";
             // 
             // serviceRequestControl1
             // 
-            this.serviceRequestControl1.Location = new System.Drawing.Point(12, 334);
+            this.serviceRequestControl1.Location = new System.Drawing.Point(18, 501);
+            this.serviceRequestControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.serviceRequestControl1.Name = "serviceRequestControl1";
-            this.serviceRequestControl1.Size = new System.Drawing.Size(236, 88);
+            this.serviceRequestControl1.Size = new System.Drawing.Size(354, 87);
             this.serviceRequestControl1.TabIndex = 2;
             this.serviceRequestControl1.Title = "ServiceRequest";
             // 
@@ -75,9 +79,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.dgvData);
             this.groupBox3.Controls.Add(this.panel1);
-            this.groupBox3.Location = new System.Drawing.Point(254, 12);
+            this.groupBox3.Location = new System.Drawing.Point(381, 18);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(534, 468);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Size = new System.Drawing.Size(801, 702);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "紀錄";
@@ -86,9 +92,12 @@
             // 
             this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvData.InfoBoxVisible = false;
-            this.dgvData.Location = new System.Drawing.Point(3, 53);
+            this.dgvData.InfoBoxWidth = 224;
+            this.dgvData.Location = new System.Drawing.Point(4, 78);
+            this.dgvData.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvData.Name = "dgvData";
-            this.dgvData.Size = new System.Drawing.Size(528, 412);
+            this.dgvData.SearchBoxWidth = 224;
+            this.dgvData.Size = new System.Drawing.Size(793, 620);
             this.dgvData.TabIndex = 3;
             this.dgvData.TopPanelVisible = false;
             // 
@@ -100,18 +109,20 @@
             this.panel1.Controls.Add(this.buttonItemDelete);
             this.panel1.Controls.Add(this.buttonItemAdd);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 18);
+            this.panel1.Location = new System.Drawing.Point(4, 26);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(528, 35);
+            this.panel1.Size = new System.Drawing.Size(793, 52);
             this.panel1.TabIndex = 0;
             // 
             // buttonItemAddBatch
             // 
             this.buttonItemAddBatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAddBatch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAddBatch.Location = new System.Drawing.Point(207, 5);
+            this.buttonItemAddBatch.Location = new System.Drawing.Point(311, 8);
+            this.buttonItemAddBatch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemAddBatch.Name = "buttonItemAddBatch";
-            this.buttonItemAddBatch.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemAddBatch.Size = new System.Drawing.Size(112, 34);
             this.buttonItemAddBatch.TabIndex = 5;
             this.buttonItemAddBatch.Text = "批次新增";
             this.buttonItemAddBatch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -122,9 +133,10 @@
             // 
             this.buttonItemAddEKG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAddEKG.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAddEKG.Location = new System.Drawing.Point(126, 5);
+            this.buttonItemAddEKG.Location = new System.Drawing.Point(190, 8);
+            this.buttonItemAddEKG.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemAddEKG.Name = "buttonItemAddEKG";
-            this.buttonItemAddEKG.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemAddEKG.Size = new System.Drawing.Size(112, 34);
             this.buttonItemAddEKG.TabIndex = 4;
             this.buttonItemAddEKG.Text = "新增EKG";
             this.buttonItemAddEKG.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -135,9 +147,10 @@
             // 
             this.buttonItemEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemEdit.Location = new System.Drawing.Point(369, 5);
+            this.buttonItemEdit.Location = new System.Drawing.Point(555, 8);
+            this.buttonItemEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemEdit.Name = "buttonItemEdit";
-            this.buttonItemEdit.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemEdit.Size = new System.Drawing.Size(112, 34);
             this.buttonItemEdit.TabIndex = 2;
             this.buttonItemEdit.Text = "修改";
             this.buttonItemEdit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -148,9 +161,10 @@
             // 
             this.buttonItemDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemDelete.Location = new System.Drawing.Point(450, 5);
+            this.buttonItemDelete.Location = new System.Drawing.Point(676, 8);
+            this.buttonItemDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemDelete.Name = "buttonItemDelete";
-            this.buttonItemDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemDelete.Size = new System.Drawing.Size(112, 34);
             this.buttonItemDelete.TabIndex = 1;
             this.buttonItemDelete.Text = "刪除";
             this.buttonItemDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -161,9 +175,10 @@
             // 
             this.buttonItemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonItemAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonItemAdd.Location = new System.Drawing.Point(288, 5);
+            this.buttonItemAdd.Location = new System.Drawing.Point(433, 8);
+            this.buttonItemAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonItemAdd.Name = "buttonItemAdd";
-            this.buttonItemAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonItemAdd.Size = new System.Drawing.Size(112, 34);
             this.buttonItemAdd.TabIndex = 0;
             this.buttonItemAdd.Text = "新增";
             this.buttonItemAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -174,25 +189,38 @@
             // 
             this.buttonUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonUpload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonUpload.Location = new System.Drawing.Point(12, 426);
+            this.buttonUpload.Location = new System.Drawing.Point(18, 639);
+            this.buttonUpload.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonUpload.Name = "buttonUpload";
-            this.buttonUpload.Size = new System.Drawing.Size(236, 51);
+            this.buttonUpload.Size = new System.Drawing.Size(354, 76);
             this.buttonUpload.TabIndex = 6;
             this.buttonUpload.Text = "上傳";
             this.buttonUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.buttonUpload.UseVisualStyleBackColor = true;
             this.buttonUpload.Click += new System.EventHandler(this.buttonUpload_Click);
             // 
+            // comboMeta
+            // 
+            this.comboMeta.Header = "META";
+            this.comboMeta.Location = new System.Drawing.Point(18, 593);
+            this.comboMeta.Margin = new System.Windows.Forms.Padding(2);
+            this.comboMeta.Name = "comboMeta";
+            this.comboMeta.Padding = new System.Windows.Forms.Padding(2);
+            this.comboMeta.Size = new System.Drawing.Size(351, 40);
+            this.comboMeta.TabIndex = 13;
+            // 
             // ObservationCreateForm2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 508);
+            this.ClientSize = new System.Drawing.Size(1200, 762);
+            this.Controls.Add(this.comboMeta);
             this.Controls.Add(this.buttonUpload);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.serviceRequestControl1);
             this.Controls.Add(this.medRequestControl1);
             this.Controls.Add(this.patientControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ObservationCreateForm2";
             this.Text = "建立生理數值";
             this.groupBox3.ResumeLayout(false);
@@ -215,5 +243,6 @@
         private Forms.CgIconButton buttonItemAdd;
         private Forms.CgIconButton buttonUpload;
         private Forms.CgIconButton buttonItemAddBatch;
+        private Forms.CgLabelComboBox comboMeta;
     }
 }

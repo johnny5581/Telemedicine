@@ -46,22 +46,26 @@
             // dgvData
             // 
             this.dgvData.InfoBoxVisible = true;
-            this.dgvData.Size = new System.Drawing.Size(530, 450);
+            this.dgvData.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dgvData.Size = new System.Drawing.Size(794, 675);
             this.dgvData.TopPanelVisible = true;
             // 
             // textId
             // 
-            this.textId.Size = new System.Drawing.Size(260, 28);
+            this.textId.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.textId.Size = new System.Drawing.Size(392, 43);
             // 
             // buttonSearch
             // 
             this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
-            this.buttonSearch.Size = new System.Drawing.Size(266, 46);
+            this.buttonSearch.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             // 
             // panelExtra
             // 
             this.panelExtra.Controls.Add(this.cgFlowLayoutPanel1);
-            this.panelExtra.Size = new System.Drawing.Size(260, 293);
+            this.panelExtra.Location = new System.Drawing.Point(4, 162);
+            this.panelExtra.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panelExtra.Size = new System.Drawing.Size(392, 440);
             // 
             // splitContainer2
             // 
@@ -81,8 +85,9 @@
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.cgFlowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(260, 293);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(392, 440);
             this.cgFlowLayoutPanel1.TabIndex = 0;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 
@@ -91,36 +96,44 @@
             this.comboVitalSign.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboVitalSign.Header = "類別";
             this.comboVitalSign.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboVitalSign.Location = new System.Drawing.Point(3, 3);
+            this.comboVitalSign.Location = new System.Drawing.Point(4, 4);
+            this.comboVitalSign.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboVitalSign.Name = "comboVitalSign";
-            this.comboVitalSign.Size = new System.Drawing.Size(220, 31);
+            this.comboVitalSign.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboVitalSign.Size = new System.Drawing.Size(332, 42);
             this.comboVitalSign.TabIndex = 8;
             // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 37);
+            this.textSubject.Location = new System.Drawing.Point(4, 52);
+            this.textSubject.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textSubject.Name = "textSubject";
-            this.textSubject.Size = new System.Drawing.Size(220, 30);
+            this.textSubject.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textSubject.Size = new System.Drawing.Size(332, 41);
             this.textSubject.TabIndex = 9;
             // 
             // textPatIdentifier
             // 
             this.textPatIdentifier.Header = "病患身分證";
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatIdentifier.Location = new System.Drawing.Point(3, 73);
+            this.textPatIdentifier.Location = new System.Drawing.Point(4, 99);
+            this.textPatIdentifier.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textPatIdentifier.Name = "textPatIdentifier";
-            this.textPatIdentifier.Size = new System.Drawing.Size(220, 30);
+            this.textPatIdentifier.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textPatIdentifier.Size = new System.Drawing.Size(332, 41);
             this.textPatIdentifier.TabIndex = 10;
             // 
             // textPatName
             // 
             this.textPatName.Header = "病患姓名";
             this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatName.Location = new System.Drawing.Point(3, 109);
+            this.textPatName.Location = new System.Drawing.Point(4, 146);
+            this.textPatName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textPatName.Name = "textPatName";
-            this.textPatName.Size = new System.Drawing.Size(220, 30);
+            this.textPatName.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textPatName.Size = new System.Drawing.Size(332, 41);
             this.textPatName.TabIndex = 11;
             // 
             // comboPatOrg
@@ -128,26 +141,31 @@
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(3, 145);
+            this.comboPatOrg.Location = new System.Drawing.Point(4, 193);
+            this.comboPatOrg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboPatOrg.Name = "comboPatOrg";
-            this.comboPatOrg.Size = new System.Drawing.Size(220, 31);
+            this.comboPatOrg.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboPatOrg.Size = new System.Drawing.Size(332, 42);
             this.comboPatOrg.TabIndex = 12;
             // 
             // cgLabelDateTimeRange1
             // 
             this.cgLabelDateTimeRange1.ComponentHeight = 50;
             this.cgLabelDateTimeRange1.IsGrouping = false;
-            this.cgLabelDateTimeRange1.Location = new System.Drawing.Point(3, 179);
+            this.cgLabelDateTimeRange1.Location = new System.Drawing.Point(4, 241);
+            this.cgLabelDateTimeRange1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cgLabelDateTimeRange1.Name = "cgLabelDateTimeRange1";
-            this.cgLabelDateTimeRange1.Size = new System.Drawing.Size(220, 58);
+            this.cgLabelDateTimeRange1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cgLabelDateTimeRange1.Size = new System.Drawing.Size(332, 62);
             this.cgLabelDateTimeRange1.TabIndex = 14;
             this.cgLabelDateTimeRange1.Text = "cgLabelDateTimeRange1";
             // 
             // ObservationListForm2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 675);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "ObservationListForm2";
             this.Text = "生理數值查詢";
             this.panelExtra.ResumeLayout(false);

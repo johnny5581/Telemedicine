@@ -1,10 +1,12 @@
-﻿using Hl7.Fhir.Model;
+﻿using Hl7.Fhir.Introspection;
+using Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,7 +31,7 @@ namespace Telemedicine.Meds
             Execute(() =>
             {
                 using (var d = new MedListDialog())
-                {                    
+                {
                     d.Insert += (s, ev) =>
                     {
                         var med = ev.Med;
@@ -123,9 +125,11 @@ namespace Telemedicine.Meds
                         display = "Community";
                         text = "其他";
                     }
+                    request.Category.Add(new CodeableConcept("http://terminology.hl7.org/CodeSystem/medicationrequest-category", code, display, text));
+                    request.Medication = new MedicationReference("Medication/" + data.Id);
 
-                    request.Category.Add(new CodeableConcept("http://terminology.hl7.org/CodeSystem/medicationrequest-category", code, display, text));                    
-                    request.Medication = new ResourceReference("Medication/" + data.Id);
+                    //var medCode = data.Code.Coding?.FirstOrDefault();
+                    //request.Medication = new MedicationCodeableConcept(medCode?.System, medCode?.Code, medCode?.Display, medCode?.Display);
                     request.Subject = new ResourceReference("Patient/" + patId);
                     request.AuthoredOn = DateTime.Today.ToString("yyyy-MM-dd");
                     request.Meta = comboMeta.GetMeta();
@@ -151,11 +155,47 @@ namespace Telemedicine.Meds
                     duration.System = "http://unitsofmeasure.org";
                     duration.Code = "d";
                     request.DispenseRequest.ExpectedSupplyDuration = duration;
+                    request.DispenseRequest.NumberOfRepeatsAllowed = 1;
 
                     Controller.Create(request);
                 }
                 MsgBoxHelper.Info("建立完成");
             });
+        }
+        [FhirType("Reference")]
+        public class MedicationReference : ResourceReference
+        {
+            public MedicationReference()
+            {
+            }
+
+            public MedicationReference(string reference) : base(reference)
+            {
+            }
+
+            public MedicationReference(string reference, string display) : base(reference, display)
+            {
+            }
+
+            public override string TypeName => "Reference";
+
+        }
+        [Serializable]
+        [DataContract]
+        [FhirType("CodeableConcept", "http://hl7.org/fhir/StructureDefinition/CodeableConcept")]
+        public class MedicationCodeableConcept : CodeableConcept
+        {
+            public MedicationCodeableConcept()
+            {
+            }
+
+            public MedicationCodeableConcept(string system, string code, string text = null) : base(system, code, text)
+            {
+            }
+
+            public MedicationCodeableConcept(string system, string code, string display, string text) : base(system, code, display, text)
+            {
+            }
         }
         private class MedicationData : DataModelBase<Medication>
         {

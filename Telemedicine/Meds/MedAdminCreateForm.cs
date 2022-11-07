@@ -18,6 +18,8 @@ namespace Telemedicine.Meds
         public MedAdminCreateForm()
         {
             InitializeComponent();
+            comboMeta.BindMeta();
+            
         }
         public Controller<MedicationAdministration> Controller { get; set; }
 
@@ -87,9 +89,17 @@ namespace Telemedicine.Meds
             Execute(() =>
             {
                 var item = GetSelectedItem<DataModel>(dgvData);
-                var list = dgvData.GetSortableSource<DataModel>();
-                list.Remove(item);
-                list.NotifyListChanged(ListChangedType.Reset);
+                if (item.Id != null)
+                {
+                    Controller.Delete(item.Data);
+                    ActionSearchByReq();
+                }
+                else
+                {
+                    var list = dgvData.GetSortableSource<DataModel>();
+                    list.Remove(item);
+                    list.NotifyListChanged(ListChangedType.Reset);
+                }
             });
         }
 
@@ -105,6 +115,7 @@ namespace Telemedicine.Meds
                 {
                     if (list[i].Id == null)
                     {
+                        list[i].Data.Meta = comboMeta.GetMeta();
                         list[i].Id = Controller.Create(list[i].Data);
                         list.NotifyListChanged(ListChangedType.ItemChanged, i);
                         created++;
@@ -148,13 +159,14 @@ namespace Telemedicine.Meds
 
         private void medRequestControl1_ItemPicked(object sender, EventArgs e)
         {
-            Execute(() =>
-            {
-                dgvData.ClearSource();
-                var medAdms = Controller.Search("request=" + medRequestControl1.GetResourceReference().Reference);
-                var dataList = medAdms.Select(r => new DataModel(r));
-                dgvData.SetSource(dataList);
-            });
+            Execute(ActionSearchByReq);
+        }
+        private void ActionSearchByReq()
+        {
+            dgvData.ClearSource();
+            var medAdms = Controller.Search("request=" + medRequestControl1.GetResourceReference().Reference);
+            var dataList = medAdms.Select(r => new DataModel(r));
+            dgvData.SetSource(dataList);
         }
     }
 }

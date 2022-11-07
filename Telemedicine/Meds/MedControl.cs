@@ -30,14 +30,17 @@ namespace Telemedicine.Meds
         }
         public static string GetMedText(DataType medRes)
         {
-            if (medRes is ResourceReference)
+            var resRef = medRes as  ResourceReference;
+            var resCode = medRes as CodeableConcept;
+
+            if (resRef != null)
             {
-                var med = ControllerBase.Get<Medication>().Read((medRes as ResourceReference).Reference);
+                var med = ControllerBase.Get<Medication>().Read(resRef.Reference);
                 return med?.Code?.Text;
             }
-            else if (medRes is CodeableConcept)
+            else if (resCode != null)
             {
-                return (medRes as CodeableConcept).Coding?.FirstOrDefault()?.Code;
+                return resCode.Coding?.FirstOrDefault()?.Code;
             }
             return null;
         }

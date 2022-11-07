@@ -26,6 +26,8 @@ namespace Telemedicine.Observations
             dgvData.AddTextColumn<Observation>(r => r.Code, "代碼", formatter: (s, ev) => ListForm.GenericFormatter<CodeableConcept>(ev, r => r.Coding.ToString(", ", m => m.Code)));
             dgvData.AddTextColumn<Observation>(r => r.Value, "值", formatter: ObservationListForm2.ObservationValueFormatter);
             dgvData.AddTextColumn<Observation>(r => r.Effective, "日期", formatter: ListForm.PeriodFormatter);
+
+            comboMeta.BindMeta();
         }
         public Controller<Observation> Controller { get; set; }
 
@@ -180,7 +182,7 @@ namespace Telemedicine.Observations
                             observation.BasedOn.Add(medRequestControl1.GetResourceReference());
                         else if (serviceRequestControl1.Id.IsNotNullOrEmpty())
                             observation.BasedOn.Add(serviceRequestControl1.GetResourceReference());
-
+                        observation.Meta = comboMeta.GetMeta();
                         Controller.Create(observation);
                     }, ex =>
                     {

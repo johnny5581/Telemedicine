@@ -22,7 +22,7 @@ namespace Telemedicine.Observations
         {
             InitializeComponent();
             comboVitalSign.AddTextItem("", null);
-            comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemDisplay, r.Item));
+            comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemDisplay, r.Code), r=>r.Code);
         
         }
         public Controller<Observation> Controller { get; set; }

@@ -28,7 +28,7 @@ namespace Telemedicine.Meds
         }
 
         public Controller<MedicationRequest> Controller { get; set; }
-        
+
         protected override void SetupDataGridPanel(CgDataGridPanel dgvData)
         {
             base.SetupDataGridPanel(dgvData);
@@ -38,22 +38,22 @@ namespace Telemedicine.Meds
             dgvData.AddTextColumn<MedicationRequest>(r => r.Subject, formatter: PatientControl.PatFormatter);
             dgvData.AddTextColumn<MedicationRequest>(r => r.AuthoredOn);
             dgvData.AddTextColumn<MedicationRequest>(r => r.DosageInstruction, formatter: MedDosageFormatter);
-            dgvData.AddTextColumn<MedicationRequest>(r => r.DispenseRequest, formatter: MedDispenseFormatter);            
+            dgvData.AddTextColumn<MedicationRequest>(r => r.DispenseRequest, formatter: MedDispenseFormatter);
         }
 
         private static void MedDispenseFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var dispense = e.Value as MedicationRequest.DispenseRequestComponent;
-            if(dispense != null)
+            if (dispense != null)
             {
-                e.Value = $"{dispense.Quantity.Value}{dispense.Quantity.Unit}, {dispense.ExpectedSupplyDuration.Value}{dispense.ExpectedSupplyDuration.Unit}";
+                e.Value = $"{dispense.Quantity?.Value}{dispense.Quantity?.Unit}, {dispense.ExpectedSupplyDuration?.Value}{dispense.ExpectedSupplyDuration?.Unit}";
             }
         }
 
         public static void MedDosageFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var dosages = e.Value as List<Dosage>;
-            if(dosages != null)
+            if (dosages != null)
             {
                 e.Value = dosages.ToString(",", r => GetInstruction(r));
             }
@@ -61,10 +61,10 @@ namespace Telemedicine.Meds
 
         public static string GetInstruction(Dosage dosage)
         {
+            var timing = dosage.Timing.Code.Text ?? dosage.Timing.Code.Coding.ToString("+", r => r.Display ?? r.Code);
+            var routes = dosage.Route.Text ?? dosage.Route.Coding.ToString("+", r => r.Display ?? r.Code);
             if (dosage.Text.IsNotNullOrEmpty())
-                return dosage.Text;
-            var timing= dosage.Timing.Code.Coding.ToString("+", r => r.Display);
-            var routes = dosage.Route.Coding.ToString("+", r => r.Display);
+                return $"{timing}, {routes} ({dosage.Text})";
             return $"{timing}, {routes}";
         }
 
@@ -74,14 +74,14 @@ namespace Telemedicine.Meds
         {
             var dataType = e.Value as DataType;
             if (dataType != null)
-                e.Value = MedControl.GetMedText(dataType);            
+                e.Value = MedControl.GetMedText(dataType);
         }
 
         protected override IEnumerable GetSearchDomainResult(List<string> criterias)
         {
             AddCriteria(criterias, "subject", textSubject.Text);
             AddCriteria(criterias, "subject.identifier", textPatIdentifier.Text);
-            AddCriteria(criterias, "status", Convert.ToString(comboStatus.SelectedValue));
+            AddCriteria(criterias, "status", Convert.ToString(comboStatus.SelectedValue).StrToLower());
             AddCriteria(criterias, "medication.code", textMedId.Text);
             AddCriteria(criterias, "subject.organization", comboPatOrg.SelectedValue as string);
 

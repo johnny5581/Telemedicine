@@ -7,10 +7,105 @@ using System.Threading.Tasks;
 
 namespace Telemedicine.Meds
 {
+    public class MedRoute2 : Coding
+    {
+        public MedRoute2(string code, string display) : base("http://hitstdio.ntunhs.edu.tw/ig/twcore/ValueSet-medication-path-tw.html", code, display)
+        {
+        }
+        public override string ToString()
+        {
+            return string.Format("{0} ({1})", Display, Code);
+        }
+        //public static readonly MedRoute XX = new MedRoute(
+        public static readonly MedRoute2 AD = new MedRoute2("AD", "右耳");
+        public static readonly MedRoute2 AS = new MedRoute2("AS", "左耳");
+        public static readonly MedRoute2 AU = new MedRoute2("AU", "每耳");
+        public static readonly MedRoute2 ET = new MedRoute2("ET", "氣內切");
+        public static readonly MedRoute2 CAR = new MedRoute2("CAR", "漱口用");
+        public static readonly MedRoute2 HD = new MedRoute2("HD", "皮下灌注");
+        public static readonly MedRoute2 IC = new MedRoute2("IC", "皮內注射");
+        public static readonly MedRoute2 IA = new MedRoute2("IA", "動脈注射");
+        public static readonly MedRoute2 IE = new MedRoute2("IE", "脊髓硬膜內注射");
+        public static readonly MedRoute2 IM = new MedRoute2("IM", "肌肉注射");
+        public static readonly MedRoute2 IV = new MedRoute2("IV", "靜脈注射");
+        public static readonly MedRoute2 IP = new MedRoute2("IP", "腹腔注射");
+        public static readonly MedRoute2 ICV = new MedRoute2("ICV", "腦室注射");
+        public static readonly MedRoute2 IMP = new MedRoute2("IMP", "植入");
+        public static readonly MedRoute2 INHL = new MedRoute2("INHL", "吸入");
+        public static readonly MedRoute2 IS = new MedRoute2("IS", "關節腔內注射");
+        public static readonly MedRoute2 IT = new MedRoute2("IT", "椎骨內注射");
+        public static readonly MedRoute2 IVA = new MedRoute2("IVA", "靜脈添加");
+        public static readonly MedRoute2 IVD = new MedRoute2("IVD", "靜脈點滴滴入");
+        public static readonly MedRoute2 IVI = new MedRoute2("IVI", "玻璃體內注射");
+        public static readonly MedRoute2 IVP = new MedRoute2("IVP", "靜脈注入");
+        public static readonly MedRoute2 LA = new MedRoute2("LA", "局部麻醉");
+        public static readonly MedRoute2 LI = new MedRoute2("LI", "局部注射");
+        public static readonly MedRoute2 NA = new MedRoute2("NA", "鼻用");
+        public static readonly MedRoute2 OD = new MedRoute2("OD", "右眼");
+        public static readonly MedRoute2 OS = new MedRoute2("OS", "左眼");
+        public static readonly MedRoute2 OU = new MedRoute2("OU", "每眼");
+        public static readonly MedRoute2 PO = new MedRoute2("PO", "口眼");
+        public static readonly MedRoute2 SC = new MedRoute2("SC", "皮下注射");
+        public static readonly MedRoute2 SCI = new MedRoute2("SCI", "結膜下注射");
+        public static readonly MedRoute2 SKIN = new MedRoute2("SKIN", "皮膚用");
+        public static readonly MedRoute2 SL = new MedRoute2("SL", "舌下");
+        public static readonly MedRoute2 SPI = new MedRoute2("SPI", "脊髓");
+        public static readonly MedRoute2 RECT = new MedRoute2("RECT", "肛門用");
+        public static readonly MedRoute2 TOPI = new MedRoute2("TOPI", "局部塗擦（與LA易混淆）");
+        public static readonly MedRoute2 TRN = new MedRoute2("TRN", "全靜脈營養劑");
+        public static readonly MedRoute2 VAG = new MedRoute2("VAG", "陰道用");
+        public static readonly MedRoute2 IRRIG = new MedRoute2("IRRIG", "沖洗(irrigation)");
+        public static readonly MedRoute2 EXT = new MedRoute2("EXT", "外用");
+        public static readonly MedRoute2 XX = new MedRoute2("XX", "其他");
 
+        public static readonly MedRoute2[] Routes = new MedRoute2[]
+        {
+                AD ,
+                AS ,
+                AU ,
+                ET ,
+                CAR,
+                HD ,
+                IC ,
+                IA ,
+                IE ,
+                IM ,
+                IV ,
+                IP ,
+                ICV,
+                IMP,
+                INHL,
+                IS ,
+                IT ,
+                IVA,
+                IVD,
+                IVI,
+                IVP,
+                LA ,
+                LI ,
+                NA ,
+                OD ,
+                OS ,
+                OU ,
+                PO ,
+                SC ,
+                SCI,
+                SKIN,
+                SL ,
+                SPI,
+                RECT,
+                TOPI,
+                TRN ,
+                VAG ,
+                IRRIG,
+                EXT,
+                XX ,
+        };
+
+    }
     public class MedRoute : Coding
     {
-        public MedRoute(string code, string display) : base("http://mtrsoftware.com.tw/Page_L/用法表.htm", code, display)
+        public MedRoute(string code, string display) : base("https://twcore.mohw.gov.tw/fhir/CodeSystem/medication-path-tw", code, display)
         {
         }
         public override string ToString()
