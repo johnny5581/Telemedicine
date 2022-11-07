@@ -39,13 +39,17 @@ namespace Telemedicine.Patients
             comboDist.SelectItem<ZipMap>(r => r.Zip == 333);
 
             // META
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForIdentifier");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForContact");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForPHR");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/PatientForEMS");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.Common");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.BloodPressure");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.ECG");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/ig/");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Patient-twcore");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Organization-twcore");
+            comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Medication-twcore");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC1");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC2");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/Patient-MITW2022-T1SC3");
+
+            comboMeta.AddTextItem("https://simplifier.net/MITW.EMS.IG/ObservationForEMSECG/");
+            comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MedicationRequest");
+            comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MITW-MedicationAdministration");
         }
 
         public Controller<Patient> Controller { get; set; }
