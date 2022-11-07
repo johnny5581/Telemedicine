@@ -71,6 +71,7 @@ namespace Telemedicine
 
         public static Meta GetMeta(this ICgComboBox comboBox)
         {
+            if(comboBox.Text.IsNotNullOrEmpty())
             return new Meta
             {
                 Profile = new List<string>
@@ -78,6 +79,7 @@ namespace Telemedicine
                     comboBox.Text,
                 }
             };
+            return null;
         }
 
 

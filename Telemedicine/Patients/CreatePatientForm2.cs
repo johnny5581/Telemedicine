@@ -102,7 +102,7 @@ namespace Telemedicine.Patients
                     pat.Gender = (AdministrativeGender)comboSex.SelectedValue;
                     pat.Name.Add(textName.GetHumanName());
                     pat.BirthDate = textBirthDat.Text;
-                    pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textTelecom.Text));
+                    pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Mobile, textTelecom.Text));
                     pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Email, ContactPoint.ContactPointUse.Home, textEmail.Text));
                     pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Url, ContactPoint.ContactPointUse.Home, textPersonalUrl.Text));
                     pat.ManagingOrganization = ucOrg.GetResourceReference();

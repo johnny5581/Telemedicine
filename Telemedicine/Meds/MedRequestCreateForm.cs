@@ -21,6 +21,7 @@ namespace Telemedicine.Meds
 
             dgvData.AutoGenerateColumns = true;
             dgvData.AutoFitColumnWidth = true;
+            comboMeta.BindMeta();
         }
         public Controller<MedicationRequest> Controller { get; set; }
         private void buttonItemAdd_Click(object sender, EventArgs e)
@@ -126,7 +127,8 @@ namespace Telemedicine.Meds
                     request.Category.Add(new CodeableConcept("http://terminology.hl7.org/CodeSystem/medicationrequest-category", code, display, text));                    
                     request.Medication = new ResourceReference("Medication/" + data.Id);
                     request.Subject = new ResourceReference("Patient/" + patId);
-                    request.AuthoredOn = DateTime.Today.ToString("yyyy-MM-dd");                    
+                    request.AuthoredOn = DateTime.Today.ToString("yyyy-MM-dd");
+                    request.Meta = comboMeta.GetMeta();
                     var dosage = new Dosage();
                     dosage.Sequence = 1;
                     dosage.Text = item.Instruction;
