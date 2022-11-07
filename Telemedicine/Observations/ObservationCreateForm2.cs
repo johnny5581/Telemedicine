@@ -20,12 +20,15 @@ namespace Telemedicine.Observations
         public ObservationCreateForm2()
         {
             InitializeComponent();
+            dgvData.AddTextColumn<Observation>(r => r.Id, "#");
 
             dgvData.AddTextColumn<Observation>(r => r.Category, "類型", formatter: (s, ev) => ListForm.GenericFormatter<CodeableConcept>(ev, r => r.Text));
             dgvData.AddTextColumn<Observation>(r => r.Code, "項目", formatter: (s, ev) => ListForm.GenericFormatter<CodeableConcept>(ev, r => r.Coding.ToString(", ", m => m.Display)));
             dgvData.AddTextColumn<Observation>(r => r.Code, "代碼", formatter: (s, ev) => ListForm.GenericFormatter<CodeableConcept>(ev, r => r.Coding.ToString(", ", m => m.Code)));
+            dgvData.AddTextColumn<Observation>(r => r.BodySite, "部位", formatter: (s, ev) => ListForm.GenericFormatter<CodeableConcept>(ev, r => r.Coding.ToString(", ", m => m.Code)));
             dgvData.AddTextColumn<Observation>(r => r.Value, "值", formatter: ObservationListForm2.ObservationValueFormatter);
             dgvData.AddTextColumn<Observation>(r => r.Effective, "日期", formatter: ListForm.PeriodFormatter);
+            dgvData.AddTextColumn<Observation>(r => r.Status, "狀態");
 
             comboMeta.BindMeta();
         }
@@ -152,9 +155,17 @@ namespace Telemedicine.Observations
             Execute(() =>
             {
                 var item = GetSelectedItem<Observation>(dgvData);
-                var list = dgvData.GetSortableSource<Observation>();
-                list.Remove(item);
-                list.NotifyListChanged(ListChangedType.Reset);
+                if(item.Id != null)
+                {
+                    Controller.Delete(item);
+                }
+                else
+                {
+
+                    var list = dgvData.GetSortableSource<Observation>();
+                    list.Remove(item);
+                    list.NotifyListChanged(ListChangedType.Reset);
+                }
             });
         }
 
@@ -175,30 +186,31 @@ namespace Telemedicine.Observations
                 var faileds = new List<Observation>();
                 foreach (var observation in list)
                 {
-                    Execute(() =>
+                    if (observation.Id == null)
                     {
-                        observation.Subject = patientControl1.GetResourceReference();
-                        if (medRequestControl1.Id.IsNotNullOrEmpty())
-                            observation.BasedOn.Add(medRequestControl1.GetResourceReference());
-                        else if (serviceRequestControl1.Id.IsNotNullOrEmpty())
-                            observation.BasedOn.Add(serviceRequestControl1.GetResourceReference());
-                        observation.Meta = comboMeta.GetMeta();
-                        Controller.Create(observation);
-                    }, ex =>
-                    {
-                        faileds.Add(observation);
-                    });
+                        Execute(() =>
+                        {
+                            observation.Subject = patientControl1.GetResourceReference();
+                            if (medRequestControl1.Id.IsNotNullOrEmpty())
+                                observation.BasedOn.Add(medRequestControl1.GetResourceReference());
+                            else if (serviceRequestControl1.Id.IsNotNullOrEmpty())
+                                observation.BasedOn.Add(serviceRequestControl1.GetResourceReference());
+                            observation.Meta = comboMeta.GetMeta();
+                            observation.Id = Controller.Create(observation);
+                            list.NotifyListChanged(ListChangedType.ItemChanged, list.IndexOf(observation));
+                        }, ex =>
+                        {
+                            faileds.Add(observation);
+                        });
+                    }
                 }
                 if (faileds.Count == 0)
                     MsgBoxHelper.Info("上傳成功");
                 else
                     MsgBoxHelper.Info("上傳失敗: " + faileds.Count);
-                dgvData.ClearSource();
-                list = dgvData.GetSortableSource<Observation>();
-                list.AddRange(faileds);
+                
             });
         }
-
 
     }
 }
