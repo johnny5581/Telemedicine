@@ -42,6 +42,12 @@ namespace Telemedicine
                 splitContainer2.Panel2Collapsed = true;
         }
         public object Selected { get; set; }
+        
+        public bool IsEditable
+        {
+            get { return menuEdit.Visible; }
+            set { menuEdit.Visible = value; }
+        }
 
         public T GetSelected<T>()
             where T : Resource
@@ -110,6 +116,20 @@ namespace Telemedicine
                 if (_flgDialog)
                     DialogResult = DialogResult.OK;
             });
+        }
+        private void meduEdit_Click(object sender, EventArgs e)
+        {
+            Execute(() =>
+            {
+                if (ActionEdit(GetSelectedItem(dgvData)))
+                    MsgBoxHelper.Info("修改成功");
+            });
+            Execute(ActionSearch);
+        }
+
+        protected virtual bool ActionEdit(object item)
+        {
+            return false;
         }
 
         public static void PeriodFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
@@ -217,5 +237,7 @@ namespace Telemedicine
                 panelExtraCriteria.Controls.Add(label);
             }
         }
+
+   
     }
 }

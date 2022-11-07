@@ -83,23 +83,24 @@ namespace Telemedicine.Patients
             // 
             // contextMenuStrip
             // 
+            this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuEdit,
             this.menuDelete});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(99, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(241, 97);
             // 
             // menuEdit
             // 
             this.menuEdit.Name = "menuEdit";
-            this.menuEdit.Size = new System.Drawing.Size(98, 22);
+            this.menuEdit.Size = new System.Drawing.Size(240, 30);
             this.menuEdit.Text = "修改";
             this.menuEdit.Click += new System.EventHandler(this.menuEdit_Click);
             // 
             // menuDelete
             // 
             this.menuDelete.Name = "menuDelete";
-            this.menuDelete.Size = new System.Drawing.Size(98, 22);
+            this.menuDelete.Size = new System.Drawing.Size(240, 30);
             this.menuDelete.Text = "刪除";
             this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
@@ -137,16 +138,16 @@ namespace Telemedicine.Patients
             this.textId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textId.Location = new System.Drawing.Point(3, 3);
             this.textId.Name = "textId";
-            this.textId.Size = new System.Drawing.Size(224, 30);
+            this.textId.Size = new System.Drawing.Size(224, 37);
             this.textId.TabIndex = 0;
             // 
             // textIdentifier
             // 
             this.textIdentifier.Header = "病患身分證";
             this.textIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textIdentifier.Location = new System.Drawing.Point(3, 39);
+            this.textIdentifier.Location = new System.Drawing.Point(3, 46);
             this.textIdentifier.Name = "textIdentifier";
-            this.textIdentifier.Size = new System.Drawing.Size(224, 30);
+            this.textIdentifier.Size = new System.Drawing.Size(224, 37);
             this.textIdentifier.TabIndex = 4;
             this.textIdentifier.Text = "X123456789";
             // 
@@ -154,9 +155,9 @@ namespace Telemedicine.Patients
             // 
             this.textName.Header = "病患姓名";
             this.textName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textName.Location = new System.Drawing.Point(3, 75);
+            this.textName.Location = new System.Drawing.Point(233, 3);
             this.textName.Name = "textName";
-            this.textName.Size = new System.Drawing.Size(224, 30);
+            this.textName.Size = new System.Drawing.Size(224, 37);
             this.textName.TabIndex = 5;
             // 
             // comboOrg
@@ -164,9 +165,9 @@ namespace Telemedicine.Patients
             this.comboOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboOrg.Header = "病患組織";
             this.comboOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboOrg.Location = new System.Drawing.Point(233, 3);
+            this.comboOrg.Location = new System.Drawing.Point(233, 46);
             this.comboOrg.Name = "comboOrg";
-            this.comboOrg.Size = new System.Drawing.Size(224, 31);
+            this.comboOrg.Size = new System.Drawing.Size(224, 38);
             this.comboOrg.TabIndex = 6;
             // 
             // buttonClear

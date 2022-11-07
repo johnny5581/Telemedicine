@@ -22,9 +22,10 @@ namespace Telemedicine.Patients
         {
             InitializeComponent();
             comboOrg.BindOrganizations("全部");
+            IsEditable = true;
         }
         public Controller<Patient> Controller { get; set; }
-
+        
         protected override void SetupDataGridPanel(CgDataGridPanel dgvData)
         {
             base.SetupDataGridPanel(dgvData);
@@ -49,6 +50,19 @@ namespace Telemedicine.Patients
                 return true;
             }
             return base.ActionDelete(item);
-        }        
+        }
+        protected override bool ActionEdit(object item)
+        {
+            var pat = item as Patient;
+            using (var d = new CreatePatientForm2())
+            {
+                d.SetSource(pat);
+                if(d.ShowDialog() == DialogResult.OK)
+                {
+                    return true;
+                }
+            }
+            return base.ActionEdit(item);
+        }
     }
 }

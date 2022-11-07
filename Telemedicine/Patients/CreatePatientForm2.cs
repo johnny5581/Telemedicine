@@ -80,6 +80,7 @@ namespace Telemedicine.Patients
                 comboCity.SelectItem(address.City);
                 comboDist.SelectValue(address.PostalCode.To<short>());
             }
+            comboMeta.Text = source.Meta?.Profile?.FirstOrDefault();
         }
 
         private void ComboCity_SelectedIndexChanged(object sender, EventArgs e)
@@ -112,6 +113,8 @@ namespace Telemedicine.Patients
                     pat.Name.Add(textName.GetHumanName());
                     pat.BirthDate = textBirthDat.Text;
                     pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textTelecom.Text));
+                    pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Email, ContactPoint.ContactPointUse.Home, textEmail.Text));
+                    pat.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Url, ContactPoint.ContactPointUse.Home, textPersonalUrl.Text));
                     pat.ManagingOrganization = ucOrg.GetResourceReference();
                     var address = new Address();
                     address.PostalCode = Convert.ToString(comboDist.SelectedValue);
@@ -128,12 +131,79 @@ namespace Telemedicine.Patients
                     contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textContactTelecom.Text));
                     pat.Contact.Add(contact);
 
+                    pat.Meta = new Meta
+                    {
+                        Profile = new string[] {
+                            comboMeta.Text,
+                        }
+                    };
                     Controller.Create(pat);
 
                     MsgBoxHelper.Info("建立完成");
                 }
                 else
                 {
+                    var pat = _source;
+                    var identifierIdNo = new Identifier(PatientControl.SystemIdNo, textIdNo.Text);
+                    identifierIdNo.Type = new CodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0203", "NI");
+                    var identifierChtNo = new Identifier(PatientControl.SystemChtNo, textChtNo.Text);
+                    identifierChtNo.Type = new CodeableConcept("http://terminology.hl7.org/CodeSystem/v2-0203", "MR");
+                    for (var i = 0; i < pat.Identifier.Count; i++)
+                    {
+                        if (pat.Identifier[i].System == PatientControl.SystemIdNo)
+                            pat.Identifier[i].Value = textIdNo.Text;
+                        else if (pat.Identifier[i].System == PatientControl.SystemChtNo)
+                            pat.Identifier[i].Value = textChtNo.Text;
+                    }
+
+                    pat.Deceased = new FhirBoolean(checkDead.Checked);
+                    pat.Gender = (AdministrativeGender)comboSex.SelectedValue;
+                    while (pat.Name.Count > 0)
+                        pat.Name.RemoveAt(0);
+                    pat.Name.Add(textName.GetHumanName());
+                    pat.BirthDate = textBirthDat.Text;
+
+                    for (var i = 0; i < pat.Telecom.Count; i++)
+                    {
+                        if (pat.Telecom[i].System == ContactPoint.ContactPointSystem.Phone)
+                            pat.Telecom[i].Value = textTelecom.Text;
+                        else if (pat.Telecom[i].System == ContactPoint.ContactPointSystem.Email)
+                            pat.Telecom[i].Value = textEmail.Text;
+                        else if (pat.Telecom[i].System == ContactPoint.ContactPointSystem.Url)
+                            pat.Telecom[i].Value = textPersonalUrl.Text;
+                    }
+
+                    pat.ManagingOrganization = ucOrg.GetResourceReference();
+                    if (pat.Address.Count > 0)
+                        pat.Address.RemoveAt(0);
+                    var address = new Address();
+                    address.PostalCode = Convert.ToString(comboDist.SelectedValue);
+                    address.City = comboCity.Text;
+                    address.District = comboDist.Text;
+                    address.Country = "TW";
+                    address.Line = textAddress.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    address.Text = $"{address.PostalCode} {address.City}{address.District}{address.Line.ToString("")}";
+                    pat.Address.Add(address);
+
+                    if (pat.Contact.Count > 0)
+                        pat.Contact.RemoveAt(0);
+                    var contact = new Patient.ContactComponent();
+                    contact.Name = textContactName.GetHumanName();
+                    contact.Relationship.Add(comboContactRelation.SelectedValue as CodeableConcept);
+                    contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textContactTelecom.Text));
+                    pat.Contact.Add(contact);
+                    pat.Meta = new Meta
+                    {
+                        Profile = new string[] {
+                            comboMeta.Text,
+                        }
+                    };
+                    Controller.Update(pat);
+
+                    MsgBoxHelper.Info("建立完成");
+
+
+
                     DialogResult = DialogResult.OK;
                 }
             });
