@@ -559,7 +559,10 @@ namespace Telemedicine.Patients
 
                        new ZipMap() { City = "嘉義市", Dist = "", Zip = 600 },
                        new ZipMap() { City = "嘉義市", Dist = "東區", Zip = 600 },
-                       new ZipMap() { City = "嘉義市", Dist = "西區", Zip = 600 }
+                       new ZipMap() { City = "嘉義市", Dist = "西區", Zip = 600 },
+
+                       new ZipMap() { City = "宜蘭縣", Dist = "冬山鄉", Zip = 269 }
+
                    };
                 _repository = list.GroupBy(r => r.City).ToDictionary(r => r.Key, r => r.ToList());
             }
