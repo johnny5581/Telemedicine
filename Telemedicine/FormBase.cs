@@ -219,7 +219,7 @@ namespace Telemedicine
         #endregion
 
         #region DataModel
-        protected abstract class DataModelBase
+        public abstract class DataModelBase
         {
             private PropertyInfo[] _properties;
             protected virtual void Bind(object model)
@@ -238,7 +238,7 @@ namespace Telemedicine
                 }
             }
         }
-        protected abstract class DataModelBase<T> : DataModelBase
+        public abstract class DataModelBase<T> : DataModelBase
         {
             private readonly T _data;
 

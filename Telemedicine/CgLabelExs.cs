@@ -123,6 +123,7 @@ namespace Telemedicine
             checkBoxEnable.CheckedChanged += CheckBox_CheckedChanged;
             checkBoxEndDate.CheckedChanged += CheckBoxEndDate_CheckedChanged;
             checkBoxEnableTime.CheckedChanged += CheckBoxEnableTime_CheckedChanged;
+            checkBoxEndDate.Checked = false;
             return panel;
         }
 

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telemedicine.Controllers;
+using Telemedicine.Forms;
 using Telemedicine.Orgs;
 
 namespace Telemedicine.Practitioners
@@ -35,6 +36,30 @@ namespace Telemedicine.Practitioners
         {
             base.ActionItemPicked(item);
             PracName = (item as Practitioner).Name.FirstOrDefault()?.Text;
-        }        
+        }
+
+        public static void PracFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
+        {
+            var resRef = e.Value as ResourceReference;
+            if (resRef != null)
+            {
+                if (e.Arguments.ElementAtOrDefault(0) as string == "Y")
+                {
+                    var prac = ControllerBase.Get<Practitioner>().Read(resRef.Reference);
+                    var rType = e.Arguments.ElementAtOrDefault(1) as string;
+                    switch (rType)
+                    {
+                        case "0":
+                            e.Value = GetHumanName(prac.Name);
+                            break;
+                        case "1":
+                            e.Value = $"{GetHumanName(prac.Name)} ({GetIdentifier(prac.Identifier, SystemId)})";
+                            break;
+                    }
+                }
+                else
+                    e.Value = resRef.Reference;
+            }
+        }
     }
 }

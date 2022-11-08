@@ -32,9 +32,10 @@
             this.comboStatus = new Telemedicine.Forms.CgLabelComboBox();
             this.textSubject = new Telemedicine.Forms.CgLabelTextBox();
             this.textPatIdentifier = new Telemedicine.Forms.CgLabelTextBox();
-            this.textMedId = new Telemedicine.Forms.CgLabelTextBox();
-            this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
             this.textMedReq = new Telemedicine.Forms.CgLabelTextBox();
+            this.comboPatOrg = new Telemedicine.Forms.CgLabelComboBox();
+            this.textMedId = new Telemedicine.Forms.CgLabelTextBox();
+            this.cgLabelDateTimeRange1 = new Telemedicine.CgLabelDateTimeRange();
             this.panelExtra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -65,9 +66,10 @@
             this.cgFlowLayoutPanel1.Controls.Add(this.comboStatus);
             this.cgFlowLayoutPanel1.Controls.Add(this.textSubject);
             this.cgFlowLayoutPanel1.Controls.Add(this.textPatIdentifier);
-            this.cgFlowLayoutPanel1.Controls.Add(this.textMedId);
-            this.cgFlowLayoutPanel1.Controls.Add(this.comboPatOrg);
             this.cgFlowLayoutPanel1.Controls.Add(this.textMedReq);
+            this.cgFlowLayoutPanel1.Controls.Add(this.comboPatOrg);
+            this.cgFlowLayoutPanel1.Controls.Add(this.textMedId);
+            this.cgFlowLayoutPanel1.Controls.Add(this.cgLabelDateTimeRange1);
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -111,16 +113,16 @@
             this.textPatIdentifier.Size = new System.Drawing.Size(332, 39);
             this.textPatIdentifier.TabIndex = 11;
             // 
-            // textMedId
+            // textMedReq
             // 
-            this.textMedId.Header = "處方";
-            this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedId.Location = new System.Drawing.Point(4, 142);
-            this.textMedId.Margin = new System.Windows.Forms.Padding(4);
-            this.textMedId.Name = "textMedId";
-            this.textMedId.Padding = new System.Windows.Forms.Padding(2);
-            this.textMedId.Size = new System.Drawing.Size(332, 39);
-            this.textMedId.TabIndex = 12;
+            this.textMedReq.Header = "處方";
+            this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedReq.Location = new System.Drawing.Point(4, 142);
+            this.textMedReq.Margin = new System.Windows.Forms.Padding(4);
+            this.textMedReq.Name = "textMedReq";
+            this.textMedReq.Padding = new System.Windows.Forms.Padding(2);
+            this.textMedReq.Size = new System.Drawing.Size(332, 39);
+            this.textMedReq.TabIndex = 14;
             // 
             // comboPatOrg
             // 
@@ -134,16 +136,29 @@
             this.comboPatOrg.Size = new System.Drawing.Size(332, 40);
             this.comboPatOrg.TabIndex = 13;
             // 
-            // textMedReq
+            // textMedId
             // 
-            this.textMedReq.Header = "用藥代號";
-            this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedReq.Location = new System.Drawing.Point(4, 233);
-            this.textMedReq.Margin = new System.Windows.Forms.Padding(4);
-            this.textMedReq.Name = "textMedReq";
-            this.textMedReq.Padding = new System.Windows.Forms.Padding(2);
-            this.textMedReq.Size = new System.Drawing.Size(332, 39);
-            this.textMedReq.TabIndex = 14;
+            this.textMedId.Header = "用藥代號";
+            this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textMedId.Location = new System.Drawing.Point(4, 233);
+            this.textMedId.Margin = new System.Windows.Forms.Padding(4);
+            this.textMedId.Name = "textMedId";
+            this.textMedId.Padding = new System.Windows.Forms.Padding(2);
+            this.textMedId.Size = new System.Drawing.Size(332, 39);
+            this.textMedId.TabIndex = 12;
+            // 
+            // cgLabelDateTimeRange1
+            // 
+            this.cgLabelDateTimeRange1.ComponentHeight = 55;
+            this.cgLabelDateTimeRange1.EndTimeAvaliable = false;
+            this.cgLabelDateTimeRange1.IsGrouping = false;
+            this.cgLabelDateTimeRange1.Location = new System.Drawing.Point(4, 280);
+            this.cgLabelDateTimeRange1.Margin = new System.Windows.Forms.Padding(4);
+            this.cgLabelDateTimeRange1.Name = "cgLabelDateTimeRange1";
+            this.cgLabelDateTimeRange1.Padding = new System.Windows.Forms.Padding(2);
+            this.cgLabelDateTimeRange1.Size = new System.Drawing.Size(332, 65);
+            this.cgLabelDateTimeRange1.TabIndex = 16;
+            this.cgLabelDateTimeRange1.Text = "cgLabelDateTimeRange1";
             // 
             // MedAdminListForm
             // 
@@ -171,5 +186,6 @@
         private Forms.CgLabelTextBox textMedId;
         private Forms.CgLabelComboBox comboPatOrg;
         private Forms.CgLabelTextBox textMedReq;
+        private CgLabelDateTimeRange cgLabelDateTimeRange1;
     }
 }

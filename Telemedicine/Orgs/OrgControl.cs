@@ -23,7 +23,7 @@ namespace Telemedicine.Orgs
                 "MITW.ForPHR",
                 "MITW.ForEMS",
             };
-
+        public const string OrgSystemId = "http://twcore.mohw.gov.tw/fhir/CodeSystem/organization-identifier-tw";
         public OrgControl()
         {
             InitializeComponent();

@@ -24,6 +24,7 @@ namespace Telemedicine.Bundles
             InitializeComponent();
         }
         public Controller<Bundle> Controller { get; set; }
+        public Controller<Composition> CompositionController { get; set; }
         protected override void SetupDataGridPanel(CgDataGridPanel dgvData)
         {
             base.SetupDataGridPanel(dgvData);
@@ -74,7 +75,7 @@ namespace Telemedicine.Bundles
 
         protected override IEnumerable GetSearchDomainResult(List<string> criterias)
         {
-            AddCriteria(criterias, "composition.date", cgLabelDateTimeRange1);
+            AddCriteria(criterias, "composition.date", cgLabelDateTimeRange1, t => "ge" + t) ;
             AddCriteria(criterias, "composition.patient.identifier", textPatIdentifier.Text);
             AddCriteria(criterias, "composition.organization.identifier", Convert.ToString(comboPatOrg.SelectedValue));
 

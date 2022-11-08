@@ -55,16 +55,29 @@ namespace Telemedicine.Patients
 
         public static string GetPatientName(Patient pat)
         {
-            return pat?.Name?.FirstOrDefault()?.Text;
+            return DomainControl.GetHumanName(pat.Name);
         }
         public static void PatFormatter(object sender, CgDataGridPanel.FormattingCellEventArgs e)
         {
             var resRef = e.Value as ResourceReference;
             if (resRef != null)
             {
-                //var pat = ControllerBase.Get<Patient>().Read(resRef.Reference);
-                //e.Value = GetPatientName(pat);
-                e.Value = resRef.Reference;
+                if(e.Arguments.ElementAtOrDefault(0) as string == "Y")
+                {
+                    var pat = ControllerBase.Get<Patient>().Read(resRef.Reference);
+                    var rType = e.Arguments.ElementAtOrDefault(1) as string;
+                    switch(rType)
+                    {
+                        case "0":
+                            e.Value = GetPatientName(pat);
+                            break;
+                        case "1":
+                            e.Value = $"{GetPatientName(pat)} ({GetIdentifier(pat.Identifier, SystemIdNo)}, {GetIdentifier(pat.Identifier, SystemChtNo)})";
+                            break;
+                    }
+                }
+                else 
+                    e.Value = resRef.Reference;
             }
         }
     }
