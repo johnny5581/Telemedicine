@@ -28,7 +28,7 @@ namespace Telemedicine.Meds
         public Controller<MedicationAdministration> Controller { get; set; }
         protected override void SetupDataGridPanel(CgDataGridPanel dgvData)
         {
-            base.SetupDataGridPanel(dgvData);
+            base.SetupDataGridPanel(dgvData); 
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Medication, formatter: MedRequestListForm.MedFormatter);
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Subject, formatter: PatientControl.PatFormatter);
             dgvData.AddTextColumn<MedicationAdministration>(r => r.Status);
@@ -50,9 +50,9 @@ namespace Telemedicine.Meds
         {
             AddCriteria(criterias, "subject", textSubject.Text);
             AddCriteria(criterias, "subject.identifier", textPatIdentifier.Text);
-            AddCriteria(criterias, "status", Convert.ToString(comboStatus.SelectedValue));
+            AddCriteria<MedicationAdministration.MedicationAdministrationStatusCodes>(criterias, "status", comboStatus.SelectedValue);
             AddCriteria(criterias, "medication.code", textMedId.Text);
-            AddCriteria(criterias, "subject.organization", Convert.ToString(comboPatOrg.SelectedValue));
+            AddCriteria(criterias, "subject.organization", comboPatOrg.SelectedValue);
             AddCriteria(criterias, "request", textMedReq.Text, r => "MedicationRequest/" + r);
 
             return Controller.Search(criterias);

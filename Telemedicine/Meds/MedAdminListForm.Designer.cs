@@ -45,7 +45,8 @@
             // dgvData
             // 
             this.dgvData.InfoBoxVisible = true;
-            this.dgvData.Size = new System.Drawing.Size(529, 450);
+            this.dgvData.Margin = new System.Windows.Forms.Padding(6);
+            this.dgvData.Size = new System.Drawing.Size(794, 675);
             this.dgvData.TopPanelVisible = true;
             // 
             // panelExtra
@@ -70,8 +71,9 @@
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.cgFlowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(261, 353);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(392, 444);
             this.cgFlowLayoutPanel1.TabIndex = 1;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 
@@ -80,36 +82,44 @@
             this.comboStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboStatus.Header = "狀態";
             this.comboStatus.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboStatus.Location = new System.Drawing.Point(3, 3);
+            this.comboStatus.Location = new System.Drawing.Point(4, 4);
+            this.comboStatus.Margin = new System.Windows.Forms.Padding(4);
             this.comboStatus.Name = "comboStatus";
-            this.comboStatus.Size = new System.Drawing.Size(221, 31);
+            this.comboStatus.Padding = new System.Windows.Forms.Padding(2);
+            this.comboStatus.Size = new System.Drawing.Size(332, 40);
             this.comboStatus.TabIndex = 9;
             // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 37);
+            this.textSubject.Location = new System.Drawing.Point(4, 48);
+            this.textSubject.Margin = new System.Windows.Forms.Padding(4);
             this.textSubject.Name = "textSubject";
-            this.textSubject.Size = new System.Drawing.Size(221, 30);
+            this.textSubject.Padding = new System.Windows.Forms.Padding(2);
+            this.textSubject.Size = new System.Drawing.Size(332, 39);
             this.textSubject.TabIndex = 10;
             // 
             // textPatIdentifier
             // 
             this.textPatIdentifier.Header = "病患識別碼";
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatIdentifier.Location = new System.Drawing.Point(3, 73);
+            this.textPatIdentifier.Location = new System.Drawing.Point(4, 95);
+            this.textPatIdentifier.Margin = new System.Windows.Forms.Padding(4);
             this.textPatIdentifier.Name = "textPatIdentifier";
-            this.textPatIdentifier.Size = new System.Drawing.Size(221, 30);
+            this.textPatIdentifier.Padding = new System.Windows.Forms.Padding(2);
+            this.textPatIdentifier.Size = new System.Drawing.Size(332, 39);
             this.textPatIdentifier.TabIndex = 11;
             // 
             // textMedId
             // 
-            this.textMedId.Header = "藥品代碼";
+            this.textMedId.Header = "處方";
             this.textMedId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedId.Location = new System.Drawing.Point(3, 109);
+            this.textMedId.Location = new System.Drawing.Point(4, 142);
+            this.textMedId.Margin = new System.Windows.Forms.Padding(4);
             this.textMedId.Name = "textMedId";
-            this.textMedId.Size = new System.Drawing.Size(221, 30);
+            this.textMedId.Padding = new System.Windows.Forms.Padding(2);
+            this.textMedId.Size = new System.Drawing.Size(332, 39);
             this.textMedId.TabIndex = 12;
             // 
             // comboPatOrg
@@ -117,25 +127,30 @@
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(3, 145);
+            this.comboPatOrg.Location = new System.Drawing.Point(4, 189);
+            this.comboPatOrg.Margin = new System.Windows.Forms.Padding(4);
             this.comboPatOrg.Name = "comboPatOrg";
-            this.comboPatOrg.Size = new System.Drawing.Size(221, 31);
+            this.comboPatOrg.Padding = new System.Windows.Forms.Padding(2);
+            this.comboPatOrg.Size = new System.Drawing.Size(332, 40);
             this.comboPatOrg.TabIndex = 13;
             // 
             // textMedReq
             // 
             this.textMedReq.Header = "用藥代號";
             this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textMedReq.Location = new System.Drawing.Point(3, 179);
+            this.textMedReq.Location = new System.Drawing.Point(4, 233);
+            this.textMedReq.Margin = new System.Windows.Forms.Padding(4);
             this.textMedReq.Name = "textMedReq";
-            this.textMedReq.Size = new System.Drawing.Size(221, 30);
+            this.textMedReq.Padding = new System.Windows.Forms.Padding(2);
+            this.textMedReq.Size = new System.Drawing.Size(332, 39);
             this.textMedReq.TabIndex = 14;
             // 
             // MedAdminListForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 675);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MedAdminListForm";
             this.Text = "用藥紀錄查詢";
             this.panelExtra.ResumeLayout(false);
