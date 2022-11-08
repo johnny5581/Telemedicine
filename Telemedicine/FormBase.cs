@@ -69,7 +69,6 @@ namespace Telemedicine
             comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MedicationRequest");
             comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MITW-MedicationAdministration");
             comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.BloodPressure");
-            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.BloodPressure");
             comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.Common");
 
         }
