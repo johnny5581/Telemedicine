@@ -137,10 +137,31 @@ namespace Telemedicine.Controllers
         }
         public T Read(string location)
         {
+            if (location.IsNullOrEmpty())
+                return default(T);
             return ExecuteClient(client =>
             {
                 return client.Read<T>(location);
             });
+        }
+        public bool TryRead(string location, out T res)
+        {
+            try
+            {
+                res = Read(location);
+                return true;
+            }
+            catch
+            {
+                res = null;
+                return false;
+            }
+        }
+        public T TryRead(string location)
+        {
+            T res;
+            TryRead(location, out res);
+            return res;
         }
 
         public T Get(string id)
@@ -212,7 +233,10 @@ namespace Telemedicine.Controllers
             //if (criteria.Length == 0 && throwOnNoCriteria)
             //    throw new InvalidOperationException("no search criteria");
             //criteria = criteria.Concat(new string[] { "_count=100" }).ToArray();
-            var bundle = ExecuteClient(client => client.Search<T>(criteria, pageSize: 100));
+
+            var bundle = criteria.Length == 0 
+                ? ExecuteClient(client => client.Search<T>(pageSize: 100))
+                : ExecuteClient(client => client.Search<T>(criteria, pageSize: 100));
             var list = new List<T>();
             if (bundle.Entry.Count > 0)
             {

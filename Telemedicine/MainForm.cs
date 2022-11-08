@@ -117,17 +117,18 @@ namespace Telemedicine
 
         private void 建立ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Vaccs.VaccCreateForm>());
+            Execute(() => FindView<Laboratories.LabCreateForm>());
         }
 
         private void 查詢ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Vaccs.VaccListForm>());
+            Execute(() => FindView<Bundles.LabCompositionListForm>());
         }
 
         private void 查詢ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            Execute(() => FindView<Bundles.BundleListForm2>());
+            //Execute(() => FindView<Bundles.BundleListForm2>());
+            Execute(() => FindView<Bundles.CompositionListForm>());
         }
         private void 建立ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
@@ -151,6 +152,11 @@ namespace Telemedicine
         private void 查詢ToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             Execute(() => FindView<Practitioners.PracListForm>());
+        }
+
+        private void toolStripMenuItem1_2_Click(object sender, EventArgs e)
+        {
+            Execute(() => FindView<Vaccs.VaccCreateForm>());
         }
     }
 }

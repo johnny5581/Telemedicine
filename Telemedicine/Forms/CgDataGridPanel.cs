@@ -226,7 +226,18 @@ namespace Telemedicine.Forms
         /// <summary>
         /// 增加文字欄位
         /// </summary>        
-        public DataGridViewTextBoxColumn AddTextColumn<T>(Expression<Func<T, object>> selector, string title = null, FormattingCellEventHandler formatter = null, string[] arguments = null)
+        //public DataGridViewTextBoxColumn AddTextColumn<T>(Expression<Func<T, object>> selector, string title = null, FormattingCellEventHandler formatter = null, string[] arguments = null)
+        //{
+        //    var builder = AppendColumn<DataGridViewTextBoxColumn>();
+        //    builder.Bind(selector, title);
+        //    if (formatter != null)
+        //        builder.UseFormatter(formatter, arguments);
+        //    return builder.Commit();
+        //}
+        /// <summary>
+        /// 增加文字欄位
+        /// </summary>        
+        public DataGridViewTextBoxColumn AddTextColumn<T>(Expression<Func<T, object>> selector, string title = null, FormattingCellEventHandler formatter = null, object[] arguments = null)
         {
             var builder = AppendColumn<DataGridViewTextBoxColumn>();
             builder.Bind(selector, title);
@@ -234,7 +245,6 @@ namespace Telemedicine.Forms
                 builder.UseFormatter(formatter, arguments);
             return builder.Commit();
         }
-
 
 
         protected override void OnSizeChanged(EventArgs e)
@@ -717,6 +727,7 @@ namespace Telemedicine.Forms
                 e.FormattingApplied = true;
             }
         }
+
         #endregion
 
         public class ColumnBuilder<T> where T : DataGridViewColumn

@@ -73,6 +73,15 @@
     <Compile Include="Bundles\BundleListForm2.Designer.cs">
       <DependentUpon>BundleListForm2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bundles\CompositionListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bundles\CompositionListForm.Designer.cs">
+      <DependentUpon>CompositionListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bundles\LabCompositionListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CgLabelExs.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -515,6 +524,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Bundles\BundleListForm2.resx">
       <DependentUpon>BundleListForm2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bundles\CompositionListForm.resx">
+      <DependentUpon>CompositionListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CgLabelExs.resx">
       <DependentUpon>CgLabelExs.cs</DependentUpon>

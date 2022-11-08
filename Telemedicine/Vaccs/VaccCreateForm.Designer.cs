@@ -81,9 +81,9 @@ namespace Telemedicine.Vaccs
             this.cgFlowLayoutPanel1.Controls.Add(this.textRptdat);
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(3, 18);
+            this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(3, 25);
             this.cgFlowLayoutPanel1.Name = "cgFlowLayoutPanel1";
-            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(403, 348);
+            this.cgFlowLayoutPanel1.Size = new System.Drawing.Size(403, 341);
             this.cgFlowLayoutPanel1.TabIndex = 5;
             this.cgFlowLayoutPanel1.WrapContents = false;
             // 
@@ -92,43 +92,43 @@ namespace Telemedicine.Vaccs
             this.textVacSystem.Header = "檢驗系統";
             this.textVacSystem.Location = new System.Drawing.Point(3, 3);
             this.textVacSystem.Name = "textVacSystem";
-            this.textVacSystem.Size = new System.Drawing.Size(231, 30);
+            this.textVacSystem.Size = new System.Drawing.Size(231, 37);
             this.textVacSystem.TabIndex = 7;
             this.textVacSystem.Text = "http://loinc.org";
             // 
             // textVacId
             // 
             this.textVacId.Header = "檢驗代號";
-            this.textVacId.Location = new System.Drawing.Point(3, 39);
+            this.textVacId.Location = new System.Drawing.Point(3, 46);
             this.textVacId.Name = "textVacId";
-            this.textVacId.Size = new System.Drawing.Size(231, 30);
+            this.textVacId.Size = new System.Drawing.Size(231, 37);
             this.textVacId.TabIndex = 5;
             this.textVacId.Text = "LP217198-3";
             // 
             // textVacName
             // 
             this.textVacName.Header = "檢驗名稱";
-            this.textVacName.Location = new System.Drawing.Point(3, 75);
+            this.textVacName.Location = new System.Drawing.Point(3, 89);
             this.textVacName.Name = "textVacName";
-            this.textVacName.Size = new System.Drawing.Size(231, 30);
+            this.textVacName.Size = new System.Drawing.Size(231, 37);
             this.textVacName.TabIndex = 6;
             this.textVacName.Text = "Rapid Immunoassay";
             // 
             // textRcvdat
             // 
             this.textRcvdat.Header = "檢驗日期";
-            this.textRcvdat.Location = new System.Drawing.Point(3, 111);
+            this.textRcvdat.Location = new System.Drawing.Point(3, 132);
             this.textRcvdat.Name = "textRcvdat";
-            this.textRcvdat.Size = new System.Drawing.Size(231, 30);
+            this.textRcvdat.Size = new System.Drawing.Size(231, 37);
             this.textRcvdat.TabIndex = 11;
             this.textRcvdat.Text = "2021-11-03";
             // 
             // textRptdat
             // 
             this.textRptdat.Header = "報告日期";
-            this.textRptdat.Location = new System.Drawing.Point(3, 147);
+            this.textRptdat.Location = new System.Drawing.Point(3, 175);
             this.textRptdat.Name = "textRptdat";
-            this.textRptdat.Size = new System.Drawing.Size(231, 30);
+            this.textRptdat.Size = new System.Drawing.Size(231, 37);
             this.textRptdat.TabIndex = 12;
             this.textRptdat.Text = "2021-11-04";
             // 
@@ -177,7 +177,7 @@ namespace Telemedicine.Vaccs
             this.textUserId.Location = new System.Drawing.Point(6, 49);
             this.textUserId.Name = "textUserId";
             this.textUserId.ReadOnly = true;
-            this.textUserId.Size = new System.Drawing.Size(165, 30);
+            this.textUserId.Size = new System.Drawing.Size(165, 37);
             this.textUserId.TabIndex = 2;
             // 
             // textOrgId
@@ -186,7 +186,7 @@ namespace Telemedicine.Vaccs
             this.textOrgId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textOrgId.Location = new System.Drawing.Point(6, 49);
             this.textOrgId.Name = "textOrgId";
-            this.textOrgId.Size = new System.Drawing.Size(165, 14);
+            this.textOrgId.Size = new System.Drawing.Size(165, 20);
             this.textOrgId.TabIndex = 6;
             this.textOrgId.Text = "11909";
             // 
@@ -208,7 +208,7 @@ namespace Telemedicine.Vaccs
             this.textOrgName.Location = new System.Drawing.Point(6, 68);
             this.textOrgName.Name = "textOrgName";
             this.textOrgName.ReadOnly = true;
-            this.textOrgName.Size = new System.Drawing.Size(165, 30);
+            this.textOrgName.Size = new System.Drawing.Size(165, 37);
             this.textOrgName.TabIndex = 8;
             this.textOrgName.Text = "長庚醫療財團法人林口長庚紀念醫院";
             // 
@@ -230,7 +230,7 @@ namespace Telemedicine.Vaccs
             this.textPatName.Location = new System.Drawing.Point(6, 69);
             this.textPatName.Name = "textPatName";
             this.textPatName.ReadOnly = true;
-            this.textPatName.Size = new System.Drawing.Size(165, 30);
+            this.textPatName.Size = new System.Drawing.Size(165, 37);
             this.textPatName.TabIndex = 3;
             // 
             // textPatBrithDate
@@ -239,7 +239,7 @@ namespace Telemedicine.Vaccs
             this.textPatBrithDate.Location = new System.Drawing.Point(6, 99);
             this.textPatBrithDate.Name = "textPatBrithDate";
             this.textPatBrithDate.ReadOnly = true;
-            this.textPatBrithDate.Size = new System.Drawing.Size(165, 30);
+            this.textPatBrithDate.Size = new System.Drawing.Size(165, 37);
             this.textPatBrithDate.TabIndex = 4;
             // 
             // textPatSex
@@ -248,7 +248,7 @@ namespace Telemedicine.Vaccs
             this.textPatSex.Location = new System.Drawing.Point(6, 129);
             this.textPatSex.Name = "textPatSex";
             this.textPatSex.ReadOnly = true;
-            this.textPatSex.Size = new System.Drawing.Size(165, 30);
+            this.textPatSex.Size = new System.Drawing.Size(165, 37);
             this.textPatSex.TabIndex = 5;
             // 
             // textPatId
@@ -257,7 +257,7 @@ namespace Telemedicine.Vaccs
             this.textPatId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatId.Location = new System.Drawing.Point(6, 49);
             this.textPatId.Name = "textPatId";
-            this.textPatId.Size = new System.Drawing.Size(165, 14);
+            this.textPatId.Size = new System.Drawing.Size(165, 20);
             this.textPatId.TabIndex = 6;
             // 
             // buttonPat

@@ -67,9 +67,38 @@ namespace Telemedicine
             });
         }
 
+        public static string GetIdentifier(List<Identifier> identifiers, string system, Func<Identifier, string> factory = null)
+        {
+            foreach (var identifier in identifiers)
+            {
+                if (identifier.System == system)
+                {
+                    if (factory != null)
+                        return factory(identifier);
+                    return identifier.Value;
+                }
+            }
+            return null;
+        }
+        public static string GetHumanName(List<HumanName> names)
+        {
+            return names?.FirstOrDefault()?.Text;
+        }
 
-
-
+        public static string GetCodeableConcept(CodeableConcept codeableConcept)
+        {
+            if (codeableConcept == null) return null;
+            var text = codeableConcept.Text;
+            if (text.IsNullOrEmpty())
+            {
+                var code = codeableConcept.Coding?.FirstOrDefault();
+                if(code != null)
+                {
+                    text = code.Display ?? code.Code;
+                }
+            }
+            return text;
+        }
 
 
 
@@ -281,6 +310,13 @@ namespace Telemedicine
             var resource = item as Resource;
             if (resource != null)
                 return resource.Id;
+            return null;
+        }
+        public static ResourceReference GetResourceReference(object item)
+        {
+            var resource = item as Resource;
+            if (resource != null)
+                return new ResourceReference(item.GetType().Name + "/" + resource.Id);
             return null;
         }
         public static string GetPeriod(DataType dataRes)

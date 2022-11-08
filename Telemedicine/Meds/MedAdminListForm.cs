@@ -51,10 +51,10 @@ namespace Telemedicine.Meds
             AddCriteria(criterias, "subject", textSubject.Text);
             AddCriteria(criterias, "subject.identifier", textPatIdentifier.Text);
             AddCriteria<MedicationAdministration.MedicationAdministrationStatusCodes>(criterias, "status", comboStatus.SelectedValue);
-            AddCriteria(criterias, "medication.code", textMedId.Text);
+            AddCriteria(criterias, "code", textMedId.Text);
             AddCriteria(criterias, "subject.organization", comboPatOrg.SelectedValue);
             AddCriteria(criterias, "request", textMedReq.Text, r => "MedicationRequest/" + r);
-
+            AddCriteria(criterias, "effective-time", cgLabelDateTimeRange1);
             return Controller.Search(criterias);
         }
 

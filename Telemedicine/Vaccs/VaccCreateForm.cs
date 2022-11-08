@@ -98,7 +98,7 @@ namespace Telemedicine.Vaccs
                 composition.Subject = new ResourceReference("Patient/" + textPatId.Text);
                 composition.Date = FhirDateTime.Now().Value;
                 composition.Author.Add(new ResourceReference("Organization/" + textOrgId.Text));
-                composition.Title = "COVID-19 Vaccine";
+                composition.Title = "檢驗報告";
                 var section = new Composition.SectionComponent();
                 section.Entry.Add(new ResourceReference("Organization/" + textOrgId.Text));
                 section.Entry.Add(new ResourceReference("Patient/" + textPatId.Text));

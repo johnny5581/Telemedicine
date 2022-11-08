@@ -213,7 +213,7 @@ namespace Telemedicine
                 criterias.Add($"{name}={text}");
             }
         }
-        protected void AddCriteria(List<string> criterias, string name, CgLabelDateTimeRange range)
+        protected void AddCriteria(List<string> criterias, string name, CgLabelDateTimeRange range, Func<string, string> valueFactory = null)
         {
             if (range.Avaliable)
             {
@@ -235,7 +235,11 @@ namespace Telemedicine
                     criterias.Add($"{name}=lt{to}");
                 }
                 else
+                {
+                    if (valueFactory != null)
+                        from = valueFactory(from);
                     criterias.Add($"{name}={from}");
+                }
             }
         }
         public new DialogResult ShowDialog()
