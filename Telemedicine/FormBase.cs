@@ -55,6 +55,7 @@ namespace Telemedicine
         public static void BindMeta(this ICgComboBox comboMeta)
         {
             // META
+           
             comboMeta.AddTextItem("https://twcore.mohw.gov.tw/ig/");
             comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Patient-twcore");
             comboMeta.AddTextItem("https://twcore.mohw.gov.tw/fhir/StructureDefinition/Organization-twcore");
@@ -67,6 +68,9 @@ namespace Telemedicine
                 comboMeta.AddTextItem("https://simplifier.net/MITW.EMS.IG/ObservationForEMSECG/");
             comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MedicationRequest");
             comboMeta.AddTextItem("https://mitwfhir.dicom.org.tw/fhir/StructureDefinition/MITW-MedicationAdministration");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.BloodPressure");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.BloodPressure");
+            comboMeta.AddTextItem("https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.Common");
 
         }
 
