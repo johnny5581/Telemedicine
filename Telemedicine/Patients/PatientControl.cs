@@ -62,8 +62,9 @@ namespace Telemedicine.Patients
             var resRef = e.Value as ResourceReference;
             if (resRef != null)
             {
-                var pat = ControllerBase.Get<Patient>().Read(resRef.Reference);
-                e.Value = GetPatientName(pat);
+                //var pat = ControllerBase.Get<Patient>().Read(resRef.Reference);
+                //e.Value = GetPatientName(pat);
+                e.Value = resRef.Reference;
             }
         }
     }

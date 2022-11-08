@@ -1,4 +1,5 @@
 ﻿using Hl7.Fhir.Model;
+using Hl7.Fhir.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,11 +25,11 @@ namespace Telemedicine
         {
             InitializeComponent();
             SetupDataGridPanel(dgvData);
-            _bindingList= new BindingList<string>();
+            _bindingList = new BindingList<string>();
             _bindingList.ListChanged += BindingList_ListChanged;
         }
 
-        
+
 
         public IList<string> PredefinedCriterias
         {
@@ -42,7 +43,7 @@ namespace Telemedicine
                 splitContainer2.Panel2Collapsed = true;
         }
         public object Selected { get; set; }
-        
+
         public bool IsEditable
         {
             get { return menuEdit.Visible; }
@@ -187,7 +188,21 @@ namespace Telemedicine
                 e.Value = identifier?.Value;
             }
         }
-
+        protected void AddCriteria<T>(List<string> criterias, string name, object value, Func<string, string> valueFactory = null)
+        {
+            if (value != null)
+            {
+                var enumMembers = typeof(T).GetMember(Convert.ToString(value));
+                var enumMember = enumMembers.FirstOrDefault(r => r.DeclaringType == typeof(T));
+                if (enumMember != null && enumMember.TryGetCustomAttribute(false, out EnumLiteralAttribute attr))
+                {
+                    var text = attr.Literal;
+                    if (valueFactory != null)
+                        text = valueFactory(text);
+                    criterias.Add($"{name}={text}");
+                }
+            }
+        }
         protected void AddCriteria(List<string> criterias, string name, object value, Func<string, string> valueFactory = null)
         {
             var text = Convert.ToString(value);
@@ -231,13 +246,13 @@ namespace Telemedicine
         private void BindingList_ListChanged(object sender, ListChangedEventArgs e)
         {
             panelExtraCriteria.Controls.Clear();
-            foreach(var criteria in _bindingList)
+            foreach (var criteria in _bindingList)
             {
                 var label = new Label { AutoSize = false, Text = criteria };
                 panelExtraCriteria.Controls.Add(label);
             }
         }
 
-   
+
     }
 }

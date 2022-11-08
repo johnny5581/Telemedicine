@@ -31,7 +31,7 @@ namespace Telemedicine
             int index = -1;
             if (notSpecifyText != null)
                 index = comboBox.AddTextItem(notSpecifyText, null);
-            var names = Enum.GetNames(typeof(MedicationRequest.medicationrequestStatus));
+            var names = Enum.GetNames(typeof(T));
             comboBox.AddItemRange(names, r => r, r => Enum.Parse(typeof(T), r));
             comboBox.SelectedIndex = index;
         }

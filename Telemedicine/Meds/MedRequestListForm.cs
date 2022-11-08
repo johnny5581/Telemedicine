@@ -82,7 +82,7 @@ namespace Telemedicine.Meds
             AddCriteria(criterias, "subject", textSubject.Text);
             AddCriteria(criterias, "subject.identifier", textPatIdentifier.Text);
             AddCriteria(criterias, "status", Convert.ToString(comboStatus.SelectedValue).StrToLower());
-            AddCriteria(criterias, "medication.code", textMedId.Text);
+            AddCriteria(criterias, "code", textMedId.Text);
             AddCriteria(criterias, "subject.organization", comboPatOrg.SelectedValue as string);
 
             return Controller.Search(criterias);
@@ -95,11 +95,6 @@ namespace Telemedicine.Meds
                 return true;
             }
             return base.ActionDelete(item);
-        }
-
-        private void buttonSearch_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
