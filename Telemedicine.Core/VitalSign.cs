@@ -49,8 +49,8 @@ namespace Telemedicine
         public static VitalSign BodyHeight = new VitalSign("3137-7", "Body Height", "身高", "cm");
         public static VitalSign BodyWeight = new VitalSign("29463-7", "Body Weight", "體重", "kg");
         public static VitalSign BodyTemperature = new VitalSign("8310-5", "Body Temperature", "體溫", "Cel");
-        public static VitalSign BloodGlucosePreMeal = new VitalSign("88365-2", "Blood Glucose Post Meal", "進食前血糖", "mg/dL", "Laboratory Data", "Laboratory Data");
-        public static VitalSign BloodGlucosePostMeal = new VitalSign("87422-2", "Blood Glucose Post Meal", "進食後血糖", "mg/dL", "Laboratory Data", "Laboratory Data");
+        public static VitalSign BloodGlucosePreMeal = new VitalSign("88365-2", "Blood Glucose Pre Meal", "進食前血糖", "mg/dL", "laboratory", "Laboratory");
+        public static VitalSign BloodGlucosePostMeal = new VitalSign("87422-2", "Blood Glucose Post Meal", "進食後血糖", "mg/dL", "laboratory", "Laboratory");
         public static VitalSign PercentageOfBodyFat = new VitalSign("41982-0", "Percentage of body fat Measured", "體脂率", "%");
         public static VitalSign GripStrengthHand = new VitalSign("83174-3", "Grip strength Hand - right Dynamometer", "握力", "kg");
         public static VitalSign Oxygen = new VitalSign("59408-5", "Oxygen saturation in Arterial blood by Pulse oximetry", "SPO2血氧飽和濃度", "%");
