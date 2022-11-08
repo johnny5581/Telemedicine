@@ -40,6 +40,8 @@ namespace Telemedicine.Patients
 
 
             comboMeta.BindMeta();
+            comboAct.AddItem("true");
+            comboAct.AddItem("false");
             }
 
         public Controller<Patient> Controller { get; set; }

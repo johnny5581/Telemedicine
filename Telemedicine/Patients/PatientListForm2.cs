@@ -22,6 +22,8 @@ namespace Telemedicine.Patients
         {
             InitializeComponent();
             comboOrg.BindOrganizations("全部");
+            comboAct.AddItem("true");
+            comboAct.AddItem("false");
             IsEditable = true;
         }
         public Controller<Patient> Controller { get; set; }

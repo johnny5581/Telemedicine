@@ -78,6 +78,7 @@ namespace Telemedicine.Patients
             dgvData.ClearSource();
 
             var criteria = new List<string>();
+            criteria.Add("active=true");
             if (id.IsNotNullOrEmpty())
                 criteria.Add("_id=" + id);
             if (identifier.IsNotNullOrEmpty())
