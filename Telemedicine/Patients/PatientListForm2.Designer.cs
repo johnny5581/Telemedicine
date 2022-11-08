@@ -33,6 +33,7 @@
             this.textIdentifier = new Telemedicine.Forms.CgLabelTextBox();
             this.textName = new Telemedicine.Forms.CgLabelTextBox();
             this.comboOrg = new Telemedicine.Forms.CgLabelComboBox();
+            this.comboAct = new Telemedicine.Forms.CgLabelComboBox();
             this.panelExtra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -74,6 +75,7 @@
             this.cgFlowLayoutPanel1.Controls.Add(this.textIdentifier);
             this.cgFlowLayoutPanel1.Controls.Add(this.textName);
             this.cgFlowLayoutPanel1.Controls.Add(this.comboOrg);
+            this.cgFlowLayoutPanel1.Controls.Add(this.comboAct);
             this.cgFlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -114,6 +116,17 @@
             this.comboOrg.Size = new System.Drawing.Size(226, 31);
             this.comboOrg.TabIndex = 9;
             // 
+            // comboAct
+            // 
+            this.comboAct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboAct.Header = "Active";
+            this.comboAct.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.comboAct.Location = new System.Drawing.Point(0, 88);
+            this.comboAct.Margin = new System.Windows.Forms.Padding(0);
+            this.comboAct.Name = "comboAct";
+            this.comboAct.Size = new System.Drawing.Size(226, 31);
+            this.comboAct.TabIndex = 10;
+            // 
             // PatientListForm2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -137,5 +150,6 @@
         private Forms.CgLabelTextBox textIdentifier;
         private Forms.CgLabelTextBox textName;
         private Forms.CgLabelComboBox comboOrg;
+        private Forms.CgLabelComboBox comboAct;
     }
 }

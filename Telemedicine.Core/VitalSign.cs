@@ -57,6 +57,7 @@ namespace Telemedicine
         public static VitalSign HeartRate = new VitalSign("8867-4", "Heart Rate", "心率", "{beats}/min");
         public static VitalSign SystolicBloodPressure = new VitalSign("8480-6", "Systolic Blood Pressure", "收縮壓", "mm[Hg]");
         public static VitalSign DistolicBloodPressure = new VitalSign("8462-4", "Distolic Blood Pressure", "舒張壓", "mm[Hg]");
+        public static VitalSign Capillary = new VitalSign("44963-7", "Capillary refill [Time] of Nail bed", "Capillary refill [Time] of Nail bed", "s", "exam", "Exam");
         public static VitalSign BloodPressurePanel = new VitalSign("35094-2", "Blood Pressure Panel", "血壓", "mmHg", valueSpecs: new ValueSpec[] {
             new ValueSpec(SystolicBloodPressure),
             new ValueSpec(DistolicBloodPressure),
@@ -195,6 +196,7 @@ namespace Telemedicine
             LeftFemoral,
             RightFemoral,
             LumbarSpine,
+            Capillary,
             ECG,
             ECG_Lead_I,
             ECG_Lead_II,
