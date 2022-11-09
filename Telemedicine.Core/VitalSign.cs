@@ -75,7 +75,8 @@ namespace Telemedicine
         public CodeableConcept GetCode()
         {
             var code = new CodeableConcept(CodeSystem, Code, Item, ItemDisplay);
-            code.Coding.Add(new Coding(UnitSystem, Unit, Unit));
+            if (Code == VitalSign.ECG.Code)
+                code.Coding.Add(new Coding(UnitSystem, Unit, Unit));
             return code;
         }
 
@@ -183,7 +184,7 @@ namespace Telemedicine
             }
         }
 
-        public static VitalSign[] VitalSigns { get; private set; }= new VitalSign[]
+        public static VitalSign[] VitalSigns { get; private set; } = new VitalSign[]
         {
             BodyHeight,
             BodyWeight,
