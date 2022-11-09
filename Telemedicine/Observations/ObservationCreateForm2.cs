@@ -110,7 +110,7 @@ namespace Telemedicine.Observations
                         list.Add(obs);
                         list.NotifyListChanged(ListChangedType.ItemAdded, list.Count - 1);
                     };
-                    d.Show();
+                    d.ShowDialog();
                 }
             });
         }
@@ -155,7 +155,7 @@ namespace Telemedicine.Observations
             Execute(() =>
             {
                 var item = GetSelectedItem<Observation>(dgvData);
-                if(item.Id != null)
+                if (item.Id != null)
                 {
                     Controller.Delete(item);
                 }
@@ -171,7 +171,25 @@ namespace Telemedicine.Observations
 
         private void buttonItemAddEKG_Click(object sender, EventArgs e)
         {
-
+            Execute(() =>
+            {
+                using (var d = new ObservationECGForm())
+                {
+                    if (d.ShowDialog() == DialogResult.OK)
+                    {
+                        var vs = VitalSign.ECG;
+                        var obs = new Observation();
+                        obs.Status = ObservationStatus.Final;
+                        obs.Category.Add(vs.GetCategory());
+                        obs.Code = vs.GetCode();
+                        obs.Effective = d.Effective;
+                        obs.Component = d.GetObservationComponents();
+                        var list = dgvData.GetSortableSource<Observation>();
+                        list.Add(obs);
+                        list.NotifyListChanged(ListChangedType.ItemAdded, list.Count - 1);
+                    }
+                }
+            });
         }
 
         private void buttonUpload_Click(object sender, EventArgs e)
@@ -190,12 +208,28 @@ namespace Telemedicine.Observations
                     {
                         Execute(() =>
                         {
-                            observation.Subject = patientControl1.GetResourceReference();
-                            if (medRequestControl1.Id.IsNotNullOrEmpty())
-                                observation.BasedOn.Add(medRequestControl1.GetResourceReference());
-                            else if (serviceRequestControl1.Id.IsNotNullOrEmpty())
-                                observation.BasedOn.Add(serviceRequestControl1.GetResourceReference());
-                            observation.Meta = comboMeta.GetMeta();
+                            if (observation?.Code?.Coding?.FirstOrDefault()?.Code == VitalSign.ECG.Code)
+                            {
+                                observation.Subject = new ResourceReference("Patient/VT.SC4.Inpatient");
+                                observation.BasedOn.Add(new ResourceReference("ServiceRequest/VT.SC4.ServiceRequest"));
+
+                                observation.Meta = new Meta
+                                {
+                                    Profile = new List<string>() 
+                                    {
+                                        "https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.ECG"
+                                    }
+                                };
+                            }
+                            else
+                            {
+                                observation.Subject = patientControl1.GetResourceReference();
+                                if (medRequestControl1.Id.IsNotNullOrEmpty())
+                                    observation.BasedOn.Add(medRequestControl1.GetResourceReference());
+                                else if (serviceRequestControl1.Id.IsNotNullOrEmpty())
+                                    observation.BasedOn.Add(serviceRequestControl1.GetResourceReference());
+                                observation.Meta = comboMeta.GetMeta();
+                            }
                             observation.Id = Controller.Create(observation);
                             list.NotifyListChanged(ListChangedType.ItemChanged, list.IndexOf(observation));
                         }, ex =>
@@ -208,7 +242,7 @@ namespace Telemedicine.Observations
                     MsgBoxHelper.Info("上傳成功");
                 else
                     MsgBoxHelper.Info("上傳失敗: " + faileds.Count);
-                
+
             });
         }
 

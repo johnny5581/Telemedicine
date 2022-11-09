@@ -111,20 +111,20 @@ namespace Telemedicine
                                                                   });
         //public static VitalSign Tempalte = new VitalSign("", "", "", "");
 
-        public static VitalSign ECG_Lead_I = new VitalSign("131329", "MDC_ECG_ELEC_POTL_I", "Lead I", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_II = new VitalSign("131330", "MDC_ECG_ELEC_POTL_II", "Lead II", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_III = new VitalSign("131389", "MDC_ECG_ELEC_POTL_III", "Lead III", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_AVR = new VitalSign("131390", "MDC_ECG_ELEC_POTL_AVR", "Lead AVR", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_AVL = new VitalSign("131391", "MDC_ECG_ELEC_POTL_AVL", "Lead AVL", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_AVF = new VitalSign("131392", "MDC_ECG_ELEC_POTL_AVF", "Lead AVF", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_V1 = new VitalSign("131331", "MDC_ECG_ELEC_POTL_V1", "Lead V1", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_V2 = new VitalSign("131332", "MDC_ECG_ELEC_POTL_V2", "Lead V2", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_V3 = new VitalSign("131333", "MDC_ECG_ELEC_POTL_V3", "Lead V3", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_V4 = new VitalSign("131334", "MDC_ECG_ELEC_POTL_V4", "Lead V4", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_V5 = new VitalSign("131335", "MDC_ECG_ELEC_POTL_V5", "Lead V5", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
-        public static VitalSign ECG_Lead_V6 = new VitalSign("131336", "MDC_ECG_ELEC_POTL_V6", "Lead V6", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_I = new VitalSign("131329", "MDC_ECG_ELEC_POTL_I", "Lead I", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_II = new VitalSign("131330", "MDC_ECG_ELEC_POTL_II", "Lead II", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_III = new VitalSign("131389", "MDC_ECG_ELEC_POTL_III", "Lead III", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_AVR = new VitalSign("131390", "MDC_ECG_ELEC_POTL_AVR", "Lead AVR", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_AVL = new VitalSign("131391", "MDC_ECG_ELEC_POTL_AVL", "Lead AVL", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_AVF = new VitalSign("131392", "MDC_ECG_ELEC_POTL_AVF", "Lead AVF", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_V1 = new VitalSign("131331", "MDC_ECG_ELEC_POTL_V1", "Lead V1", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_V2 = new VitalSign("131332", "MDC_ECG_ELEC_POTL_V2", "Lead V2", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_V3 = new VitalSign("131333", "MDC_ECG_ELEC_POTL_V3", "Lead V3", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_V4 = new VitalSign("131334", "MDC_ECG_ELEC_POTL_V4", "Lead V4", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_V5 = new VitalSign("131335", "MDC_ECG_ELEC_POTL_V5", "Lead V5", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
+        public static VitalSign ECG_Lead_V6 = new VitalSign("131336", "MDC_ECG_ELEC_POTL_V6", "Lead V6", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24");
 
-        public static VitalSign ECG = new VitalSign("131328", "MDC_ECG_ELEC_POTL", "心電圖", "mm[Hg]", "Procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24",
+        public static VitalSign ECG = new VitalSign("131328", "MDC_ECG_ELEC_POTL", "心電圖", "mm[Hg]", "procedure", "Procedure", "urn:oid:2.16.840.1.113883.6.24",
             valueSpecs: new ValueSpec[] {
                 new ValueSpec(ECG_Lead_I),
                 new ValueSpec(ECG_Lead_II),

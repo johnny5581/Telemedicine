@@ -202,7 +202,7 @@ namespace Telemedicine.Meds
     public class MedTiming : Coding
     {
         private float _quantity;
-        public MedTiming(string code, string display, float quantityPerDay) : base("http://terminology.hl7.org/CodeSystem/v3-GTSAbbreviation", code, display)
+        public MedTiming(string code, string display, float quantityPerDay) : base("https://twcore.mohw.gov.tw/fhir/CodeSystem/medication-frequency-tw", code, display)
         {
             _quantity = quantityPerDay;
         }

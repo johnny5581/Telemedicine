@@ -87,23 +87,24 @@ namespace Telemedicine.Observations
             // 
             // contextMenuStrip
             // 
+            this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuEdit,
             this.menuDelete});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(99, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(117, 64);
             // 
             // menuEdit
             // 
             this.menuEdit.Name = "menuEdit";
-            this.menuEdit.Size = new System.Drawing.Size(98, 22);
+            this.menuEdit.Size = new System.Drawing.Size(116, 30);
             this.menuEdit.Text = "修改";
             this.menuEdit.Click += new System.EventHandler(this.menuEdit_Click);
             // 
             // menuDelete
             // 
             this.menuDelete.Name = "menuDelete";
-            this.menuDelete.Size = new System.Drawing.Size(98, 22);
+            this.menuDelete.Size = new System.Drawing.Size(116, 30);
             this.menuDelete.Text = "刪除";
             this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
@@ -126,9 +127,9 @@ namespace Telemedicine.Observations
             // 
             this.checkDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkDateRange.AutoSize = true;
-            this.checkDateRange.Location = new System.Drawing.Point(472, 158);
+            this.checkDateRange.Location = new System.Drawing.Point(472, 152);
             this.checkDateRange.Name = "checkDateRange";
-            this.checkDateRange.Size = new System.Drawing.Size(62, 16);
+            this.checkDateRange.Size = new System.Drawing.Size(89, 22);
             this.checkDateRange.TabIndex = 9;
             this.checkDateRange.Text = "Enabled";
             this.checkDateRange.UseVisualStyleBackColor = true;
@@ -158,7 +159,7 @@ namespace Telemedicine.Observations
             this.textId.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textId.Location = new System.Drawing.Point(3, 3);
             this.textId.Name = "textId";
-            this.textId.Size = new System.Drawing.Size(189, 30);
+            this.textId.Size = new System.Drawing.Size(189, 37);
             this.textId.TabIndex = 0;
             // 
             // comboVitalSign
@@ -166,18 +167,18 @@ namespace Telemedicine.Observations
             this.comboVitalSign.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboVitalSign.Header = "類別";
             this.comboVitalSign.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboVitalSign.Location = new System.Drawing.Point(3, 39);
+            this.comboVitalSign.Location = new System.Drawing.Point(3, 46);
             this.comboVitalSign.Name = "comboVitalSign";
-            this.comboVitalSign.Size = new System.Drawing.Size(189, 31);
+            this.comboVitalSign.Size = new System.Drawing.Size(189, 38);
             this.comboVitalSign.TabIndex = 2;
             // 
             // textSubject
             // 
             this.textSubject.Header = "病患ID";
             this.textSubject.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textSubject.Location = new System.Drawing.Point(3, 73);
+            this.textSubject.Location = new System.Drawing.Point(3, 86);
             this.textSubject.Name = "textSubject";
-            this.textSubject.Size = new System.Drawing.Size(189, 30);
+            this.textSubject.Size = new System.Drawing.Size(189, 37);
             this.textSubject.TabIndex = 3;
             // 
             // textPatIdentifier
@@ -186,16 +187,16 @@ namespace Telemedicine.Observations
             this.textPatIdentifier.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textPatIdentifier.Location = new System.Drawing.Point(198, 3);
             this.textPatIdentifier.Name = "textPatIdentifier";
-            this.textPatIdentifier.Size = new System.Drawing.Size(194, 30);
+            this.textPatIdentifier.Size = new System.Drawing.Size(194, 37);
             this.textPatIdentifier.TabIndex = 4;
             // 
             // textPatName
             // 
             this.textPatName.Header = "病患姓名";
             this.textPatName.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textPatName.Location = new System.Drawing.Point(198, 39);
+            this.textPatName.Location = new System.Drawing.Point(198, 46);
             this.textPatName.Name = "textPatName";
-            this.textPatName.Size = new System.Drawing.Size(194, 30);
+            this.textPatName.Size = new System.Drawing.Size(194, 37);
             this.textPatName.TabIndex = 5;
             // 
             // comboPatOrg
@@ -203,9 +204,9 @@ namespace Telemedicine.Observations
             this.comboPatOrg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPatOrg.Header = "病患組織";
             this.comboPatOrg.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.comboPatOrg.Location = new System.Drawing.Point(198, 75);
+            this.comboPatOrg.Location = new System.Drawing.Point(198, 89);
             this.comboPatOrg.Name = "comboPatOrg";
-            this.comboPatOrg.Size = new System.Drawing.Size(194, 31);
+            this.comboPatOrg.Size = new System.Drawing.Size(194, 38);
             this.comboPatOrg.TabIndex = 6;
             // 
             // textMedReq
@@ -215,7 +216,7 @@ namespace Telemedicine.Observations
             this.textMedReq.HeaderAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textMedReq.Location = new System.Drawing.Point(398, 3);
             this.textMedReq.Name = "textMedReq";
-            this.textMedReq.Size = new System.Drawing.Size(194, 31);
+            this.textMedReq.Size = new System.Drawing.Size(194, 38);
             this.textMedReq.TabIndex = 7;
             // 
             // buttonClear

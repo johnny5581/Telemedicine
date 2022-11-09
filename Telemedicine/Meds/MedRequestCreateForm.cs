@@ -126,10 +126,10 @@ namespace Telemedicine.Meds
                         text = "其他";
                     }
                     request.Category.Add(new CodeableConcept("http://terminology.hl7.org/CodeSystem/medicationrequest-category", code, display, text));
-                    request.Medication = new MedicationReference("Medication/" + data.Id);
+                    //request.Medication = new MedicationReference("Medication/" + data.Id);
 
-                    //var medCode = data.Code.Coding?.FirstOrDefault();
-                    //request.Medication = new MedicationCodeableConcept(medCode?.System, medCode?.Code, medCode?.Display, medCode?.Display);
+                    var medCode = data.Code.Coding?.FirstOrDefault();
+                    request.Medication = new MedicationCodeableConcept(medCode?.System, medCode?.Code, medCode?.Display, medCode?.Display);
                     request.Subject = new ResourceReference("Patient/" + patId);
                     request.AuthoredOn = DateTime.Today.ToString("yyyy-MM-dd");
                     request.Meta = comboMeta.GetMeta();

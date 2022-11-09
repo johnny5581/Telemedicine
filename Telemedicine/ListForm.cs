@@ -30,7 +30,11 @@ namespace Telemedicine
         }
 
 
-
+        protected void AppendContextMenu(string text, EventHandler click)
+        {
+            var item = contextMenuStrip.Items.Add(text);
+            item.Click += click;
+        }
         public IList<string> PredefinedCriterias
         {
             get { return _bindingList; }

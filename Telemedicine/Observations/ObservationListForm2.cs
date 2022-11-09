@@ -22,8 +22,17 @@ namespace Telemedicine.Observations
         {
             InitializeComponent();
             comboVitalSign.AddTextItem("", null);
-            comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemDisplay, r.Code), r=>r.Code);
-        
+            comboVitalSign.AddItemRange(VitalSign.VitalSigns, r => string.Format("{0} ({1})", r.ItemDisplay, r.Code), r => r.Code);
+            AppendContextMenu("使用ECG Viewer開啟", (s, ev) =>
+            {
+                var item = GetSelectedItem(dgvData);
+                var obs = item as Observation;
+                using (var d = new ObservationECGForm())
+                {
+                    d.SetObservationComponents(obs.Component);
+                    d.ShowDialog();
+                }
+            });
         }
         public Controller<Observation> Controller { get; set; }
 
@@ -55,7 +64,7 @@ namespace Telemedicine.Observations
                 var dbp = components.FirstOrDefault(r => r.Code.Coding.FirstOrDefault()?.Code == VitalSign.DistolicBloodPressure.Code);
                 e.Value = $"{DomainControl.GetQuantity(sbp.Value as Quantity)}, {DomainControl.GetQuantity(dbp.Value as Quantity)}";
             }
-            else if(obs.Code.Coding.FirstOrDefault()?.Code == VitalSign.ECG.Code)
+            else if (obs.Code.Coding.FirstOrDefault()?.Code == VitalSign.ECG.Code)
             {
                 e.Value = "(SampledData)";
             }
@@ -69,6 +78,7 @@ namespace Telemedicine.Observations
             AddCriteria(criterias, "subject.name", textPatName.Text);
             AddCriteria(criterias, "subject.organization", comboPatOrg.SelectedValue);
             AddCriteria(criterias, "date", cgLabelDateTimeRange1);
+            AddCriteria(criterias, "based-on", textServiceRequest.Text, r => "ServiceRequest/" + r);
             return Controller.Search(criterias);
         }
         protected override bool ActionDelete(object item)
