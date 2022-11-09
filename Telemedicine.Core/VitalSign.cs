@@ -60,6 +60,7 @@ namespace Telemedicine
         public static VitalSign Capillary = new VitalSign("44963-7", "Capillary refill [Time] of Nail bed", "Capillary refill [Time] of Nail bed", "s", "exam", "Exam");
         public static VitalSign Glucose = new VitalSign("2339-0", "Glucose [Mass/volume] in Blood", "Glucose [Mass/volume] in Blood", "mg/dL", "laboratory", "Laboratory");
         public static VitalSign RespiratoryRate = new VitalSign("9279-1", "Respiratory Rate", "Respiratory Rate", "{counts/min}");
+        public static VitalSign Hrbpx = new VitalSign("8889-8", "Heart rate by Pulse oximeter", "Heart rate by Pulse oximeter", "{beats}/min");
         public static VitalSign BloodPressurePanel = new VitalSign("35094-2", "Blood pressure panel", "血壓", "mmHg", valueSpecs: new ValueSpec[] {
             new ValueSpec(SystolicBloodPressure),
             new ValueSpec(DistolicBloodPressure),
@@ -201,6 +202,7 @@ namespace Telemedicine
             Capillary,
             RespiratoryRate,
             Glucose,
+            Hrbpx,
             ECG,
             ECG_Lead_I,
             ECG_Lead_II,

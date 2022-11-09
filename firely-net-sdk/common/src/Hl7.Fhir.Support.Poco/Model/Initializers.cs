@@ -64,7 +64,7 @@ namespace Hl7.Fhir.Model
             if (!string.IsNullOrEmpty(system) || !string.IsNullOrEmpty(code))
             {
                 this.Coding = new List<Coding>() {
-                    new Coding(system,code) };
+                    new Coding(system,code,text) };
             }
             this.Text = text;
         }
