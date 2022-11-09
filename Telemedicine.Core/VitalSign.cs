@@ -95,10 +95,10 @@ namespace Telemedicine
         public static VitalSign LeftFemoral = new VitalSign("80948-3", "DXA Femur - Left [T-score] Bone density", "左股骨骨密度", "{T-score}"
                                                                 , "imaging", "Imaging"
                                                                   , bodySite: FemoralBodySites);
-        public static VitalSign RightFemoral = new VitalSign("80947-5", "DXA Femur [T-score] Bone density", "右股骨骨密度", "{T-score}"
+        public static VitalSign RightFemoral = new VitalSign("80947-5", "DXA Femur - Right [T-score] Bone density", "右股骨骨密度", "{T-score}"
                                                                 , "imaging", "Imaging"
                                                                   , bodySite: FemoralBodySites);
-        public static VitalSign LumbarSpine = new VitalSign("38263-0", "DXA Lumbar spine [T-score] Bone density", "腰椎骨密度", "{T-score}"
+        public static VitalSign LumbarSpine = new VitalSign("38267-1", "DXA Lumbar spine [T-score] Bone density", "腰椎骨密度", "{T-score}"
                                                                 , "imaging", "Imaging"
                                                                   , bodySite: new List<BodySiteObj>
                                                                   {
