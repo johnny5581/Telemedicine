@@ -220,7 +220,12 @@ namespace Telemedicine
         #region DataModel
         public abstract class DataModelBase
         {
+            private object _data;
             private PropertyInfo[] _properties;
+            public DataModelBase(object data)
+            {
+                _data = data;
+            }
             protected virtual void Bind(object model)
             {
                 if (model != null)
@@ -236,24 +241,27 @@ namespace Telemedicine
                     }
                 }
             }
+            public object Raw
+            {
+                get { return _data; }
+            }
         }
         public abstract class DataModelBase<T> : DataModelBase
         {
-            private readonly T _data;
+
 
             public DataModelBase(T data) : this(data, true)
             {
             }
-            public DataModelBase(T data, bool binding)
+            public DataModelBase(T data, bool binding) : base(data)
             {
-                _data = data;
                 if (binding)
                     Bind(data);
             }
             [Browsable(false)]
             public T Data
             {
-                get { return _data; }
+                get { return (T)Raw; }
             }
         }
 
@@ -266,7 +274,7 @@ namespace Telemedicine
                 : this(data1, data2, true)
             {
             }
-            public DataModelBase(T1 data1, T2 data2, bool binding)
+            public DataModelBase(T1 data1, T2 data2, bool binding) : base(data1)
             {
                 _data1 = data1;
                 _data2 = data2;

@@ -74,7 +74,9 @@ namespace Telemedicine
 
         public CodeableConcept GetCode()
         {
-            return new CodeableConcept(CodeSystem, Code, Item, ItemDisplay);
+            var code = new CodeableConcept(CodeSystem, Code, Item, ItemDisplay);
+            code.Coding.Add(new Coding(UnitSystem, Unit, Unit));
+            return code;
         }
 
 
@@ -153,7 +155,7 @@ namespace Telemedicine
             public string CodeSystem { get; set; }
             public CodeableConcept GetCodeableConcept()
             {
-                return new CodeableConcept(CodeSystem, Code, CodeDisplay);
+                return new CodeableConcept(CodeSystem, Code, Code, CodeDisplay);
             }
             public Coding GetCode()
             {

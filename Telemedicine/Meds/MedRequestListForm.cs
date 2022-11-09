@@ -99,7 +99,7 @@ namespace Telemedicine.Meds
         {
             if (MsgBoxHelper.YesNo("是否要刪除 #" + DomainControl.GetResourceId(item)))
             {
-                Controller.Delete(item as MedicationRequest);
+                Controller.Delete((item as ViewModel).Data);
                 return true;
             }
             return base.ActionDelete(item);

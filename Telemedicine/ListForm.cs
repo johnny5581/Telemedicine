@@ -117,8 +117,12 @@ namespace Telemedicine
         {
             Execute(() =>
             {
-                Selected = e.Data;
-                ActionDataSelected(e.Data);
+                var item = e.Data;
+                var model = item as DataModelBase;
+                if (model != null)
+                    item = model.Raw;
+                Selected = item;
+                ActionDataSelected(item);
                 if (_flgDialog)
                     DialogResult = DialogResult.OK;
             });
