@@ -51,9 +51,7 @@
             this.cgFlowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cgFlowLayoutPanel1.AutoMargin = true;
             this.cgFlowLayoutPanel1.AutoMarginSize = new System.Windows.Forms.Padding(3);
-            this.cgFlowLayoutPanel1.AutoResizeChild = true;
             this.cgFlowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.cgFlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.cgFlowLayoutPanel1.Location = new System.Drawing.Point(12, 109);

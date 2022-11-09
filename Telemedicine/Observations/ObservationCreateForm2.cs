@@ -217,7 +217,7 @@ namespace Telemedicine.Observations
                                 {
                                     Profile = new List<string>() 
                                     {
-                                        "https://hapi.fhir.tw/fhir/StructureDefinition/ObservationForEMS.ECG"
+                                        "http://192.168.50.5:10051/api/StructureDefinition/observationForEMS.ECG"
                                     }
                                 };
                             }
