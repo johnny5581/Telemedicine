@@ -203,7 +203,6 @@ namespace Telemedicine
             Capillary,
             RespiratoryRate,
             Glucose,
-            Hrbpx,
             ECG,
             ECG_Lead_I,
             ECG_Lead_II,
