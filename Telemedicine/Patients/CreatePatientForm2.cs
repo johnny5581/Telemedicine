@@ -180,6 +180,7 @@ namespace Telemedicine.Patients
                     contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textContactTelecom.Text));
                     pat.Contact.Add(contact);
                     pat.Meta = comboMeta.GetMeta();
+                    pat.Text
                     Controller.Update(pat);
 
                     MsgBoxHelper.Info("建立完成");
