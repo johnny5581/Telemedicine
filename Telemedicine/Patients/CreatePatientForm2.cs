@@ -179,8 +179,7 @@ namespace Telemedicine.Patients
                     contact.Relationship.Add(comboContactRelation.SelectedValue as CodeableConcept);
                     contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Home, textContactTelecom.Text));
                     pat.Contact.Add(contact);
-                    pat.Meta = comboMeta.GetMeta();
-                    pat.Text
+                    pat.Meta = comboMeta.GetMeta();                    
                     Controller.Update(pat);
 
                     MsgBoxHelper.Info("建立完成");
