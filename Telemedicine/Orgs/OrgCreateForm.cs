@@ -28,7 +28,7 @@ namespace Telemedicine.Orgs
                 var org = new Organization();
                 org.Id = textId.Text.ToNull();
                 var identifier = new Identifier(textIdSys.Text, textIdVal.Text);
-                identifier.Type.Coding.Add(new Coding("https://twcore.mohw.gov.tw/fhir/CodeSystem/v2-0203", "HOI"));
+                identifier.Type = new CodeableConcept("https://twcore.mohw.gov.tw/fhir/CodeSystem/v2-0203", "HOI");
                 org.Identifier.Add(identifier);
                 org.Name = textName.Text;
                 org.AliasElement.Add(new FhirString(textAlias.Text));
